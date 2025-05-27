@@ -6,6 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		E8650F512DE5DACA0066D798 /* CLAUDE.md in Resources */ = {isa = PBXBuildFile; fileRef = E8650F502DE5DACA0066D798 /* CLAUDE.md */; };
+		E8650F572DE5DAE30066D798 /* Hand Estデザインイメージ.png in Resources */ = {isa = PBXBuildFile; fileRef = E8650F522DE5DAE30066D798 /* Hand Estデザインイメージ.png */; };
+		E8650F582DE5DAE30066D798 /* デザイン.md in Resources */ = {isa = PBXBuildFile; fileRef = E8650F532DE5DAE30066D798 /* デザイン.md */; };
+		E8650F592DE5DAE30066D798 /* 要件定義.md in Resources */ = {isa = PBXBuildFile; fileRef = E8650F552DE5DAE30066D798 /* 要件定義.md */; };
+		E8650F5A2DE5DAE30066D798 /* 機能要件仕様書.md in Resources */ = {isa = PBXBuildFile; fileRef = E8650F542DE5DAE30066D798 /* 機能要件仕様書.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		E822940D2DE5D92E00DBE717 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +35,11 @@
 		E82293FC2DE5D92D00DBE717 /* HandEst.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HandEst.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E822940C2DE5D92E00DBE717 /* HandEstTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HandEstTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E82294162DE5D92F00DBE717 /* HandEstUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HandEstUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E8650F502DE5DACA0066D798 /* CLAUDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CLAUDE.md; sourceTree = "<group>"; };
+		E8650F522DE5DAE30066D798 /* Hand Estデザインイメージ.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Hand Estデザインイメージ.png"; sourceTree = "<group>"; };
+		E8650F532DE5DAE30066D798 /* デザイン.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "デザイン.md"; sourceTree = "<group>"; };
+		E8650F542DE5DAE30066D798 /* 機能要件仕様書.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "機能要件仕様書.md"; sourceTree = "<group>"; };
+		E8650F552DE5DAE30066D798 /* 要件定義.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "要件定義.md"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -43,6 +56,21 @@
 		E82294192DE5D92F00DBE717 /* HandEstUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = HandEstUITests;
+			sourceTree = "<group>";
+		};
+		E8650F5B2DE5DBE30066D798 /* done */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = done;
+			sourceTree = "<group>";
+		};
+		E8650F5C2DE5DBED0066D798 /* doing */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = doing;
+			sourceTree = "<group>";
+		};
+		E8650F5D2DE5DBEF0066D798 /* todo */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = todo;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -79,6 +107,8 @@
 				E822940F2DE5D92E00DBE717 /* HandEstTests */,
 				E82294192DE5D92F00DBE717 /* HandEstUITests */,
 				E82293FD2DE5D92D00DBE717 /* Products */,
+				E8650F502DE5DACA0066D798 /* CLAUDE.md */,
+				E8650F562DE5DAE30066D798 /* Projects */,
 			);
 			sourceTree = "<group>";
 		};
@@ -90,6 +120,20 @@
 				E82294162DE5D92F00DBE717 /* HandEstUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		E8650F562DE5DAE30066D798 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				E8650F5D2DE5DBEF0066D798 /* todo */,
+				E8650F5C2DE5DBED0066D798 /* doing */,
+				E8650F5B2DE5DBE30066D798 /* done */,
+				E8650F522DE5DAE30066D798 /* Hand Estデザインイメージ.png */,
+				E8650F532DE5DAE30066D798 /* デザイン.md */,
+				E8650F542DE5DAE30066D798 /* 機能要件仕様書.md */,
+				E8650F552DE5DAE30066D798 /* 要件定義.md */,
+			);
+			path = Projects;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -109,6 +153,9 @@
 			);
 			fileSystemSynchronizedGroups = (
 				E82293FE2DE5D92D00DBE717 /* HandEst */,
+				E8650F5B2DE5DBE30066D798 /* done */,
+				E8650F5C2DE5DBED0066D798 /* doing */,
+				E8650F5D2DE5DBEF0066D798 /* todo */,
 			);
 			name = HandEst;
 			packageProductDependencies = (
@@ -212,6 +259,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E8650F512DE5DACA0066D798 /* CLAUDE.md in Resources */,
+				E8650F572DE5DAE30066D798 /* Hand Estデザインイメージ.png in Resources */,
+				E8650F582DE5DAE30066D798 /* デザイン.md in Resources */,
+				E8650F592DE5DAE30066D798 /* 要件定義.md in Resources */,
+				E8650F5A2DE5DAE30066D798 /* 機能要件仕様書.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
