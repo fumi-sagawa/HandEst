@@ -257,3 +257,134 @@ fi
 - 実際の開発フローで動作確認
 - CI/CD設定の検討
 - カメラ機能の実装開始
+
+---
+
+## 追加作業（2024-12-03 23:00）
+
+### VSCode開発効率化機能の実装
+
+#### 1. ~~ホットリロード風の開発環境構築~~ （削除）
+当初はVSCodeでSwiftUI開発時に、ファイル変更を検知して自動的にビルド・再起動する仕組みを実装したが、以下の理由により削除：
+- ファイル保存の度にビルドが走り、マシンに負荷がかかる
+- SwiftUIのビルドは重く、頻繁な再ビルドは現実的でない
+- Xcodeのプレビューキャンバスの方が効率的
+
+**推奨される開発スタイル**
+- リアルタイムプレビューが必要な場合：VSCode + Xcode同時起動
+- 都度確認で十分な場合：VSCodeでの開発 + 手動ビルド
+
+#### 2. 純粋関数・Reducerテストカバレッジチェック機能
+TCAの原則に従い、純粋関数とReducerには必ずテストを書くことを強制する仕組みを実装。
+
+**Scripts/check-test-coverage.swift**
+- Featureファイル内の純粋関数を検出
+- Reducerのreduceメソッドを検出
+- 対応するテストファイルの存在確認
+- テストされていない関数をレポート
+
+**pre-commit hook への統合**
+- テスト実行後にカバレッジチェックを追加
+- テストが不足している場合は警告を表示
+- `--no-verify` でスキップ可能
+
+#### 3. README整理
+- ルートのREADME.md: 開発効率化のTipsとトラブルシューティングを追加
+- Scripts/README.md: スクリプトの詳細説明に特化
+
+### 実装した機能の利点
+1. **品質の担保**: 純粋関数には必ずテストを書く文化の定着
+2. **TCAベストプラクティスの遵守**: Reducerテストの強制
+3. **開発スタイルの柔軟性**: VSCode単独でも、Xcode併用でも開発可能
+
+### 使い方
+```bash
+# テストカバレッジ確認
+./Scripts/check-test-coverage.swift
+
+# Git hooks再インストール（更新を反映）
+./Scripts/install-hooks.sh
+
+# 推奨：VSCode + Xcode同時起動での開発
+open HandEst.xcodeproj  # Xcodeでプレビュー表示
+code .                  # VSCodeで編集
+```
+
+## 最終成果（更新）
+- ✅ VSCodeとXcodeの連携環境構築完了
+- ✅ xcodegenによる自動ファイル認識が可能に
+- ✅ SwiftLintによるコード品質管理が有効化
+- ✅ TCA（The Composable Architecture）の導入完了
+- ✅ シミュレータでのビルド・実行が可能に
+- ✅ README.mdによるドキュメント整備
+- ✅ .gitignoreによる適切なファイル管理
+- ✅ Git hooksによる自動テスト実行環境
+- ✅ 全ての警告・エラーを解消
+- ✅ **純粋関数・Reducerテストカバレッジチェック機能を実装**
+- ✅ **pre-commit hookでテストカバレッジを自動チェック**
+- ✅ **VSCode + Xcode同時起動での開発スタイルを確立**
+
+---
+
+## 追加作業（2025-05-28 00:45）
+
+### Package.swift関連エラーの解決
+
+#### 問題
+VS Code上で`No such module 'PackageDescription'`というSourceKitエラーが表示される問題が発生。
+
+#### 原因
+1. エディタ（VS Code/Xcode）のSourceKitによる誤検知
+2. 実際の問題はmacOSプラットフォームのバージョン設定不足
+
+#### 解決策
+Package.swiftに以下の修正を実施：
+```swift
+// 修正前
+platforms: [
+    .iOS(.v17)
+],
+
+// 修正後
+platforms: [
+    .iOS(.v17),
+    .macOS(.v12)  // SwiftUIの機能要件に合わせてv12を指定
+],
+```
+
+#### 結果
+- ✅ `No such module 'PackageDescription'`エラーが解消
+- ✅ VS Code上で全ファイルエラー0件
+- ✅ Xcodeビルドが成功（iPhone 16シミュレータ）
+- ✅ TCAパッケージの依存関係が正しく解決
+
+### 作業ログ
+### 2025-05-28 00:35
+- VS Code上で`No such module 'PackageDescription'`エラーが表示される問題を調査
+- swift package describeコマンドで正常動作を確認（エディタの誤検知と判明）
+- swift buildでmacOSバージョン関連のエラーを発見
+
+### 2025-05-28 00:40
+- Package.swiftにmacOSプラットフォームを追加（最初は.v10_15）
+- SwiftUIの機能要件に合わせて.v12に更新
+- ビルドが成功し、エラーが完全に解消
+
+### 2025-05-28 00:45
+- VS Code診断機能でエラー0件を確認
+- Xcodeビルドでプロジェクト全体の正常性を確認
+- チケットに作業内容を記録
+
+## 最終成果（2025-05-28更新）
+- ✅ VSCodeとXcodeの連携環境構築完了
+- ✅ xcodegenによる自動ファイル認識が可能に
+- ✅ SwiftLintによるコード品質管理が有効化
+- ✅ TCA（The Composable Architecture）の導入完了
+- ✅ シミュレータでのビルド・実行が可能に
+- ✅ README.mdによるドキュメント整備
+- ✅ .gitignoreによる適切なファイル管理
+- ✅ Git hooksによる自動テスト実行環境
+- ✅ 全ての警告・エラーを解消
+- ✅ 純粋関数・Reducerテストカバレッジチェック機能を実装
+- ✅ pre-commit hookでテストカバレッジを自動チェック
+- ✅ VSCode + Xcode同時起動での開発スタイルを確立
+- ✅ **Package.swift関連のSourceKitエラーを完全解決**

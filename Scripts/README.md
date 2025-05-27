@@ -28,6 +28,27 @@ Xcodeプロジェクトをバックグラウンドで開いて同期します。
 ./Scripts/sync-xcode.sh
 ```
 
+### check-test-coverage.swift
+純粋関数とReducerのテストカバレッジをチェックします。
+pre-commitフックで自動実行されます。
+
+```bash
+./Scripts/check-test-coverage.swift
+```
+
+#### チェック対象
+- Reducerの`reduce`メソッド
+- public/internalな純粋関数
+- Featureファイルに対応するTestファイルの存在
+
+#### 出力例
+```
+🔍 テストカバレッジをチェック中...
+📄 CameraFeature.swift
+   ✅ reduce
+   ❌ calculateFocalLength のテストがありません
+```
+
 ## git-hooks/ ディレクトリ
 
 Git hooksのテンプレートが含まれています：
@@ -35,3 +56,4 @@ Git hooksのテンプレートが含まれています：
 
 これらのファイルはGitで管理され、`install-hooks.sh`によって
 `.git/hooks/`にコピーされます。
+

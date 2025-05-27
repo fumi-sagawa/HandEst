@@ -1,12 +1,12 @@
 {
-  "swift.disableAutoResolve": false,
-  "swift.enableBuildDebugging": true,
-  "swift.problemMatchCompileErrors": true,
-  "files.exclude": {
-    "**/.git": false,
-    "**/.DS_Store": true,
-    "**/.swiftpm": true,
-    "**/build": true,
-    "**/DerivedData": true
-  }
+  "swift.path": "/usr/bin",
+  "sourcekit-lsp.serverPath": "/usr/bin/sourcekit-lsp",
+  "swift.buildArguments": [
+    "-Xswiftc", "-sdk",
+    "-Xswiftc", "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk",
+    "-Xswiftc", "-target",
+    "-Xswiftc", "arm64-apple-ios17.0"
+  ],
+  "swift.enableSyntaxHighlighting": true,
+  "swift.autoGenerateLaunchConfigurations": true
 }

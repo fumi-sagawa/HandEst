@@ -87,7 +87,7 @@ open HandEst.xcodeproj
 
 2. **ビルド**
    ```bash
-   xcodebuild -scheme HandEst -destination 'platform=iOS Simulator,name=iPhone 16 Pro' build
+   xcodebuild -scheme HandEst -destination 'platform=iOS Simulator,name=iPhone 15' build
    ```
 
 3. **テスト実行**
@@ -97,9 +97,49 @@ open HandEst.xcodeproj
 
 4. **シミュレータで実行**
    ```bash
-   xcodebuild -scheme HandEst -destination 'platform=iOS Simulator,name=iPhone 16 Pro' build
+   xcodebuild -scheme HandEst -destination 'platform=iOS Simulator,name=iPhone 15' build
    open -a Simulator
    ```
+
+### 開発効率化のTips
+
+#### 1. Xcodeとの併用（推奨）
+VSCodeで編集しながら、Xcodeのプレビューを活用：
+
+```bash
+# Xcodeでプロジェクトを開く
+open HandEst.xcodeproj
+```
+
+- Xcodeでプレビューキャンバスを表示
+- VSCodeで編集
+- 保存時にXcodeのプレビューが自動更新
+- **リアルタイムプレビューが必要な場合はXcodeの同時起動を推奨**
+
+#### 2. VSCodeビルドタスク
+`.vscode/tasks.json` を作成：
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build and Run",
+      "type": "shell",
+      "command": "xcodebuild -scheme HandEst -destination 'platform=iOS Simulator,name=iPhone 15' build && xcrun simctl launch booted com.yourcompany.HandEst",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$gcc"]
+    }
+  ]
+}
+```
+
+`Cmd+Shift+B` でビルド&実行が可能になります。
+
+
 
 ### Xcodeでの開発
 
@@ -164,6 +204,17 @@ Xcodeでプロジェクトを開き、Package Dependenciesが解決されるま�
 ```bash
 # 利用可能なシミュレータを確認
 xcrun simctl list devices
+
+# 特定のシミュレータを指定して実行
+xcodebuild -scheme HandEst -destination 'platform=iOS Simulator,name=iPhone 14' build
+```
+
+
+### ビルドが遅い場合
+
+```bash
+# DerivedDataをクリーン
+rm -rf ~/Library/Developer/Xcode/DerivedData/HandEst-*
 ```
 
 ## 📝 コントリビューション

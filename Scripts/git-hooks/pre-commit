@@ -4,15 +4,32 @@ echo "🔍 Running pre-commit checks..."
 
 # テストを実行
 echo "🧪 Running tests..."
-if ! xcodebuild -scheme HandEst -destination 'platform=iOS Simulator,name=iPhone 16' test -quiet; then
+if ! xcodebuild -scheme HandEst -destination 'platform=iOS Simulator,name=iPhone 15' test -quiet; then
     echo "❌ Tests failed! Please fix the failing tests before committing."
     exit 1
 fi
 
 # ビルドが成功するか確認（SwiftLintはproject.ymlで実行されるため、ここでは省略）
 echo "🔨 Building project..."
-if ! xcodebuild -scheme HandEst -destination 'platform=iOS Simulator,name=iPhone 16' -configuration Debug build -quiet; then
+if ! xcodebuild -scheme HandEst -destination 'platform=iOS Simulator,name=iPhone 15' -configuration Debug build -quiet; then
     echo "❌ Build failed! Please fix build errors before committing."
+    exit 1
+fi
+
+# 純粋関数とReducerのテストカバレッジをチェック
+echo "📊 Checking test coverage for pure functions and Reducers..."
+if ! ./Scripts/check-test-coverage.swift; then
+    echo ""
+    echo "⚠️  警告: 純粋関数またはReducerのテストが不足しています"
+    echo ""
+    echo "TCAの原則に従い、以下は必ずテストを書いてください:"
+    echo "  - Reducerのreduceメソッド"
+    echo "  - public/internalな純粋関数"
+    echo "  - 副作用のない計算処理"
+    echo ""
+    echo "このチェックをスキップしてコミットする場合は --no-verify を使用してください:"
+    echo "  git commit --no-verify -m 'WIP: テスト追加予定'"
+    echo ""
     exit 1
 fi
 
