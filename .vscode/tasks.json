@@ -1,0 +1,51 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build (Debug)",
+      "type": "shell",
+      "command": "xcodebuild",
+      "args": [
+        "-scheme", "HandEst",
+        "-configuration", "Debug",
+        "-destination", "platform=iOS Simulator,name=iPhone 16 Pro",
+        "build"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": {
+        "owner": "swift",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5
+        }
+      }
+    },
+    {
+      "label": "Test",
+      "type": "shell",
+      "command": "xcodebuild",
+      "args": [
+        "-scheme", "HandEst",
+        "test"
+      ],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Regenerate Project",
+      "type": "shell",
+      "command": "./Scripts/regenerate-project.sh",
+      "problemMatcher": []
+    }
+  ]
+}

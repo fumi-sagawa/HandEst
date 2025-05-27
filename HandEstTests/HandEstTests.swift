@@ -5,8 +5,8 @@
 //  Created by fumiyasagawa on 2025/05/27.
 //
 
-import Testing
 @testable import HandEst
+import Testing
 
 struct HandEstTests {
 

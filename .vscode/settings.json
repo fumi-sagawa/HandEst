@@ -1,0 +1,12 @@
+{
+  "swift.disableAutoResolve": false,
+  "swift.enableBuildDebugging": true,
+  "swift.problemMatchCompileErrors": true,
+  "files.exclude": {
+    "**/.git": false,
+    "**/.DS_Store": true,
+    "**/.swiftpm": true,
+    "**/build": true,
+    "**/DerivedData": true
+  }
+}

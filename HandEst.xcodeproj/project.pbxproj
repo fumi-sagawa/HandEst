@@ -3,332 +3,336 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E8650F512DE5DACA0066D798 /* CLAUDE.md in Resources */ = {isa = PBXBuildFile; fileRef = E8650F502DE5DACA0066D798 /* CLAUDE.md */; };
-		E8650F572DE5DAE30066D798 /* Hand Estデザインイメージ.png in Resources */ = {isa = PBXBuildFile; fileRef = E8650F522DE5DAE30066D798 /* Hand Estデザインイメージ.png */; };
-		E8650F582DE5DAE30066D798 /* デザイン.md in Resources */ = {isa = PBXBuildFile; fileRef = E8650F532DE5DAE30066D798 /* デザイン.md */; };
-		E8650F592DE5DAE30066D798 /* 要件定義.md in Resources */ = {isa = PBXBuildFile; fileRef = E8650F552DE5DAE30066D798 /* 要件定義.md */; };
-		E8650F5A2DE5DAE30066D798 /* 機能要件仕様書.md in Resources */ = {isa = PBXBuildFile; fileRef = E8650F542DE5DAE30066D798 /* 機能要件仕様書.md */; };
+		1234CF6BA24B9B7FA4DDDE5D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE52738F08D03EB39A077AF /* ContentView.swift */; };
+		1D556F42D72B719FC7340103 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A19C7B6A0A94724C838E2A1F /* Preview Assets.xcassets */; };
+		3F414776FCFC28DA4A6AE801 /* HandEstTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3E0DAC2D99E737CF6C5B05 /* HandEstTests.swift */; };
+		6881BB5C32E48ADE81592595 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 11D97D45F8417FAC70E072E4 /* ComposableArchitecture */; };
+		6F0430D31032A34E0D776454 /* HandEstUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A60DBD554440DA3B4EC1AB /* HandEstUITests.swift */; };
+		71800E8B306BD5B7BA5E4ACB /* HandEstApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05F16FD0AE04BDEEDC5449DB /* HandEstApp.swift */; };
+		933BA31F835505829C091744 /* HandEstUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11829F90999DB91B34C20C /* HandEstUITestsLaunchTests.swift */; };
+		B4AABDE9EC5E982B8662C73E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37C2AD49E86388EA04D8CE3C /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		E822940D2DE5D92E00DBE717 /* PBXContainerItemProxy */ = {
+		AACD3F060371E26D73649202 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = E82293F42DE5D92D00DBE717 /* Project object */;
+			containerPortal = 4C52B64ADB8EF886943E532A /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = E82293FB2DE5D92D00DBE717;
+			remoteGlobalIDString = DAAE03B8CDF1F333CB5CE236;
 			remoteInfo = HandEst;
 		};
-		E82294172DE5D92F00DBE717 /* PBXContainerItemProxy */ = {
+		E5060AEF841C128770F1B518 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = E82293F42DE5D92D00DBE717 /* Project object */;
+			containerPortal = 4C52B64ADB8EF886943E532A /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = E82293FB2DE5D92D00DBE717;
+			remoteGlobalIDString = DAAE03B8CDF1F333CB5CE236;
 			remoteInfo = HandEst;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		E82293FC2DE5D92D00DBE717 /* HandEst.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HandEst.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		E822940C2DE5D92E00DBE717 /* HandEstTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HandEstTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E82294162DE5D92F00DBE717 /* HandEstUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HandEstUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E8650F502DE5DACA0066D798 /* CLAUDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CLAUDE.md; sourceTree = "<group>"; };
-		E8650F522DE5DAE30066D798 /* Hand Estデザインイメージ.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Hand Estデザインイメージ.png"; sourceTree = "<group>"; };
-		E8650F532DE5DAE30066D798 /* デザイン.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "デザイン.md"; sourceTree = "<group>"; };
-		E8650F542DE5DAE30066D798 /* 機能要件仕様書.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "機能要件仕様書.md"; sourceTree = "<group>"; };
-		E8650F552DE5DAE30066D798 /* 要件定義.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "要件定義.md"; sourceTree = "<group>"; };
+		01775D65E294D6FF40EC6876 /* HandEstTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HandEstTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		05F16FD0AE04BDEEDC5449DB /* HandEstApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandEstApp.swift; sourceTree = "<group>"; };
+		16DD6BD0C6626F13B08FD254 /* HandEstUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HandEstUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A3E0DAC2D99E737CF6C5B05 /* HandEstTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandEstTests.swift; sourceTree = "<group>"; };
+		2C11829F90999DB91B34C20C /* HandEstUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandEstUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		37C2AD49E86388EA04D8CE3C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8BE52738F08D03EB39A077AF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A19C7B6A0A94724C838E2A1F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A6A8C15E7145261EB2E8CA4C /* HandEst.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = HandEst.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8A60DBD554440DA3B4EC1AB /* HandEstUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandEstUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		E82293FE2DE5D92D00DBE717 /* HandEst */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = HandEst;
-			sourceTree = "<group>";
-		};
-		E822940F2DE5D92E00DBE717 /* HandEstTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = HandEstTests;
-			sourceTree = "<group>";
-		};
-		E82294192DE5D92F00DBE717 /* HandEstUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = HandEstUITests;
-			sourceTree = "<group>";
-		};
-		E8650F5B2DE5DBE30066D798 /* done */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = done;
-			sourceTree = "<group>";
-		};
-		E8650F5C2DE5DBED0066D798 /* doing */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = doing;
-			sourceTree = "<group>";
-		};
-		E8650F5D2DE5DBEF0066D798 /* todo */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = todo;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
-
 /* Begin PBXFrameworksBuildPhase section */
-		E82293F92DE5D92D00DBE717 /* Frameworks */ = {
+		6EF559BE40549D78396E19A0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E82294092DE5D92E00DBE717 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E82294132DE5D92F00DBE717 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				6881BB5C32E48ADE81592595 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		E82293F32DE5D92D00DBE717 = {
+		48B57629B15EE5409CA3781A /* HandEst */ = {
 			isa = PBXGroup;
 			children = (
-				E82293FE2DE5D92D00DBE717 /* HandEst */,
-				E822940F2DE5D92E00DBE717 /* HandEstTests */,
-				E82294192DE5D92F00DBE717 /* HandEstUITests */,
-				E82293FD2DE5D92D00DBE717 /* Products */,
-				E8650F502DE5DACA0066D798 /* CLAUDE.md */,
-				E8650F562DE5DAE30066D798 /* Projects */,
+				E8C554E3B9065698E850B9BE /* Preview Content */,
+				37C2AD49E86388EA04D8CE3C /* Assets.xcassets */,
+				8BE52738F08D03EB39A077AF /* ContentView.swift */,
+				05F16FD0AE04BDEEDC5449DB /* HandEstApp.swift */,
+			);
+			path = HandEst;
+			sourceTree = "<group>";
+		};
+		4A8DE5DC69B8E46B372952B5 /* HandEstTests */ = {
+			isa = PBXGroup;
+			children = (
+				1A3E0DAC2D99E737CF6C5B05 /* HandEstTests.swift */,
+			);
+			path = HandEstTests;
+			sourceTree = "<group>";
+		};
+		5024216D24372C87326FBA4A = {
+			isa = PBXGroup;
+			children = (
+				48B57629B15EE5409CA3781A /* HandEst */,
+				4A8DE5DC69B8E46B372952B5 /* HandEstTests */,
+				BD59AD7DF8508295B8DFB9A8 /* HandEstUITests */,
+				FAD1378D670BC29530C9C825 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		E82293FD2DE5D92D00DBE717 /* Products */ = {
+		BD59AD7DF8508295B8DFB9A8 /* HandEstUITests */ = {
 			isa = PBXGroup;
 			children = (
-				E82293FC2DE5D92D00DBE717 /* HandEst.app */,
-				E822940C2DE5D92E00DBE717 /* HandEstTests.xctest */,
-				E82294162DE5D92F00DBE717 /* HandEstUITests.xctest */,
+				A8A60DBD554440DA3B4EC1AB /* HandEstUITests.swift */,
+				2C11829F90999DB91B34C20C /* HandEstUITestsLaunchTests.swift */,
+			);
+			path = HandEstUITests;
+			sourceTree = "<group>";
+		};
+		E8C554E3B9065698E850B9BE /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				A19C7B6A0A94724C838E2A1F /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		FAD1378D670BC29530C9C825 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A6A8C15E7145261EB2E8CA4C /* HandEst.app */,
+				01775D65E294D6FF40EC6876 /* HandEstTests.xctest */,
+				16DD6BD0C6626F13B08FD254 /* HandEstUITests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		E8650F562DE5DAE30066D798 /* Projects */ = {
-			isa = PBXGroup;
-			children = (
-				E8650F5D2DE5DBEF0066D798 /* todo */,
-				E8650F5C2DE5DBED0066D798 /* doing */,
-				E8650F5B2DE5DBE30066D798 /* done */,
-				E8650F522DE5DAE30066D798 /* Hand Estデザインイメージ.png */,
-				E8650F532DE5DAE30066D798 /* デザイン.md */,
-				E8650F542DE5DAE30066D798 /* 機能要件仕様書.md */,
-				E8650F552DE5DAE30066D798 /* 要件定義.md */,
-			);
-			path = Projects;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E82293FB2DE5D92D00DBE717 /* HandEst */ = {
+		6D241B10F13AF226F266C39F /* HandEstUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E82294202DE5D92F00DBE717 /* Build configuration list for PBXNativeTarget "HandEst" */;
+			buildConfigurationList = C30FC84C832B6E8095AA755B /* Build configuration list for PBXNativeTarget "HandEstUITests" */;
 			buildPhases = (
-				E82293F82DE5D92D00DBE717 /* Sources */,
-				E82293F92DE5D92D00DBE717 /* Frameworks */,
-				E82293FA2DE5D92D00DBE717 /* Resources */,
+				776C4C2C3979E04A2978803E /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				E82293FE2DE5D92D00DBE717 /* HandEst */,
-				E8650F5B2DE5DBE30066D798 /* done */,
-				E8650F5C2DE5DBED0066D798 /* doing */,
-				E8650F5D2DE5DBEF0066D798 /* todo */,
-			);
-			name = HandEst;
-			packageProductDependencies = (
-			);
-			productName = HandEst;
-			productReference = E82293FC2DE5D92D00DBE717 /* HandEst.app */;
-			productType = "com.apple.product-type.application";
-		};
-		E822940B2DE5D92E00DBE717 /* HandEstTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E82294232DE5D92F00DBE717 /* Build configuration list for PBXNativeTarget "HandEstTests" */;
-			buildPhases = (
-				E82294082DE5D92E00DBE717 /* Sources */,
-				E82294092DE5D92E00DBE717 /* Frameworks */,
-				E822940A2DE5D92E00DBE717 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				E822940E2DE5D92E00DBE717 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				E822940F2DE5D92E00DBE717 /* HandEstTests */,
-			);
-			name = HandEstTests;
-			packageProductDependencies = (
-			);
-			productName = HandEstTests;
-			productReference = E822940C2DE5D92E00DBE717 /* HandEstTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		E82294152DE5D92F00DBE717 /* HandEstUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E82294262DE5D92F00DBE717 /* Build configuration list for PBXNativeTarget "HandEstUITests" */;
-			buildPhases = (
-				E82294122DE5D92F00DBE717 /* Sources */,
-				E82294132DE5D92F00DBE717 /* Frameworks */,
-				E82294142DE5D92F00DBE717 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				E82294182DE5D92F00DBE717 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				E82294192DE5D92F00DBE717 /* HandEstUITests */,
+				14E6BF9951CC4C4220E1E6BB /* PBXTargetDependency */,
 			);
 			name = HandEstUITests;
 			packageProductDependencies = (
 			);
 			productName = HandEstUITests;
-			productReference = E82294162DE5D92F00DBE717 /* HandEstUITests.xctest */;
+			productReference = 16DD6BD0C6626F13B08FD254 /* HandEstUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		DAAE03B8CDF1F333CB5CE236 /* HandEst */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 76D930B046ED09A840E5E6E9 /* Build configuration list for PBXNativeTarget "HandEst" */;
+			buildPhases = (
+				58E6BC4A6AE97D52A29F6855 /* SwiftLint */,
+				022CB3E55ED371E3776D53D2 /* Sources */,
+				3BA01F5837E5156AE5B39B84 /* Resources */,
+				6EF559BE40549D78396E19A0 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HandEst;
+			packageProductDependencies = (
+				11D97D45F8417FAC70E072E4 /* ComposableArchitecture */,
+			);
+			productName = HandEst;
+			productReference = A6A8C15E7145261EB2E8CA4C /* HandEst.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FF33615083CAC99504EFDAA5 /* HandEstTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D886731830DA6786095F6588 /* Build configuration list for PBXNativeTarget "HandEstTests" */;
+			buildPhases = (
+				DC912C555EEBF74F1B2411C5 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				147BFB16D161469B05C87487 /* PBXTargetDependency */,
+			);
+			name = HandEstTests;
+			packageProductDependencies = (
+			);
+			productName = HandEstTests;
+			productReference = 01775D65E294D6FF40EC6876 /* HandEstTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		E82293F42DE5D92D00DBE717 /* Project object */ = {
+		4C52B64ADB8EF886943E532A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
-				LastUpgradeCheck = 1620;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
-					E82293FB2DE5D92D00DBE717 = {
-						CreatedOnToolsVersion = 16.2;
+					6D241B10F13AF226F266C39F = {
+						DevelopmentTeam = 8BD446AR8T;
+						TestTargetID = DAAE03B8CDF1F333CB5CE236;
 					};
-					E822940B2DE5D92E00DBE717 = {
-						CreatedOnToolsVersion = 16.2;
-						TestTargetID = E82293FB2DE5D92D00DBE717;
+					DAAE03B8CDF1F333CB5CE236 = {
+						DevelopmentTeam = 8BD446AR8T;
 					};
-					E82294152DE5D92F00DBE717 = {
-						CreatedOnToolsVersion = 16.2;
-						TestTargetID = E82293FB2DE5D92D00DBE717;
+					FF33615083CAC99504EFDAA5 = {
+						DevelopmentTeam = 8BD446AR8T;
 					};
 				};
 			};
-			buildConfigurationList = E82293F72DE5D92D00DBE717 /* Build configuration list for PBXProject "HandEst" */;
+			buildConfigurationList = 6EC54E70E1A84E8502C85AFA /* Build configuration list for PBXProject "HandEst" */;
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
+				en,
 			);
-			mainGroup = E82293F32DE5D92D00DBE717;
+			mainGroup = 5024216D24372C87326FBA4A;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
-			productRefGroup = E82293FD2DE5D92D00DBE717 /* Products */;
+			packageReferences = (
+				4DFDDACB808EDD6A9B078A02 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+			);
+			preferredProjectObjectVersion = 54;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E82293FB2DE5D92D00DBE717 /* HandEst */,
-				E822940B2DE5D92E00DBE717 /* HandEstTests */,
-				E82294152DE5D92F00DBE717 /* HandEstUITests */,
+				DAAE03B8CDF1F333CB5CE236 /* HandEst */,
+				FF33615083CAC99504EFDAA5 /* HandEstTests */,
+				6D241B10F13AF226F266C39F /* HandEstUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		E82293FA2DE5D92D00DBE717 /* Resources */ = {
+		3BA01F5837E5156AE5B39B84 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E8650F512DE5DACA0066D798 /* CLAUDE.md in Resources */,
-				E8650F572DE5DAE30066D798 /* Hand Estデザインイメージ.png in Resources */,
-				E8650F582DE5DAE30066D798 /* デザイン.md in Resources */,
-				E8650F592DE5DAE30066D798 /* 要件定義.md in Resources */,
-				E8650F5A2DE5DAE30066D798 /* 機能要件仕様書.md in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E822940A2DE5D92E00DBE717 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E82294142DE5D92F00DBE717 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				B4AABDE9EC5E982B8662C73E /* Assets.xcassets in Resources */,
+				1D556F42D72B719FC7340103 /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		58E6BC4A6AE97D52A29F6855 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/HandEst",
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/swiftlint.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ -f /opt/homebrew/bin/swiftlint ]; then\n  /opt/homebrew/bin/swiftlint\nelif [ -f /usr/local/bin/swiftlint ]; then\n  /usr/local/bin/swiftlint\nelif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		E82293F82DE5D92D00DBE717 /* Sources */ = {
+		022CB3E55ED371E3776D53D2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1234CF6BA24B9B7FA4DDDE5D /* ContentView.swift in Sources */,
+				71800E8B306BD5B7BA5E4ACB /* HandEstApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E82294082DE5D92E00DBE717 /* Sources */ = {
+		776C4C2C3979E04A2978803E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F0430D31032A34E0D776454 /* HandEstUITests.swift in Sources */,
+				933BA31F835505829C091744 /* HandEstUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E82294122DE5D92F00DBE717 /* Sources */ = {
+		DC912C555EEBF74F1B2411C5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F414776FCFC28DA4A6AE801 /* HandEstTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		E822940E2DE5D92E00DBE717 /* PBXTargetDependency */ = {
+		147BFB16D161469B05C87487 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E82293FB2DE5D92D00DBE717 /* HandEst */;
-			targetProxy = E822940D2DE5D92E00DBE717 /* PBXContainerItemProxy */;
+			target = DAAE03B8CDF1F333CB5CE236 /* HandEst */;
+			targetProxy = AACD3F060371E26D73649202 /* PBXContainerItemProxy */;
 		};
-		E82294182DE5D92F00DBE717 /* PBXTargetDependency */ = {
+		14E6BF9951CC4C4220E1E6BB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E82293FB2DE5D92D00DBE717 /* HandEst */;
-			targetProxy = E82294172DE5D92F00DBE717 /* PBXContainerItemProxy */;
+			target = DAAE03B8CDF1F333CB5CE236 /* HandEst */;
+			targetProxy = E5060AEF841C128770F1B518 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		E822941E2DE5D92F00DBE717 /* Debug */ = {
+		17F21BC2C9060AEB5BF43120 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 8BD446AR8T;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = HandEst;
+				INFOPLIST_KEY_CFBundleName = HandEst;
+				INFOPLIST_KEY_CFBundleShortVersionString = 1.0;
+				INFOPLIST_KEY_CFBundleVersion = 1;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sagawafumiya.HandEst;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		2E9FAC0F72C9C0FAF45EF511 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -355,17 +359,75 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		555E0A43419EAAA49455D974 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
 					"$(inherited)",
+					"DEBUG=1",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -374,242 +436,176 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
-		E822941F2DE5D92F00DBE717 /* Release */ = {
+		74788551039F6A026636D855 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 8BD446AR8T;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = HandEst;
+				INFOPLIST_KEY_CFBundleName = HandEst;
+				INFOPLIST_KEY_CFBundleShortVersionString = 1.0;
+				INFOPLIST_KEY_CFBundleVersion = 1;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sagawafumiya.HandEst;
 				SDKROOT = iphoneos;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		E82294212DE5D92F00DBE717 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"HandEst/Preview Content\"";
-				DEVELOPMENT_TEAM = 8BD446AR8T;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sagawafumiya.HandEst;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		E82294222DE5D92F00DBE717 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"HandEst/Preview Content\"";
-				DEVELOPMENT_TEAM = 8BD446AR8T;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sagawafumiya.HandEst;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		E82294242DE5D92F00DBE717 /* Debug */ = {
+		B3484EA10C8C93D62BB30591 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8BD446AR8T;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
-				MARKETING_VERSION = 1.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.sagawafumiya.HandEstTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HandEst.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HandEst";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HandEst.app/HandEst";
 			};
 			name = Debug;
 		};
-		E82294252DE5D92F00DBE717 /* Release */ = {
+		B668DFDF667D787BEE9D2AB5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8BD446AR8T;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sagawafumiya.HandEstTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HandEst.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HandEst";
-			};
-			name = Release;
-		};
-		E82294272DE5D92F00DBE717 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8BD446AR8T;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.sagawafumiya.HandEstUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = HandEst;
-			};
-			name = Debug;
-		};
-		E82294282DE5D92F00DBE717 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8BD446AR8T;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sagawafumiya.HandEstUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = HandEst;
 			};
 			name = Release;
+		};
+		CAC079D7AC02ECEDF1FA44AC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 8BD446AR8T;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sagawafumiya.HandEstTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HandEst.app/HandEst";
+			};
+			name = Release;
+		};
+		EF4C635426687AE2E0301A16 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 8BD446AR8T;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sagawafumiya.HandEstUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = HandEst;
+			};
+			name = Debug;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E82293F72DE5D92D00DBE717 /* Build configuration list for PBXProject "HandEst" */ = {
+		6EC54E70E1A84E8502C85AFA /* Build configuration list for PBXProject "HandEst" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E822941E2DE5D92F00DBE717 /* Debug */,
-				E822941F2DE5D92F00DBE717 /* Release */,
+				555E0A43419EAAA49455D974 /* Debug */,
+				2E9FAC0F72C9C0FAF45EF511 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
-		E82294202DE5D92F00DBE717 /* Build configuration list for PBXNativeTarget "HandEst" */ = {
+		76D930B046ED09A840E5E6E9 /* Build configuration list for PBXNativeTarget "HandEst" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E82294212DE5D92F00DBE717 /* Debug */,
-				E82294222DE5D92F00DBE717 /* Release */,
+				74788551039F6A026636D855 /* Debug */,
+				17F21BC2C9060AEB5BF43120 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
-		E82294232DE5D92F00DBE717 /* Build configuration list for PBXNativeTarget "HandEstTests" */ = {
+		C30FC84C832B6E8095AA755B /* Build configuration list for PBXNativeTarget "HandEstUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E82294242DE5D92F00DBE717 /* Debug */,
-				E82294252DE5D92F00DBE717 /* Release */,
+				EF4C635426687AE2E0301A16 /* Debug */,
+				B668DFDF667D787BEE9D2AB5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
-		E82294262DE5D92F00DBE717 /* Build configuration list for PBXNativeTarget "HandEstUITests" */ = {
+		D886731830DA6786095F6588 /* Build configuration list for PBXNativeTarget "HandEstTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E82294272DE5D92F00DBE717 /* Debug */,
-				E82294282DE5D92F00DBE717 /* Release */,
+				B3484EA10C8C93D62BB30591 /* Debug */,
+				CAC079D7AC02ECEDF1FA44AC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4DFDDACB808EDD6A9B078A02 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		11D97D45F8417FAC70E072E4 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DFDDACB808EDD6A9B078A02 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = E82293F42DE5D92D00DBE717 /* Project object */;
+	rootObject = 4C52B64ADB8EF886943E532A /* Project object */;
 }
