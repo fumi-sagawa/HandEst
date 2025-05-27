@@ -1,0 +1,60 @@
+# SwiftLint設定ファイル
+
+# 除外するパス
+excluded:
+  - Pods
+  - DerivedData
+  - .build
+  - HandEstTests
+  - HandEstUITests
+
+# 無効にするルール
+disabled_rules:
+  - trailing_whitespace # 末尾の空白（Xcodeが自動で追加することがあるため）
+  - line_length # 行の長さ制限（一時的に無効）
+  
+# 有効にするオプトインルール
+opt_in_rules:
+  - empty_count # count == 0 より isEmpty を推奨
+  - closure_spacing # クロージャのスペーシング
+  - collection_alignment # コレクションの要素の配置
+  - contains_over_first_not_nil # first(where:) != nil より contains を推奨
+  - sorted_first_last # sorted().first より min() を推奨
+  - operator_usage_whitespace # 演算子の前後のスペース
+  
+# カスタムルール設定
+identifier_name:
+  min_length: 2
+  max_length: 40
+  
+type_body_length:
+  warning: 300
+  error: 500
+
+file_length:
+  warning: 500
+  error: 1000
+  
+function_body_length:
+  warning: 40
+  error: 80
+
+# TCA特有の設定
+# Reducerは長くなりがちなので制限を緩める
+type_name:
+  excluded:
+    - T # ジェネリック型パラメータ
+    
+# カスタムルール
+custom_rules:
+  tca_state_equatable:
+    name: "TCA State must be Equatable"
+    regex: "struct\\s+\\w+State\\s*[^:]*\\{"
+    message: "TCA の State は Equatable に準拠する必要があります"
+    severity: warning
+    
+  avoid_print:
+    name: "print()の使用を避ける"
+    regex: "print\\("
+    message: "デバッグ用のprint文は削除してください"
+    severity: warning
