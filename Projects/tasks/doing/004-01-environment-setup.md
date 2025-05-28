@@ -55,7 +55,72 @@ MediaPipe統合の第1段階として、SwiftTasksVisionを使用した環境セ
 - メインチケット: 004-mediapipe-integration.md
 
 ## 作業ログ
-### YYYY-MM-DD HH:MM
-- 作業内容の記録
-- 発生した問題と解決方法
-- 次回の作業予定
+### 2025-05-28 17:30
+- XcodeGenを使用してXcodeでのビルド環境を確認
+- 初回ビルドは成功（MediaPipeをコメントアウトした状態）
+- SwiftTasksVisionパッケージの統合を試みた
+
+#### 発生した問題
+1. **SwiftTasksVisionの`unsafeFlags`エラー**
+   - エラー: `The package product 'SwiftTasksVision' cannot be used as a dependency of this target because it uses unsafe build flags`
+   - 原因: SwiftTasksVisionのPackage.swiftで`linkerSettings: [.unsafeFlags(["-ObjC"])]`を使用している
+   - Swift Package Managerはセキュリティ上の理由から、`unsafeFlags`を使用するパッケージを依存関係として許可しない
+
+#### 調査した解決方法
+1. **XcodeプロジェクトでOTHER_LDFLAGSを設定**
+   - project.ymlに`OTHER_LDFLAGS: "-ObjC"`を追加
+   - 結果: SPMの制限により効果なし
+
+2. **追加のビルド設定**
+   - `ALLOW_TARGET_PLATFORM_SPECIALIZATION: YES`
+   - `CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES: YES`
+   - 結果: SPMの制限により効果なし
+
+#### 今後の方針
+1. **ローカルパッケージとして統合**
+   - SwiftTasksVisionをローカルにクローン
+   - Package.swiftを編集して`unsafeFlags`を削除
+   - ローカルパスで依存関係を追加
+
+2. **フォークして修正**
+   - SwiftTasksVisionをフォーク
+   - `unsafeFlags`を使わない実装に変更
+   - 修正版を使用
+
+3. **代替手段の検討**
+   - MediaPipe公式のiOS SDKを直接使用
+   - XCFrameworkでの統合
+   - 手動でのフレームワーク組み込み
+
+4. **暫定対応**
+   - 現時点ではMediaPipeClientをモックアップとして実装
+   - 基本的なアーキテクチャは動作確認済み
+
+#### 次回の作業予定
+- 上記方針のいずれかを選択して実装
+- MediaPipeの統合方法について最終決定
+- 統合後の動作確認とテスト実装
+
+### 2025-05-28 18:00
+- SwiftTasksVisionをローカルパッケージとして統合することに決定
+- LocalPackagesディレクトリを作成し、SwiftTasksVisionをクローン
+- Package.swiftからunsafeFlagsを削除して、SPMの制限を回避
+- project.ymlを更新して、ローカルパッケージを参照するように変更
+- SwiftLintの設定を更新して、LocalPackagesフォルダを除外
+- MediaPipeClient.swiftでMediaPipeTasksVisionのimportを確認
+
+#### 成果
+- ✅ SwiftTasksVisionのローカル統合完了
+- ✅ MediaPipeTasksVisionモジュールのimport成功
+- ✅ プロジェクトのビルド成功
+- ✅ 全テストの通過確認
+- ✅ HandLandmarkerOptionsクラスへのアクセス確認
+
+#### 技術的決定事項
+- SwiftTasksVisionをローカルパッケージとして管理
+- `-ObjC`フラグはproject.ymlで設定済み
+- LocalPackagesフォルダはSwiftLintから除外
+
+#### 次のステップ
+- MediaPipeのHandLandmarkerの実装を進める
+- モデルファイルの配置と読み込み処理の実装

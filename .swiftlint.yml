@@ -8,6 +8,7 @@ excluded:
   - HandEst/Preview Content
   - HandEst/Assets.xcassets
   - Scripts/
+  - LocalPackages/
 
 # 有効にするルール
 opt_in_rules:

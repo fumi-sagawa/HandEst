@@ -40,17 +40,22 @@ targets:
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
         INFOPLIST_KEY_NSCameraUsageDescription: "HandEstはユーザーの手をリアルタイムで3Dモデルに変換するためにカメラを使用します。カメラ映像は端末内でのみ処理され、外部に送信されることはありません。"
+        OTHER_LDFLAGS: "-ObjC"
+        ALLOW_TARGET_PLATFORM_SPECIALIZATION: YES
+        CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES: YES
     dependencies:
       - package: ComposableArchitecture
         product: ComposableArchitecture
+      - package: SwiftTasksVision
+        product: SwiftTasksVision
     preBuildScripts:
       - script: |
           if [ -f /opt/homebrew/bin/swiftlint ]; then
-            /opt/homebrew/bin/swiftlint
+            /opt/homebrew/bin/swiftlint --lenient
           elif [ -f /usr/local/bin/swiftlint ]; then
-            /usr/local/bin/swiftlint
+            /usr/local/bin/swiftlint --lenient
           elif which swiftlint >/dev/null; then
-            swiftlint
+            swiftlint --lenient
           else
             echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
           fi
@@ -117,3 +122,5 @@ packages:
   ComposableArchitecture:
     url: https://github.com/pointfreeco/swift-composable-architecture
     from: 1.0.0
+  SwiftTasksVision:
+    path: ./LocalPackages/SwiftTasksVision

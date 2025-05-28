@@ -11,7 +11,7 @@ public struct MediaPipeClient: DependencyKey {
         initializeHandLandmarker: {
             // TODO: HandLandmarkerの初期化処理を実装
             // 現時点では基本的なimportの確認のみ
-            let _ = HandLandmarkerOptions()
+            _ = HandLandmarkerOptions()
         },
         isInitialized: {
             // TODO: 初期化状態の管理を実装
@@ -25,8 +25,8 @@ public struct MediaPipeClient: DependencyKey {
     )
 }
 
-extension DependencyValues {
-    public var mediaPipeClient: MediaPipeClient {
+public extension DependencyValues {
+    var mediaPipeClient: MediaPipeClient {
         get { self[MediaPipeClient.self] }
         set { self[MediaPipeClient.self] = newValue }
     }

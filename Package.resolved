@@ -118,15 +118,6 @@
       }
     },
     {
-      "identity" : "swifttasksvision",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/paescebu/SwiftTasksVision",
-      "state" : {
-        "revision" : "0d1e0f75a98734e54fb28f5820fa28c59781cfa6",
-        "version" : "0.10.21"
-      }
-    },
-    {
       "identity" : "xctest-dynamic-overlay",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
