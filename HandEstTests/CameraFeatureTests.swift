@@ -1,5 +1,6 @@
 import AVFoundation
 import ComposableArchitecture
+import CoreVideo
 import XCTest
 @testable import HandEst
 
@@ -309,5 +310,136 @@ final class CameraFeatureTests: XCTestCase {
         state.authorizationStatus = .authorized
         state.isCameraActive = false
         XCTAssertTrue(state.canStartCamera)
+    }
+    
+    // MARK: - Video Data Output Tests
+    
+    /// 動作: ビデオデータ出力を開始する
+    /// 期待結果: カメラがアクティブで、ビデオデータ出力が開始される
+    func testStartVideoDataOutput() async {
+        let store = TestStore(
+            initialState: CameraFeature.State(
+                isCameraActive: true,
+                isVideoDataOutputActive: false
+            ),
+            reducer: { CameraFeature() }
+        ) {
+            var startCallCount = 0
+            $0.cameraManager.startVideoDataOutput = { _ in
+                startCallCount += 1
+            }
+        }
+        
+        await store.send(.startVideoDataOutput)
+        await store.receive(.videoDataOutputStarted) {
+            $0.isVideoDataOutputActive = true
+        }
+    }
+    
+    /// 動作: カメラが非アクティブな時にビデオデータ出力を開始しようとする
+    /// 期待結果: 何も起こらない
+    func testStartVideoDataOutputWhenCameraInactive() async {
+        let store = TestStore(
+            initialState: CameraFeature.State(
+                isCameraActive: false,
+                isVideoDataOutputActive: false
+            ),
+            reducer: { CameraFeature() }
+        ) {
+            $0.cameraManager.startVideoDataOutput = { _ in
+                XCTFail("startVideoDataOutput should not be called when camera is inactive")
+            }
+        }
+        
+        await store.send(.startVideoDataOutput)
+    }
+    
+    /// 動作: ビデオデータ出力を停止する
+    /// 期待結果: ビデオデータ出力が停止される
+    func testStopVideoDataOutput() async {
+        let store = TestStore(
+            initialState: CameraFeature.State(
+                isCameraActive: true,
+                isVideoDataOutputActive: true
+            ),
+            reducer: { CameraFeature() }
+        ) {
+            var stopCallCount = 0
+            $0.cameraManager.stopVideoDataOutput = {
+                stopCallCount += 1
+            }
+        }
+        
+        await store.send(.stopVideoDataOutput)
+        await store.receive(.videoDataOutputStopped) {
+            $0.isVideoDataOutputActive = false
+        }
+    }
+    
+    /// 動作: フレームを受信する
+    /// 期待結果: フレームを受信してもCameraFeature自体では何も起こらない
+    func testFrameReceived() async {
+        let store = TestStore(
+            initialState: CameraFeature.State(
+                isCameraActive: true,
+                isVideoDataOutputActive: true
+            ),
+            reducer: { CameraFeature() }
+        )
+        
+        let pixelBuffer = createMockPixelBuffer()
+        await store.send(.frameReceived(pixelBuffer))
+    }
+    
+    /// 動作: ビデオデータ出力のエラー処理
+    /// 期待結果: エラーが設定される
+    func testVideoDataOutputError() async {
+        struct TestError: Error, LocalizedError {
+            let message: String
+            var errorDescription: String? { message }
+        }
+        
+        let testError = TestError(message: "Test error")
+        let expectedError = AppError.camera(.videoDataOutputFailed("Test error"))
+        
+        let store = TestStore(
+            initialState: CameraFeature.State(
+                isCameraActive: true,
+                isVideoDataOutputActive: false
+            ),
+            reducer: { CameraFeature() }
+        ) {
+            $0.cameraManager.startVideoDataOutput = { _ in
+                throw testError
+            }
+        }
+        
+        await store.send(.startVideoDataOutput)
+        await store.receive(.errorOccurred(expectedError)) {
+            $0.error = expectedError
+            $0.isCameraActive = false
+            $0.captureSession = nil
+        }
+    }
+    
+    // MARK: - Helper Methods
+    
+    private func createMockPixelBuffer() -> CVPixelBuffer {
+        var pixelBuffer: CVPixelBuffer?
+        let attrs = [
+            kCVPixelBufferCGImageCompatibilityKey: kCFBooleanTrue,
+            kCVPixelBufferCGBitmapContextCompatibilityKey: kCFBooleanTrue
+        ] as CFDictionary
+        
+        CVPixelBufferCreate(
+            kCFAllocatorDefault,
+            640,
+            480,
+            kCVPixelFormatType_32BGRA,
+            attrs,
+            &pixelBuffer
+        )
+        
+        return pixelBuffer!
     }
 }

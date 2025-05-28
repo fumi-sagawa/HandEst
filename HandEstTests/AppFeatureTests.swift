@@ -1,4 +1,5 @@
 import AVFoundation
+import CoreVideo
 import XCTest
 import ComposableArchitecture
 @testable import HandEst
@@ -21,6 +22,7 @@ final class AppFeatureTests: XCTestCase {
         
         await store.send(.onAppear)
         await store.receive(\.camera.onAppear)
+        await store.receive(\.handTracking.onAppear)
         await store.receive(\.settings.loadSettings)
         await store.receive(\.settings.settingsLoaded)
     }
@@ -225,5 +227,191 @@ final class AppFeatureTests: XCTestCase {
         await store.send(.rendering(.startRendering)) {
             $0.rendering.isRendering = true
         }
+    }
+    
+    // MARK: - Camera and HandTracking Integration Tests
+    
+    /// 動作: カメラ開始時にHandTrackingが初期化済みの場合
+    /// 期待結果: ビデオデータ出力とトラッキングが自動的に開始される
+    func testCameraStartedWithHandTrackingInitialized() async {
+        let store = TestStore(
+            initialState: AppFeature.State(
+                handTracking: HandTrackingFeature.State(isMediaPipeInitialized: true)
+            ),
+            reducer: { AppFeature() }
+        ) {
+            $0.cameraManager = .testValue
+            $0.mediaPipeClient = .testValue
+        }
+        
+        let mockSession = AVCaptureSession()
+        await store.send(.camera(.cameraStarted(mockSession))) {
+            $0.camera.isCameraActive = true
+            $0.camera.captureSession = mockSession
+        }
+        await store.receive(.camera(.startVideoDataOutput))
+        await store.receive(.handTracking(.startTracking)) {
+            $0.handTracking.isTracking = true
+        }
+        await store.receive(.camera(.videoDataOutputStarted)) {
+            $0.camera.isVideoDataOutputActive = true
+        }
+    }
+    
+    /// 動作: MediaPipe初期化完了時にカメラがアクティブな場合
+    /// 期待結果: ビデオデータ出力とトラッキングが自動的に開始される
+    func testHandTrackingInitializedWithCameraActive() async {
+        let store = TestStore(
+            initialState: AppFeature.State(
+                camera: CameraFeature.State(isCameraActive: true)
+            ),
+            reducer: { AppFeature() }
+        ) {
+            $0.cameraManager = .testValue
+            $0.mediaPipeClient = .testValue
+        }
+        
+        await store.send(.handTracking(.mediaPipeInitialized(true))) {
+            $0.handTracking.isMediaPipeInitialized = true
+        }
+        await store.receive(.camera(.startVideoDataOutput))
+        await store.receive(.handTracking(.startTracking)) {
+            $0.handTracking.isTracking = true
+        }
+        await store.receive(.camera(.videoDataOutputStarted)) {
+            $0.camera.isVideoDataOutputActive = true
+        }
+    }
+    
+    /// 動作: カメラからフレームを受信してHandTrackingに渡す
+    /// 期待結果: トラッキング中ならHandTrackingにフレームが送信される
+    func testFrameReceivedForwarding() async {
+        // モックデータを事前に作成して使い回す
+        let mockResult = HandTrackingResult.mockData()
+        
+        let store = TestStore(
+            initialState: AppFeature.State(
+                handTracking: HandTrackingFeature.State(
+                    isTracking: true,
+                    isMediaPipeInitialized: true
+                )
+            ),
+            reducer: { AppFeature() }
+        ) {
+            // processFrameは常に同じmockResultを返すようにする
+            $0.mediaPipeClient.processFrame = { _ in mockResult }
+        }
+        
+        let pixelBuffer = createMockPixelBuffer()
+        await store.send(.camera(.frameReceived(pixelBuffer)))
+        await store.receive(.handTracking(.processFrame(pixelBuffer)))
+        await store.receive(.handTracking(.trackingResult(mockResult))) {
+            $0.handTracking.currentResult = mockResult
+            $0.handTracking.trackingHistory.append(mockResult)
+        }
+        await store.receive(.handTracking(.updatePerformanceMetrics)) {
+            $0.handTracking.performanceMetrics.currentFPS = mockResult.estimatedFPS
+            $0.handTracking.performanceMetrics.processingTimeMs = mockResult.processingTimeMs
+            $0.handTracking.performanceMetrics.totalFramesProcessed = 1
+            $0.handTracking.performanceMetrics.averageFPS = mockResult.estimatedFPS
+            $0.handTracking.performanceMetrics.detectionRate = 1.0
+        }
+    }
+    
+    /// 動作: カメラ停止時の連携処理
+    /// 期待結果: ビデオデータ出力とトラッキングも停止される
+    func testCameraStoppedIntegration() async {
+        let store = TestStore(
+            initialState: AppFeature.State(
+                camera: CameraFeature.State(
+                    isCameraActive: true,
+                    isVideoDataOutputActive: true
+                ),
+                handTracking: HandTrackingFeature.State(
+                    isTracking: true,
+                    isMediaPipeInitialized: true
+                )
+            ),
+            reducer: { AppFeature() }
+        ) {
+            $0.cameraManager = .testValue
+            $0.mediaPipeClient = .testValue
+        }
+        
+        await store.send(.camera(.cameraStopped)) {
+            $0.camera.isCameraActive = false
+            $0.camera.captureSession = nil
+        }
+        await store.receive(.camera(.stopVideoDataOutput))
+        await store.receive(.handTracking(.stopTracking)) {
+            $0.handTracking.isTracking = false
+        }
+        await store.receive(.camera(.videoDataOutputStopped)) {
+            $0.camera.isVideoDataOutputActive = false
+        }
+    }
+    
+    /// 動作: HandTrackingエラーがAppレベルで表示される
+    /// 期待結果: MediaPipeErrorがAppErrorに変換されて表示される
+    func testHandTrackingErrorPropagation() async {
+        let store = TestStore(
+            initialState: AppFeature.State(),
+            reducer: { AppFeature() }
+        )
+        
+        let mediaPipeError = MediaPipeError.processingFailed("Test error")
+        await store.send(.handTracking(.trackingError(mediaPipeError))) {
+            $0.handTracking.error = mediaPipeError
+        }
+        let expectedMessage = mediaPipeError.errorDescription ?? mediaPipeError.localizedDescription
+        await store.receive(.showError(.handTracking(.unknown(expectedMessage)))) {
+            $0.hasError = true
+            $0.errorMessage = "手トラッキングで予期しないエラーが発生しました。"  // unknownのuserMessage
+            $0.currentError = .handTracking(.unknown(expectedMessage))
+            $0.isLoading = false
+        }
+    }
+    
+    /// 動作: CameraエラーがAppレベルで表示される
+    /// 期待結果: CameraErrorがそのまま表示される
+    func testCameraErrorPropagation() async {
+        let store = TestStore(
+            initialState: AppFeature.State(),
+            reducer: { AppFeature() }
+        )
+        
+        let cameraError = AppError.camera(.videoDataOutputFailed("Frame processing error"))
+        await store.send(.camera(.errorOccurred(cameraError))) {
+            $0.camera.error = cameraError
+            $0.camera.isCameraActive = false
+            $0.camera.captureSession = nil
+        }
+        await store.receive(.showError(cameraError)) {
+            $0.hasError = true
+            $0.errorMessage = "ビデオデータの処理に失敗しました。アプリを再起動してお試しください。"
+            $0.currentError = cameraError
+            $0.isLoading = false
+        }
+    }
+    
+    // MARK: - Helper Methods
+    
+    private func createMockPixelBuffer() -> CVPixelBuffer {
+        var pixelBuffer: CVPixelBuffer?
+        let attrs = [
+            kCVPixelBufferCGImageCompatibilityKey: kCFBooleanTrue,
+            kCVPixelBufferCGBitmapContextCompatibilityKey: kCFBooleanTrue
+        ] as CFDictionary
+        
+        CVPixelBufferCreate(
+            kCFAllocatorDefault,
+            640,
+            480,
+            kCVPixelFormatType_32BGRA,
+            attrs,
+            &pixelBuffer
+        )
+        
+        return pixelBuffer!
     }
 }

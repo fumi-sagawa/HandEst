@@ -56,6 +56,7 @@ enum CameraError: Error, Equatable {
     case configurationFailed
     case captureSessionFailed
     case deviceNotAvailable
+    case videoDataOutputFailed(String)
     case unknown(String)
     
     var localizedDescription: String {
@@ -68,6 +69,8 @@ enum CameraError: Error, Equatable {
             return "カメラのキャプチャセッションの開始に失敗しました"
         case .deviceNotAvailable:
             return "カメラデバイスが利用できません"
+        case .videoDataOutputFailed(let message):
+            return "ビデオデータ出力に失敗しました: \(message)"
         case .unknown(let message):
             return message
         }
@@ -81,6 +84,8 @@ enum CameraError: Error, Equatable {
             return "カメラの初期化に失敗しました。アプリを再起動してお試しください。"
         case .deviceNotAvailable:
             return "カメラが利用できません。デバイスを確認してください。"
+        case .videoDataOutputFailed:
+            return "ビデオデータの処理に失敗しました。アプリを再起動してお試しください。"
         case .unknown:
             return "カメラで予期しないエラーが発生しました。"
         }

@@ -53,6 +53,7 @@ struct AppFeature {
                 AppLogger.shared.info("アプリケーション開始")
                 return .merge(
                     .send(.camera(.onAppear)),
+                    .send(.handTracking(.onAppear)),
                     .send(.settings(.loadSettings))
                 )
                 
@@ -82,6 +83,48 @@ struct AppFeature {
                 return .none
                 
             // 子Featureアクションの処理
+            case .camera(.cameraStarted):
+                // カメラが開始されたら、HandTrackingの初期化状態を確認
+                if state.handTracking.isMediaPipeInitialized {
+                    return .merge(
+                        .send(.camera(.startVideoDataOutput)),
+                        .send(.handTracking(.startTracking))
+                    )
+                }
+                return .none
+                
+            case .camera(.cameraStopped):
+                // カメラが停止したら、ビデオデータ出力とトラッキングも停止
+                return .merge(
+                    .send(.camera(.stopVideoDataOutput)),
+                    .send(.handTracking(.stopTracking))
+                )
+                
+            case let .camera(.frameReceived(pixelBuffer)):
+                // カメラからフレームを受信したら、HandTrackingに渡す
+                if state.handTracking.isTracking {
+                    return .send(.handTracking(.processFrame(pixelBuffer)))
+                }
+                return .none
+                
+            case .handTracking(.mediaPipeInitialized(true)):
+                // MediaPipeが初期化されたら、カメラがアクティブならビデオデータ出力を開始
+                if state.camera.isCameraActive {
+                    return .merge(
+                        .send(.camera(.startVideoDataOutput)),
+                        .send(.handTracking(.startTracking))
+                    )
+                }
+                return .none
+                
+            case let .handTracking(.trackingError(error)):
+                // HandTrackingエラーをAppErrorに変換して表示
+                return .send(.showError(.handTracking(.unknown(error.errorDescription ?? error.localizedDescription))))
+                
+            case let .camera(.errorOccurred(error)):
+                // CameraエラーをAppレベルで表示
+                return .send(.showError(error))
+                
             case .camera, .handTracking, .rendering, .settings:
                 return .none
             }

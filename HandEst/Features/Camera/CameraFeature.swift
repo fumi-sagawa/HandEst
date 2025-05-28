@@ -1,5 +1,6 @@
 import AVFoundation
 import ComposableArchitecture
+import CoreVideo
 import Foundation
 import SwiftUI
 
@@ -12,12 +13,14 @@ struct CameraFeature {
         var currentCameraPosition: AVCaptureDevice.Position = .back
         var error: AppError?
         var captureSession: AVCaptureSession?
+        var isVideoDataOutputActive = false
         
         static func == (lhs: State, rhs: State) -> Bool {
             lhs.authorizationStatus == rhs.authorizationStatus &&
             lhs.isCameraActive == rhs.isCameraActive &&
             lhs.currentCameraPosition == rhs.currentCameraPosition &&
             lhs.error == rhs.error &&
+            lhs.isVideoDataOutputActive == rhs.isVideoDataOutputActive &&
             ObjectIdentifier(lhs.captureSession as AnyObject) == ObjectIdentifier(rhs.captureSession as AnyObject)
         }
         
@@ -49,6 +52,13 @@ struct CameraFeature {
         case errorOccurred(AppError)
         case clearError
         case scenePhaseChanged(ScenePhase)
+        
+        // ビデオデータ出力関連
+        case startVideoDataOutput
+        case stopVideoDataOutput
+        case frameReceived(CVPixelBuffer)
+        case videoDataOutputStarted
+        case videoDataOutputStopped
     }
     
     @Dependency(\.cameraManager) var cameraManager
@@ -170,6 +180,44 @@ struct CameraFeature {
                 @unknown default:
                     return .none
                 }
+                return .none
+                
+            // ビデオデータ出力関連
+            case .startVideoDataOutput:
+                guard state.isCameraActive, !state.isVideoDataOutputActive else { return .none }
+                
+                return .run { send in
+                    do {
+                        try await cameraManager.startVideoDataOutput { pixelBuffer in
+                            Task {
+                                await send(.frameReceived(pixelBuffer))
+                            }
+                        }
+                        await send(.videoDataOutputStarted)
+                    } catch {
+                        await send(.errorOccurred(.camera(.videoDataOutputFailed(error.localizedDescription))))
+                    }
+                }
+                
+            case .stopVideoDataOutput:
+                guard state.isVideoDataOutputActive else { return .none }
+                
+                return .run { send in
+                    await cameraManager.stopVideoDataOutput()
+                    await send(.videoDataOutputStopped)
+                }
+                
+            case .frameReceived:
+                // フレームを受信したが、CameraFeature自体では処理しない
+                // AppFeatureで処理するため、ここではnoneを返す
+                return .none
+                
+            case .videoDataOutputStarted:
+                state.isVideoDataOutputActive = true
+                return .none
+                
+            case .videoDataOutputStopped:
+                state.isVideoDataOutputActive = false
                 return .none
             }
         }

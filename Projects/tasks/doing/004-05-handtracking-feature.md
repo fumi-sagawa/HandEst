@@ -211,10 +211,10 @@ TCAアーキテクチャに基づくHandTrackingFeatureを実装し、MediaPipeC
 3. [x] 結果の状態反映
 4. [x] エラーハンドリング実装
 
-### フェーズ3: CameraFeature連携
-1. [ ] AppFeatureでの連携実装
-2. [ ] フレームストリーミングのセットアップ
-3. [ ] ライフサイクル管理（開始/停止）
+### フェーズ3: CameraFeature連携 ✅
+1. [x] AppFeatureでの連携実装
+2. [x] フレームストリーミングのセットアップ
+3. [x] ライフサイクル管理（開始/停止）
 
 ### フェーズ4: デバッグ・監視機能
 1. [ ] デバッグログ出力の実装
@@ -335,3 +335,24 @@ func testTrackingHistoryManagement() async {
   - MediaPipe統合テストを9個追加（全117テスト成功）
 - **次のステップ**:
   - Phase 3: CameraFeature連携の実装
+
+### 2025-05-29 01:30
+- **Phase 3完了**: CameraFeature連携を実装
+  - CameraFeatureにビデオデータ出力機能を追加
+    - startVideoDataOutput/stopVideoDataOutputアクション
+    - frameReceivedアクションでフレームを受信
+  - AppFeatureでの連携実装
+    - カメラ開始時にHandTrackingが初期化済みなら自動で連携開始
+    - MediaPipe初期化時にカメラがアクティブなら自動で連携開始
+    - フレームデータをCameraからHandTrackingへ転送
+    - カメラ停止時にビデオ出力とトラッキングも停止
+  - エラーハンドリング連携
+    - CameraError.videoDataOutputFailedを追加
+    - HandTrackingエラーをAppレベルで表示
+  - テストを11個追加（全128テスト成功）
+- **実装の詳細**:
+  - CameraManagerのstartVideoDataOutput/stopVideoDataOutput機能を活用
+  - TCAのEffect管理でフレーム処理を非同期実行
+  - ライフサイクル管理を適切に実装（開始/停止の連携）
+- **次のステップ**:
+  - Phase 4: デバッグ・監視機能の実装

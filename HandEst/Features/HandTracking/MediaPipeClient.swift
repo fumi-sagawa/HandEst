@@ -290,9 +290,9 @@ extension HandTrackingResult {
     static func mockData() -> HandTrackingResult {
         let landmarks = (0..<21).map { index in
             HandLandmark(
-                x: Float.random(in: 0...1),
-                y: Float.random(in: 0...1),
-                z: Float.random(in: -0.1...0.1),
+                x: Float(index) / 21.0,  // 固定値にする
+                y: Float(index) / 21.0,  // 固定値にする
+                z: Float(index) / 210.0, // 固定値にする
                 confidence: 0.9,
                 type: LandmarkType(rawValue: index)!
             )
