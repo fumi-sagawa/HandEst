@@ -6,7 +6,7 @@ import ComposableArchitecture
 final class AppFeatureTests: XCTestCase {
     
     /// 動作: アプリ起動時にonAppearアクションを送信
-    /// 期待結果: ログが出力され、状態は変更されない
+    /// 期待結果: ログが出力され、子Featureの初期化アクションが送信される
     func testOnAppearLogsStartup() async {
         let store = TestStore(
             initialState: AppFeature.State(),
@@ -14,6 +14,11 @@ final class AppFeatureTests: XCTestCase {
         )
         
         await store.send(.onAppear)
+        await store.receive(\.camera.onAppear)
+        await store.receive(\.settings.loadSettings) {
+            $0.settings.isLoaded = true
+        }
+        await store.receive(\.settings.settingsLoaded)
     }
     
     /// 動作: ローディング状態をtrue/falseで切り替え
@@ -122,5 +127,91 @@ final class AppFeatureTests: XCTestCase {
             unknownError.userMessage, 
             "予期しないエラーが発生しました。アプリを再起動してお試しください。"
         )
+    }
+    
+    /// 動作: カメラFeatureのアクションがAppFeatureで正しく処理されるかテスト
+    /// 期待結果: カメラFeatureの状態が適切に更新される
+    func testCameraFeatureIntegration() async {
+        let store = TestStore(
+            initialState: AppFeature.State(),
+            reducer: { AppFeature() }
+        )
+        
+        await store.send(.camera(.requestPermission))
+        
+        await store.send(.camera(.permissionGranted(true))) {
+            $0.camera.isAuthorized = true
+        }
+        
+        await store.send(.camera(.startCamera)) {
+            $0.camera.isCameraActive = true
+        }
+    }
+    
+    /// 動作: 設定Featureのアクションがスコープされて処理されるかテスト
+    /// 期待結果: 設定の変更が正しく反映され、保存アクションが発行される
+    func testSettingsFeatureIntegration() async {
+        let store = TestStore(
+            initialState: AppFeature.State(),
+            reducer: { AppFeature() }
+        )
+        
+        await store.send(.settings(.setHapticFeedback(false))) {
+            $0.settings.hapticFeedbackEnabled = false
+        }
+        await store.receive(\.settings.saveSettings)
+        await store.receive(\.settings.settingsSaved)
+        
+        await store.send(.settings(.setDefaultHandedness(.left))) {
+            $0.settings.defaultHandedness = .left
+        }
+        await store.receive(\.settings.saveSettings)
+        await store.receive(\.settings.settingsSaved)
+    }
+    
+    /// 動作: HandTrackingFeatureの基本アクションテスト
+    /// 期待結果: 手認識の開始・停止が正しく動作する
+    func testHandTrackingFeatureIntegration() async {
+        let store = TestStore(
+            initialState: AppFeature.State(),
+            reducer: { AppFeature() }
+        )
+        
+        await store.send(.handTracking(.startTracking)) {
+            $0.handTracking.isTracking = true
+        }
+        
+        await store.send(.handTracking(.setHandedness(.left))) {
+            $0.handTracking.handedness = .left
+        }
+        
+        await store.send(.handTracking(.togglePoseLock)) {
+            $0.handTracking.isPoseLocked = true
+        }
+        
+        await store.send(.handTracking(.stopTracking)) {
+            $0.handTracking.isTracking = false
+        }
+    }
+    
+    /// 動作: RenderingFeatureの設定変更テスト
+    /// 期待結果: レンダリング設定が正しく更新される
+    func testRenderingFeatureIntegration() async {
+        let store = TestStore(
+            initialState: AppFeature.State(),
+            reducer: { AppFeature() }
+        )
+        
+        await store.send(.rendering(.setFocalLength(.wide24mm))) {
+            $0.rendering.focalLength = .wide24mm
+        }
+        
+        await store.send(.rendering(.updateScale(1.5))) {
+            $0.rendering.scale = 1.5
+        }
+        
+        await store.send(.rendering(.startRendering)) {
+            $0.rendering.isRendering = true
+        }
     }
 }

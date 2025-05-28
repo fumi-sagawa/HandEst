@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D7C4EDE62EF575D5DCD161E /* HandTrackingFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD284D924E8A135EB96C0FC2 /* HandTrackingFeature.swift */; };
 		1234CF6BA24B9B7FA4DDDE5D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE52738F08D03EB39A077AF /* ContentView.swift */; };
 		1BFECFD55B73F5CF5805DDF1 /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311DE1B94A9AAB1AD9636169 /* AppFeature.swift */; };
 		1D556F42D72B719FC7340103 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A19C7B6A0A94724C838E2A1F /* Preview Assets.xcassets */; };
@@ -14,11 +15,16 @@
 		2A923892B0F1F95A71122208 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1E243434D33E0D4973858F /* LoggerTests.swift */; };
 		3F414776FCFC28DA4A6AE801 /* HandEstTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3E0DAC2D99E737CF6C5B05 /* HandEstTests.swift */; };
 		40DE92CC55D8EFBAAD86E5E1 /* TCA+ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66847FDECB8D7821F06F06B0 /* TCA+ErrorHandling.swift */; };
+		4A5351524C17F0995C01E8D4 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188FFDDBABBBEB87C86077C1 /* UserDefaultsManager.swift */; };
+		64F096E98AF3C9A1936F40F6 /* SettingsFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8DB00000D933CCD73B2583 /* SettingsFeature.swift */; };
 		6881BB5C32E48ADE81592595 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 11D97D45F8417FAC70E072E4 /* ComposableArchitecture */; };
 		6F0430D31032A34E0D776454 /* HandEstUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A60DBD554440DA3B4EC1AB /* HandEstUITests.swift */; };
 		89290FC8EBE69310BC704759 /* HandEstApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2BF58A26505D04424A00FE /* HandEstApp.swift */; };
 		933BA31F835505829C091744 /* HandEstUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11829F90999DB91B34C20C /* HandEstUITestsLaunchTests.swift */; };
+		9F26AE2B225A32459B486606 /* RenderingFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D96AA2AF686579FD677B2AC /* RenderingFeature.swift */; };
+		A4EBDE54B45B89EC1BC7F69B /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB53E71B72D360CD12DFD51 /* CameraManager.swift */; };
 		ACC370F43EFFAD11FFABC6CD /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413DD054A9F83F4B8C13083A /* AppError.swift */; };
+		B1116408F8845BAF7ECE00D5 /* CameraFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364268121FB500F64917675A /* CameraFeature.swift */; };
 		B4AABDE9EC5E982B8662C73E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37C2AD49E86388EA04D8CE3C /* Assets.xcassets */; };
 		E2CCE8DEBA5BEEA6F578A93C /* AppFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F0068E8B9F2043CD1B96A6 /* AppFeatureTests.swift */; };
 /* End PBXBuildFile section */
@@ -43,20 +49,26 @@
 /* Begin PBXFileReference section */
 		01775D65E294D6FF40EC6876 /* HandEstTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HandEstTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		16DD6BD0C6626F13B08FD254 /* HandEstUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HandEstUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		188FFDDBABBBEB87C86077C1 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		1A3E0DAC2D99E737CF6C5B05 /* HandEstTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandEstTests.swift; sourceTree = "<group>"; };
 		2C11829F90999DB91B34C20C /* HandEstUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandEstUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		311DE1B94A9AAB1AD9636169 /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
+		364268121FB500F64917675A /* CameraFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeature.swift; sourceTree = "<group>"; };
 		37C2AD49E86388EA04D8CE3C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		413DD054A9F83F4B8C13083A /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		58F0068E8B9F2043CD1B96A6 /* AppFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeatureTests.swift; sourceTree = "<group>"; };
 		66847FDECB8D7821F06F06B0 /* TCA+ErrorHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TCA+ErrorHandling.swift"; sourceTree = "<group>"; };
 		7F1E243434D33E0D4973858F /* LoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		8BE52738F08D03EB39A077AF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		8DB53E71B72D360CD12DFD51 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
+		9D96AA2AF686579FD677B2AC /* RenderingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderingFeature.swift; sourceTree = "<group>"; };
 		A19C7B6A0A94724C838E2A1F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A6A8C15E7145261EB2E8CA4C /* HandEst.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = HandEst.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8A60DBD554440DA3B4EC1AB /* HandEstUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandEstUITests.swift; sourceTree = "<group>"; };
+		AF8DB00000D933CCD73B2583 /* SettingsFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFeature.swift; sourceTree = "<group>"; };
 		DB2BF58A26505D04424A00FE /* HandEstApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandEstApp.swift; sourceTree = "<group>"; };
 		E66D5685D4609CD3BC0DDF66 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		FD284D924E8A135EB96C0FC2 /* HandTrackingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandTrackingFeature.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +94,7 @@
 		1510F2C05A860397A67469EE /* HandTracking */ = {
 			isa = PBXGroup;
 			children = (
+				FD284D924E8A135EB96C0FC2 /* HandTrackingFeature.swift */,
 			);
 			path = HandTracking;
 			sourceTree = "<group>";
@@ -104,6 +117,8 @@
 		4294AAD9277F5F3724B2B95E /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				8DB53E71B72D360CD12DFD51 /* CameraManager.swift */,
+				188FFDDBABBBEB87C86077C1 /* UserDefaultsManager.swift */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -172,6 +187,7 @@
 		8B5F98C91A5400D028FEDBCB /* Rendering */ = {
 			isa = PBXGroup;
 			children = (
+				9D96AA2AF686579FD677B2AC /* RenderingFeature.swift */,
 			);
 			path = Rendering;
 			sourceTree = "<group>";
@@ -197,6 +213,7 @@
 		CC231F2F2B4BF950C6D8325C /* Camera */ = {
 			isa = PBXGroup;
 			children = (
+				364268121FB500F64917675A /* CameraFeature.swift */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -204,6 +221,7 @@
 		E47F7A0DA883C1DBE2E6259A /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				AF8DB00000D933CCD73B2583 /* SettingsFeature.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -384,10 +402,16 @@
 			files = (
 				ACC370F43EFFAD11FFABC6CD /* AppError.swift in Sources */,
 				1BFECFD55B73F5CF5805DDF1 /* AppFeature.swift in Sources */,
+				B1116408F8845BAF7ECE00D5 /* CameraFeature.swift in Sources */,
+				A4EBDE54B45B89EC1BC7F69B /* CameraManager.swift in Sources */,
 				1234CF6BA24B9B7FA4DDDE5D /* ContentView.swift in Sources */,
 				89290FC8EBE69310BC704759 /* HandEstApp.swift in Sources */,
+				0D7C4EDE62EF575D5DCD161E /* HandTrackingFeature.swift in Sources */,
 				21A5FD149C6E697BC489436A /* Logger.swift in Sources */,
+				9F26AE2B225A32459B486606 /* RenderingFeature.swift in Sources */,
+				64F096E98AF3C9A1936F40F6 /* SettingsFeature.swift in Sources */,
 				40DE92CC55D8EFBAAD86E5E1 /* TCA+ErrorHandling.swift in Sources */,
+				4A5351524C17F0995C01E8D4 /* UserDefaultsManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

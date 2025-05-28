@@ -2,39 +2,51 @@ import ComposableArchitecture
 import Foundation
 
 extension Effect {
-    static func handleError<T: Error>(
-        operation: @escaping () async throws -> Void,
-        errorAction: @escaping (T) -> Action
+    /// エラーをキャッチしてAppErrorにラップするEffect拡張
+    static func catching<T: Sendable>(
+        _ operation: @escaping @Sendable () async throws -> T,
+        errorMapper: @escaping @Sendable (Error) -> Action
     ) -> Effect<Action> {
-        .run { send in
+        return .run { send in
             do {
-                try await operation()
-            } catch let error as T {
-                await send(errorAction(error))
+                _ = try await operation()
             } catch {
-                AppLogger.shared.error("Unexpected error: \(error)")
+                await send(errorMapper(error))
             }
         }
     }
     
-    static func handleAppError(
-        operation: @escaping () async throws -> Void,
-        errorAction: @escaping (AppError) -> Action
+    /// カメラエラーを処理するためのヘルパー
+    static func handleCameraError<T: Sendable>(
+        _ operation: @escaping @Sendable () async throws -> T,
+        onError: @escaping @Sendable (CameraError) -> Action
     ) -> Effect<Action> {
-        .run { send in
-            do {
-                try await operation()
-            } catch let error as AppError {
-                AppLogger.shared.error(error.description, category: error.category)
-                await send(errorAction(error))
-            } catch {
-                let appError = AppError.unknown(error.localizedDescription)
-                AppLogger.shared.error(
-                    appError.description, 
-                    category: appError.category
-                )
-                await send(errorAction(appError))
+        return .catching(operation) { error in
+            if let cameraError = error as? CameraError {
+                return onError(cameraError)
+            } else {
+                return onError(.unknown(error.localizedDescription))
             }
         }
+    }
+}
+
+/// 共通のエラーハンドリングヘルパー関数
+struct ErrorHandling {
+    /// エラー状態をクリアするための関数
+    static func clearError<State>(
+        _ state: inout State,
+        at path: WritableKeyPath<State, String?>
+    ) {
+        state[keyPath: path] = nil
+    }
+    
+    /// エラー状態を設定するための関数
+    static func setError<State>(
+        _ state: inout State,
+        at path: WritableKeyPath<State, String?>,
+        error: String
+    ) {
+        state[keyPath: path] = error
     }
 }

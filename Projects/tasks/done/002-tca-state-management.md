@@ -49,7 +49,11 @@ The Composable Architectureを使用して、アプリケーション全体の�
 - CLAUDE.md: TCAの基本原則セクション
 
 ## 作業ログ
-### YYYY-MM-DD HH:MM
-- 作業内容の記録
-- 発生した問題と解決方法
-- 次回の作業予定
+### 2025-05-28 13:15
+- AppFeatureの状態管理基盤を完成
+- 各Feature（Camera/HandTracking/Rendering/Settings）の雛形を実装
+- Dependencyクライアント（CameraManager/UserDefaultsManager）の基本構造を作成
+- TCA+ErrorHandling拡張で共通エラーハンドリングを実装
+- AppFeatureのTestStoreを使用した包括的な単体テストを作成
+- 全14テストが成功、TCAアーキテクチャの状態管理基盤が完成
+- 次回以降のタスクで具体的な機能実装（カメラアクセス、MediaPipe統合等）を進める
