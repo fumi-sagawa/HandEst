@@ -136,7 +136,8 @@ final class HandTrackingFeatureTests: XCTestCase {
         let store = TestStore(
             initialState: HandTrackingFeature.State(
                 isTracking: true,
-                isMediaPipeInitialized: true
+                isMediaPipeInitialized: true,
+                isDebugMode: false  // デバッグモードをOFFにしてテスト
             ),
             reducer: { HandTrackingFeature() }
         ) {
@@ -155,6 +156,7 @@ final class HandTrackingFeatureTests: XCTestCase {
             $0.performanceMetrics.averageFPS = mockResult.estimatedFPS
             $0.performanceMetrics.detectionRate = 1.0
         }
+        await store.finish()
     }
     
     /// 動作: フレーム処理の失敗をテスト
@@ -253,17 +255,24 @@ final class HandTrackingFeatureTests: XCTestCase {
     /// 期待結果: isDebugModeが反転される
     func testToggleDebugMode() async {
         let store = TestStore(
-            initialState: HandTrackingFeature.State(),
+            initialState: HandTrackingFeature.State(),  // デフォルトでisDebugMode = true
             reducer: { HandTrackingFeature() }
         )
         
-        await store.send(.toggleDebugMode) {
-            $0.isDebugMode = true
-        }
-        
+        // 初期状態がtrue -> falseに切り替え
         await store.send(.toggleDebugMode) {
             $0.isDebugMode = false
+            $0.debugInfo = nil
         }
+        
+        // false -> trueに切り替え
+        await store.send(.toggleDebugMode) {
+            $0.isDebugMode = true
+            // デバッグモードON時は、currentResultがnilなのでdebugInfoもnil
+            $0.debugInfo = nil
+        }
+        
+        await store.finish()
     }
     
     /// 動作: エラークリアをテスト

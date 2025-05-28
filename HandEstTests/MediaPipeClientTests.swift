@@ -18,7 +18,7 @@ final class MediaPipeClientTests: XCTestCase {
         XCTAssertEqual(options.maxNumHands, 2)
         XCTAssertEqual(options.minDetectionConfidence, 0.5)
         XCTAssertEqual(options.minTrackingConfidence, 0.5)
-        XCTAssertEqual(options.runningMode, .liveStream)
+        XCTAssertEqual(options.runningMode, .video)
     }
     
     /// 動作: MediaPipeClientOptionsにカスタム値を設定

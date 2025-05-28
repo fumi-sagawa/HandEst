@@ -12,13 +12,30 @@ struct ContentView: View {
     @Bindable var store: StoreOf<AppFeature>
     
     var body: some View {
-        // CameraViewを直接表示（テスト用）
-        CameraView(
-            store: store.scope(
-                state: \.camera,
-                action: \.camera
+        ZStack {
+            // CameraViewを直接表示（テスト用）
+            CameraView(
+                store: store.scope(
+                    state: \.camera,
+                    action: \.camera
+                )
             )
-        )
+            
+            // HandTrackingのデバッグビューをオーバーレイ
+            VStack {
+                HandTrackingView(
+                    store: store.scope(
+                        state: \.handTracking,
+                        action: \.handTracking
+                    )
+                )
+                
+                Spacer()
+            }
+        }
+        .onAppear {
+            store.send(.onAppear)
+        }
     }
 }
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		053FE9F4A596102B350E523E /* HandTrackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DFE7A162D1172044983FFE /* HandTrackingView.swift */; };
 		0822E987A10CC486451196DB /* HandTrackingResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6A11867E314F5BF9A3454F /* HandTrackingResultTests.swift */; };
 		0B74583E4DC98EB42DD49689 /* RenderingFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B2FC0EB0391B28BE8AC90B /* RenderingFeatureTests.swift */; };
 		0BD4F7F963D39294156E2E95 /* MediaPipeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D5C7AE3C3DDC53623DF967 /* MediaPipeError.swift */; };
@@ -87,6 +88,7 @@
 		3E935C5CCE9C4E676357C9EF /* HandednessData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandednessData.swift; sourceTree = "<group>"; };
 		413DD054A9F83F4B8C13083A /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		45596991A457EFC183FB474C /* HandPoseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandPoseTests.swift; sourceTree = "<group>"; };
+		53DFE7A162D1172044983FFE /* HandTrackingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandTrackingView.swift; sourceTree = "<group>"; };
 		58F0068E8B9F2043CD1B96A6 /* AppFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeatureTests.swift; sourceTree = "<group>"; };
 		66847FDECB8D7821F06F06B0 /* TCA+ErrorHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TCA+ErrorHandling.swift"; sourceTree = "<group>"; };
 		7BA2DA6F13C9E4C2D16F3283 /* MediaPipeClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPipeClient.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				FD284D924E8A135EB96C0FC2 /* HandTrackingFeature.swift */,
+				53DFE7A162D1172044983FFE /* HandTrackingView.swift */,
 				7BA2DA6F13C9E4C2D16F3283 /* MediaPipeClient.swift */,
 			);
 			path = HandTracking;
@@ -502,6 +505,7 @@
 				ACA4FFDF092E08A27A3615D1 /* HandPose.swift in Sources */,
 				0D7C4EDE62EF575D5DCD161E /* HandTrackingFeature.swift in Sources */,
 				C0901D0044CA9A67E7E5EF33 /* HandTrackingResult.swift in Sources */,
+				053FE9F4A596102B350E523E /* HandTrackingView.swift in Sources */,
 				A94F0139DEE5F03C4F1894C5 /* Handedness.swift in Sources */,
 				F8A2FACC887594B5F7CABE25 /* HandednessData.swift in Sources */,
 				21A5FD149C6E697BC489436A /* Logger.swift in Sources */,
@@ -584,8 +588,10 @@
 					"@executable_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				OTHER_SWIFT_FLAGS = "-strict-concurrency=minimal";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sagawafumiya.HandEst;
 				SDKROOT = iphoneos;
+				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -738,8 +744,10 @@
 					"@executable_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				OTHER_SWIFT_FLAGS = "-strict-concurrency=minimal";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sagawafumiya.HandEst;
 				SDKROOT = iphoneos;
+				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

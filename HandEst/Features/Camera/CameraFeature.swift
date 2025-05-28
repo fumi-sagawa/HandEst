@@ -184,35 +184,77 @@ struct CameraFeature {
                 
             // ビデオデータ出力関連
             case .startVideoDataOutput:
-                guard state.isCameraActive, !state.isVideoDataOutputActive else { return .none }
+                AppLogger.shared.info("ビデオデータ出力開始リクエスト - カメラアクティブ: \(state.isCameraActive), 出力アクティブ: \(state.isVideoDataOutputActive)", category: .camera)
+                guard state.isCameraActive, !state.isVideoDataOutputActive else { 
+                    AppLogger.shared.warning("ビデオデータ出力開始できません - カメラアクティブ: \(state.isCameraActive), 出力アクティブ: \(state.isVideoDataOutputActive)", category: .camera)
+                    return .none 
+                }
+                
+                // ビデオデータストリーミング用の長時間実行Effect（IDを付けて管理）
+                struct VideoDataOutputID: Hashable {}
                 
                 return .run { send in
                     do {
-                        try await cameraManager.startVideoDataOutput { pixelBuffer in
+                        AppLogger.shared.info("ビデオデータ出力を開始中...", category: .camera)
+                        
+                        // Continuationを使ってコールバックとEffectを繋ぐ
+                        let stream = AsyncStream<CVPixelBuffer> { continuation in
                             Task {
-                                await send(.frameReceived(pixelBuffer))
+                                do {
+                                    try await cameraManager.startVideoDataOutput { pixelBuffer in
+                                        // ストリームにフレームを送信
+                                        continuation.yield(pixelBuffer)
+                                    }
+                                } catch {
+                                    AppLogger.shared.error("ビデオデータ出力エラー: \(error)", category: .camera)
+                                    continuation.finish()
+                                }
                             }
                         }
+                        
                         await send(.videoDataOutputStarted)
+                        
+                        // ストリームからフレームを受信し続ける
+                        for await pixelBuffer in stream {
+                            // コールバックが呼ばれたことをログ（頻度を制限）
+                            if Int.random(in: 0..<30) == 0 {  // 30フレームに1回ログ
+                                AppLogger.shared.debug("CameraFeature: フレーム受信", category: .camera)
+                            }
+                            await send(.frameReceived(pixelBuffer))
+                        }
+                        
                     } catch {
+                        AppLogger.shared.error("ビデオデータ出力開始失敗: \(error)", category: .camera)
                         await send(.errorOccurred(.camera(.videoDataOutputFailed(error.localizedDescription))))
                     }
                 }
+                .cancellable(id: VideoDataOutputID())
                 
             case .stopVideoDataOutput:
                 guard state.isVideoDataOutputActive else { return .none }
                 
-                return .run { send in
-                    await cameraManager.stopVideoDataOutput()
-                    await send(.videoDataOutputStopped)
-                }
+                struct VideoDataOutputID: Hashable {}
+                
+                return .concatenate(
+                    // 既存のビデオデータ出力Effectをキャンセル
+                    .cancel(id: VideoDataOutputID()),
+                    // その後、stopVideoDataOutputを実行
+                    .run { send in
+                        await cameraManager.stopVideoDataOutput()
+                        await send(.videoDataOutputStopped)
+                    }
+                )
                 
             case .frameReceived:
                 // フレームを受信したが、CameraFeature自体では処理しない
                 // AppFeatureで処理するため、ここではnoneを返す
+                if Int.random(in: 0..<30) == 0 {  // 30フレームに1回ログ
+                    AppLogger.shared.debug("CameraFeature: フレーム受信", category: .camera)
+                }
                 return .none
                 
             case .videoDataOutputStarted:
+                AppLogger.shared.info("ビデオデータ出力が開始されました", category: .camera)
                 state.isVideoDataOutputActive = true
                 return .none
                 

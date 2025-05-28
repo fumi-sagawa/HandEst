@@ -50,7 +50,7 @@ public struct MediaPipeClientOptions: Equatable {
         minTrackingConfidence: Float = 0.5,
         minHandednessConfidence: Float = 0.8,
         targetFPS: Double = 30.0,
-        runningMode: RunningMode = .liveStream
+        runningMode: RunningMode = .video
     ) {
         self.maxNumHands = min(max(1, maxNumHands), 2)
         self.minDetectionConfidence = min(max(0, minDetectionConfidence), 1)
@@ -124,7 +124,16 @@ actor LiveMediaPipeClient: MediaPipeClientProtocol {
     func initialize() async throws {
         // HandLandmarkerのオプション設定
         let options = HandLandmarkerOptions()
-        options.baseOptions.modelAssetPath = Bundle.main.path(forResource: "hand_landmarker", ofType: "task") ?? ""
+        
+        // モデルファイルのパスを確認
+        guard let modelPath = Bundle.main.path(forResource: "hand_landmarker", ofType: "task") else {
+            AppLogger.shared.error("hand_landmarker.taskファイルが見つかりません", category: .handTracking)
+            throw MediaPipeError.initializationFailed("Model file not found: hand_landmarker.task")
+        }
+        
+        AppLogger.shared.info("モデルファイルパス: \(modelPath)", category: .handTracking)
+        
+        options.baseOptions.modelAssetPath = modelPath
         options.runningMode = mapRunningMode(self.options.runningMode)
         options.numHands = self.options.maxNumHands
         options.minHandDetectionConfidence = self.options.minDetectionConfidence
@@ -132,14 +141,18 @@ actor LiveMediaPipeClient: MediaPipeClientProtocol {
         options.minTrackingConfidence = self.options.minTrackingConfidence
         
         do {
+            AppLogger.shared.info("HandLandmarker初期化中...", category: .handTracking)
             handLandmarker = try HandLandmarker(options: options)
+            AppLogger.shared.info("HandLandmarker初期化成功", category: .handTracking)
         } catch {
+            AppLogger.shared.error("HandLandmarker初期化失敗: \(error)", category: .handTracking)
             throw MediaPipeError.initializationFailed(error.localizedDescription)
         }
     }
     
     func processFrame(_ pixelBuffer: CVPixelBuffer) async throws -> HandTrackingResult? {
         guard let handLandmarker = handLandmarker else {
+            AppLogger.shared.error("HandLandmarkerが初期化されていません", category: .handTracking)
             throw MediaPipeError.notInitialized
         }
         
@@ -173,10 +186,10 @@ actor LiveMediaPipeClient: MediaPipeClientProtocol {
         let result: HandLandmarkerResult
         do {
             switch options.runningMode {
-            case .image, .video:
+            case .image:
                 result = try handLandmarker.detect(image: image)
-            case .liveStream:
-                // ライブストリームモードでは、現在のタイムスタンプを使用
+            case .video, .liveStream:
+                // ビデオモードでタイムスタンプ付きで処理
                 let timestampMs = Int(Date().timeIntervalSince1970 * 1000)
                 result = try handLandmarker.detect(
                     videoFrame: image,
@@ -191,7 +204,18 @@ actor LiveMediaPipeClient: MediaPipeClientProtocol {
         let processingTime = Date().timeIntervalSince(startTime) * 1000 // ミリ秒に変換
         
         // 結果をHandTrackingResultに変換
-        return convertToHandTrackingResult(result, processingTimeMs: processingTime, pixelBuffer: pixelBuffer)
+        let trackingResult = convertToHandTrackingResult(result, processingTimeMs: processingTime, pixelBuffer: pixelBuffer)
+        
+        // 結果をログ（頻度を制限）
+        if Int.random(in: 0..<30) == 0 {  // 30フレームに1回ログ
+            if trackingResult != nil {
+                AppLogger.shared.debug("手を検出: \(result.landmarks.count)個", category: .handTracking)
+            } else {
+                AppLogger.shared.debug("手が検出されませんでした", category: .handTracking)
+            }
+        }
+        
+        return trackingResult
     }
     
     private func createMPImage(from pixelBuffer: CVPixelBuffer) throws -> MPImage {

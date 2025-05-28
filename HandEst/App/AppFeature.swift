@@ -50,7 +50,8 @@ struct AppFeature {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                AppLogger.shared.info("アプリケーション開始")
+                AppLogger.shared.info("AppFeature.onAppear呼び出し", category: .app)
+                AppLogger.shared.info("アプリケーション開始", category: .app)
                 return .merge(
                     .send(.camera(.onAppear)),
                     .send(.handTracking(.onAppear)),
@@ -85,11 +86,15 @@ struct AppFeature {
             // 子Featureアクションの処理
             case .camera(.cameraStarted):
                 // カメラが開始されたら、HandTrackingの初期化状態を確認
+                AppLogger.shared.info("カメラ開始 - MediaPipe初期化状態: \(state.handTracking.isMediaPipeInitialized)", category: .camera)
                 if state.handTracking.isMediaPipeInitialized {
+                    AppLogger.shared.info("ビデオデータ出力とトラッキングを開始", category: .camera)
                     return .merge(
                         .send(.camera(.startVideoDataOutput)),
                         .send(.handTracking(.startTracking))
                     )
+                } else {
+                    AppLogger.shared.warning("MediaPipeがまだ初期化されていません", category: .camera)
                 }
                 return .none
                 
@@ -103,17 +108,29 @@ struct AppFeature {
             case let .camera(.frameReceived(pixelBuffer)):
                 // カメラからフレームを受信したら、HandTrackingに渡す
                 if state.handTracking.isTracking {
+                    // フレーム転送をログ（頻度を制限）
+                    if Int.random(in: 0..<30) == 0 {  // 30フレームに1回ログ
+                        AppLogger.shared.debug("フレームをHandTrackingに転送", category: .app)
+                    }
                     return .send(.handTracking(.processFrame(pixelBuffer)))
+                } else {
+                    if Int.random(in: 0..<60) == 0 {  // 60フレームに1回ログ
+                        AppLogger.shared.warning("HandTrackingがアクティブでないためフレームをスキップ", category: .app)
+                    }
                 }
                 return .none
                 
             case .handTracking(.mediaPipeInitialized(true)):
                 // MediaPipeが初期化されたら、カメラがアクティブならビデオデータ出力を開始
+                AppLogger.shared.info("MediaPipe初期化完了 - カメラアクティブ: \(state.camera.isCameraActive)", category: .handTracking)
                 if state.camera.isCameraActive {
+                    AppLogger.shared.info("カメラがアクティブなのでビデオデータ出力とトラッキングを開始", category: .handTracking)
                     return .merge(
                         .send(.camera(.startVideoDataOutput)),
                         .send(.handTracking(.startTracking))
                     )
+                } else {
+                    AppLogger.shared.warning("カメラがまだアクティブではありません", category: .handTracking)
                 }
                 return .none
                 

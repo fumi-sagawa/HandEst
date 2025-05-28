@@ -256,6 +256,8 @@ final class AppFeatureTests: XCTestCase {
         await store.receive(.camera(.videoDataOutputStarted)) {
             $0.camera.isVideoDataOutputActive = true
         }
+        // 長時間実行されるEffectをスキップ
+        await store.skipInFlightEffects()
     }
     
     /// 動作: MediaPipe初期化完了時にカメラがアクティブな場合
@@ -281,6 +283,8 @@ final class AppFeatureTests: XCTestCase {
         await store.receive(.camera(.videoDataOutputStarted)) {
             $0.camera.isVideoDataOutputActive = true
         }
+        // 長時間実行されるEffectをスキップ
+        await store.skipInFlightEffects()
     }
     
     /// 動作: カメラからフレームを受信してHandTrackingに渡す
@@ -293,7 +297,8 @@ final class AppFeatureTests: XCTestCase {
             initialState: AppFeature.State(
                 handTracking: HandTrackingFeature.State(
                     isTracking: true,
-                    isMediaPipeInitialized: true
+                    isMediaPipeInitialized: true,
+                    isDebugMode: false  // デバッグモードをOFFにしてテスト
                 )
             ),
             reducer: { AppFeature() }
@@ -315,6 +320,8 @@ final class AppFeatureTests: XCTestCase {
             $0.handTracking.performanceMetrics.totalFramesProcessed = 1
             $0.handTracking.performanceMetrics.averageFPS = mockResult.estimatedFPS
             $0.handTracking.performanceMetrics.detectionRate = 1.0
+            // フレームドロップ率の計算（currentFPSが30以上なので0になる）
+            $0.handTracking.performanceMetrics.frameDropRate = 0.0
         }
     }
     
