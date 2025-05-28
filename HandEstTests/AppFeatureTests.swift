@@ -5,6 +5,8 @@ import ComposableArchitecture
 @MainActor
 final class AppFeatureTests: XCTestCase {
     
+    /// 動作: アプリ起動時にonAppearアクションを送信
+    /// 期待結果: ログが出力され、状態は変更されない
     func testOnAppearLogsStartup() async {
         let store = TestStore(
             initialState: AppFeature.State(),
@@ -14,6 +16,8 @@ final class AppFeatureTests: XCTestCase {
         await store.send(.onAppear)
     }
     
+    /// 動作: ローディング状態をtrue/falseで切り替え
+    /// 期待結果: state.isLoadingが送信した値に更新される
     func testSetLoadingUpdatesState() async {
         let store = TestStore(
             initialState: AppFeature.State(),
@@ -29,6 +33,8 @@ final class AppFeatureTests: XCTestCase {
         }
     }
     
+    /// 動作: AppErrorオブジェクトでエラー表示アクションを送信
+    /// 期待結果: エラー状態がtrue、メッセージとエラーオブジェクトが設定、ローディングがfalse
     func testShowErrorUpdatesState() async {
         let store = TestStore(
             initialState: AppFeature.State(),
@@ -45,6 +51,8 @@ final class AppFeatureTests: XCTestCase {
         }
     }
     
+    /// 動作: 文字列でエラーメッセージ表示アクションを送信
+    /// 期待結果: エラー状態がtrue、メッセージが設定、エラーオブジェクトはnil、ローディングがfalse
     func testShowErrorMessageUpdatesState() async {
         let store = TestStore(
             initialState: AppFeature.State(),
@@ -61,6 +69,8 @@ final class AppFeatureTests: XCTestCase {
         }
     }
     
+    /// 動作: エラー状態でdismissErrorアクションを送信
+    /// 期待結果: エラー関連の状態が全てクリア（hasError=false, errorMessage=nil, currentError=nil）
     func testDismissErrorClearsState() async {
         let store = TestStore(
             initialState: AppFeature.State(
@@ -78,6 +88,8 @@ final class AppFeatureTests: XCTestCase {
         }
     }
     
+    /// 動作: 各種AppErrorタイプのuserMessageプロパティを検証
+    /// 期待結果: 各エラータイプが適切な日本語メッセージを返す
     func testErrorMessagesForAllErrorTypes() {
         // カメラエラー
         let cameraError = AppError.camera(.permissionDenied)
