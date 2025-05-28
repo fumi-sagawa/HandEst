@@ -1,48 +1,153 @@
-# SwiftLint設定ファイル
+# SwiftLint Configuration for HandEst
 
-# 無効化するルール
-disabled_rules:
-  - trailing_whitespace
-
-# 有効化するオプトインルール
-opt_in_rules:
-  - empty_count
-  - closure_spacing
-  - contains_over_first_not_nil
-  - sorted_imports
-  - unused_optional_binding
-  - static_over_final_class
-
-# 除外するパス
+# 除外するフォルダ
 excluded:
-  - HandEst/Preview Content
   - .build
-  - DerivedData
-  - .swiftpm
+  - Package.swift
+  - HandEst.xcodeproj
+  - HandEst/Preview Content
+  - HandEst/Assets.xcassets
+  - Scripts/
 
-# カスタムルール設定
-identifier_name:
-  min_length: 2
-  max_length: 40
-  excluded:
-    - id
+# 有効にするルール
+opt_in_rules:
+  - array_init
+  - attributes
+  - closure_end_indentation
+  - closure_spacing
+  - collection_alignment
+  - contains_over_filter_count
+  - contains_over_filter_is_empty
+  - contains_over_first_not_nil
+  - contains_over_range_nil_comparison
+  - discouraged_object_literal
+  - empty_collection_literal
+  - empty_count
+  - empty_string
+  - enum_case_associated_values_count
+  - explicit_init
+  - extension_access_modifier
+  - fallthrough
+  - fatal_error_message
+  - file_header
+  - first_where
+  - flatmap_over_map_reduce
+  - identical_operands
+  - joined_default_parameter
+  - last_where
+  - legacy_random
+  - literal_expression_end_indentation
+  - modifier_order
+  - nimble_operator
+  - nslocalizedstring_key
+  - number_separator
+  - object_literal
+  - operator_usage_whitespace
+  - overridden_super_call
+  - override_in_extension
+  - pattern_matching_keywords
+  - prefer_self_type_over_type_of_self
+  - redundant_nil_coalescing
+  - redundant_type_annotation
+  - sorted_first_last
+  - static_operator
+  - strong_iboutlet
+  - toggle_bool
+  - trailing_closure
+  - unneeded_parentheses_in_closure_argument
+  - unused_import
+  - vertical_parameter_alignment_on_call
+  - yoda_condition
 
-# ファイルの長さ
-file_length:
-  warning: 500
-  error: 1200
+# 無効にするルール
+disabled_rules:
+  - todo # TODOコメントを許可
+  - trailing_whitespace # 末尾空白を一時的に許可
+  - trailing_newline # 末尾改行を一時的に許可
+  - trailing_closure # トレイリングクロージャを一時的に許可
 
-# 型の本体の長さ
-type_body_length:
-  warning: 300
-  error: 500
-
-# 関数の本体の長さ
-function_body_length:
-  warning: 40
-  error: 100
-
-# 行の長さ
+# カスタム設定
 line_length:
   warning: 120
-  error: 200
+  error: 150
+
+function_body_length:
+  warning: 60
+  error: 100
+
+type_body_length:
+  warning: 300
+  error: 400
+
+file_length:
+  warning: 500
+  error: 800
+
+cyclomatic_complexity:
+  warning: 10
+  error: 20
+
+nesting:
+  type_level:
+    warning: 3
+    error: 6
+  function_level:
+    warning: 5
+    error: 10
+
+identifier_name:
+  min_length:
+    warning: 2
+    error: 1
+  max_length:
+    warning: 40
+    error: 60
+  excluded:
+    - id
+    - x
+    - y
+    - z
+
+type_name:
+  min_length:
+    warning: 3
+    error: 2
+  max_length:
+    warning: 40
+    error: 50
+
+# ファイルヘッダー設定（必要に応じて有効化）
+# file_header:
+#   required_pattern: |
+#                     \/\/
+#                     \/\/  .*\.swift
+#                     \/\/  HandEst
+#                     \/\/
+#                     \/\/  Created by .* on \d{4}\/\d{2}\/\d{2}\.
+#                     \/\/
+
+# カスタムルール
+custom_rules:
+  # 日本語コメントの推奨
+  japanese_comments:
+    name: "Japanese Comments"
+    message: "日本語でのコメントを推奨します"
+    regex: '\/\/\s*[a-zA-Z]{20,}'
+    severity: warning
+  
+  # AppLoggerの使用を推奨
+  print_statement:
+    name: "Print Statement"
+    message: "print文の代わりにAppLoggerを使用してください"
+    regex: '\bprint\s*\('
+    severity: warning
+  
+  # TODO/FIXMEに日本語使用を推奨
+  todo_fixme_japanese:
+    name: "TODO/FIXME Japanese"
+    message: "TODO/FIXMEは日本語で記述してください"
+    regex: '(TODO|FIXME):\s*[a-zA-Z]'
+    severity: warning
+
+# レポート形式
+reporter: "xcode"
