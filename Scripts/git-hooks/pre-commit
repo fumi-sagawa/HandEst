@@ -9,8 +9,11 @@ TEST_SETTINGS="-parallel-testing-enabled YES -maximum-concurrent-test-simulator-
 
 # ビルドとテストを必ず実行（並列テスト実行）
 echo "🧪 Running tests and build..."
-if ! xcodebuild -scheme HandEst -destination "$DESTINATION" $BUILD_SETTINGS $TEST_SETTINGS test -quiet; then
+# テスト結果のサマリーのみを表示（エラーがある場合は詳細も表示）
+if ! xcodebuild -scheme HandEst -destination "$DESTINATION" $BUILD_SETTINGS $TEST_SETTINGS test -quiet 2>&1 | grep -E "(Test Suite|tests? (passed|failed)|error:|warning:|FAILED|Executed)" | tail -20; then
     echo "❌ Tests or build failed! Please fix the issues before committing."
+    # エラーの詳細を表示するために再実行
+    xcodebuild -scheme HandEst -destination "$DESTINATION" test 2>&1 | grep -A 5 -B 5 -E "(error:|FAILED)"
     exit 1
 fi
 

@@ -320,7 +320,7 @@ mv Projects/tasks/todo/20240524-camera-setup.md Projects/tasks/doing/
 2. **ビルドとユーザーへの報告**
    ```bash
    # アプリをビルドしてシミュレータで起動
-   xcodebuild -scheme HandEst -destination 'platform=iOS Simulator,name=iPhone 15' build
+   xcodebuild -scheme HandEst -destination 'platform=iOS Simulator,name=iPhone 16' build
    open -a Simulator
    ```
    

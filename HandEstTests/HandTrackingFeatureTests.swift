@@ -1,5 +1,6 @@
 import XCTest
 import ComposableArchitecture
+import CoreVideo
 @testable import HandEst
 
 @MainActor
@@ -87,4 +88,218 @@ final class HandTrackingFeatureTests: XCTestCase {
             $0.error = error
         }
     }
+    
+    // MARK: - MediaPipe Integration Tests
+    
+    /// 動作: onAppearアクションでMediaPipeを初期化
+    /// 期待結果: MediaPipeが初期化され、isMediaPipeInitializedがtrueになる
+    func testMediaPipeInitializationOnAppear() async {
+        let store = TestStore(
+            initialState: HandTrackingFeature.State(),
+            reducer: { HandTrackingFeature() }
+        ) {
+            $0.mediaPipeClient.initialize = { }
+            $0.mediaPipeClient.isInitialized = { true }
+        }
+        
+        await store.send(.onAppear)
+        await store.receive(.initializeMediaPipe)
+        await store.receive(.mediaPipeInitialized(true)) {
+            $0.isMediaPipeInitialized = true
+        }
+    }
+    
+    /// 動作: MediaPipe初期化失敗をテスト
+    /// 期待結果: エラーが設定される
+    func testMediaPipeInitializationFailure() async {
+        let initError = MediaPipeError.initializationFailed("モデルファイルが見つかりません")
+        let store = TestStore(
+            initialState: HandTrackingFeature.State(),
+            reducer: { HandTrackingFeature() }
+        ) {
+            $0.mediaPipeClient.initialize = { throw initError }
+        }
+        
+        await store.send(.initializeMediaPipe)
+        await store.receive(.trackingError(initError)) {
+            $0.error = initError
+        }
+    }
+    
+    /// 動作: フレーム処理の成功をテスト
+    /// 期待結果: トラッキング結果が状態に反映される
+    func testProcessFrameSuccess() async {
+        // テスト用のピクセルバッファを作成
+        let pixelBuffer = createMockPixelBuffer()
+        let mockResult = HandTrackingResult.mockData()
+        
+        let store = TestStore(
+            initialState: HandTrackingFeature.State(
+                isTracking: true,
+                isMediaPipeInitialized: true
+            ),
+            reducer: { HandTrackingFeature() }
+        ) {
+            $0.mediaPipeClient.processFrame = { _ in mockResult }
+        }
+        
+        await store.send(.processFrame(pixelBuffer))
+        await store.receive(.trackingResult(mockResult)) {
+            $0.currentResult = mockResult
+            $0.trackingHistory.append(mockResult)
+        }
+        await store.receive(.updatePerformanceMetrics) {
+            $0.performanceMetrics.currentFPS = mockResult.estimatedFPS
+            $0.performanceMetrics.processingTimeMs = mockResult.processingTimeMs
+            $0.performanceMetrics.totalFramesProcessed = 1
+            $0.performanceMetrics.averageFPS = mockResult.estimatedFPS
+            $0.performanceMetrics.detectionRate = 1.0
+        }
+    }
+    
+    /// 動作: フレーム処理の失敗をテスト
+    /// 期待結果: エラーが設定される
+    func testProcessFrameFailure() async {
+        let pixelBuffer = createMockPixelBuffer()
+        let processError = MediaPipeError.processingFailed("処理エラー")
+        
+        let store = TestStore(
+            initialState: HandTrackingFeature.State(
+                isTracking: true,
+                isMediaPipeInitialized: true
+            ),
+            reducer: { HandTrackingFeature() }
+        ) {
+            $0.mediaPipeClient.processFrame = { _ in throw processError }
+        }
+        
+        await store.send(.processFrame(pixelBuffer))
+        await store.receive(.trackingError(processError)) {
+            $0.error = processError
+        }
+    }
+    
+    /// 動作: トラッキング停止時はフレーム処理をスキップ
+    /// 期待結果: フレーム処理が実行されない
+    func testProcessFrameSkipWhenNotTracking() async {
+        let pixelBuffer = createMockPixelBuffer()
+        
+        let store = TestStore(
+            initialState: HandTrackingFeature.State(
+                isTracking: false,
+                isMediaPipeInitialized: true
+            ),
+            reducer: { HandTrackingFeature() }
+        ) {
+            $0.mediaPipeClient.processFrame = { _ in
+                XCTFail("processFrame should not be called when not tracking")
+                return nil
+            }
+        }
+        
+        await store.send(.processFrame(pixelBuffer))
+    }
+    
+    /// 動作: ポーズロック時はフレーム処理をスキップ
+    /// 期待結果: フレーム処理が実行されない
+    func testProcessFrameSkipWhenPoseLocked() async {
+        let pixelBuffer = createMockPixelBuffer()
+        
+        let store = TestStore(
+            initialState: HandTrackingFeature.State(
+                isTracking: true,
+                isPoseLocked: true,
+                isMediaPipeInitialized: true
+            ),
+            reducer: { HandTrackingFeature() }
+        ) {
+            $0.mediaPipeClient.processFrame = { _ in
+                XCTFail("processFrame should not be called when pose is locked")
+                return nil
+            }
+        }
+        
+        await store.send(.processFrame(pixelBuffer))
+    }
+    
+    /// 動作: onDisappearでMediaPipeをシャットダウン
+    /// 期待結果: トラッキングが停止し、MediaPipeがシャットダウンされる
+    func testOnDisappearShutdown() async {
+        var shutdownCalled = false
+        
+        let store = TestStore(
+            initialState: HandTrackingFeature.State(
+                isTracking: true,
+                isMediaPipeInitialized: true
+            ),
+            reducer: { HandTrackingFeature() }
+        ) {
+            $0.mediaPipeClient.shutdown = {
+                shutdownCalled = true
+            }
+        }
+        
+        await store.send(.onDisappear)
+        await store.receive(.stopTracking) {
+            $0.isTracking = false
+        }
+        
+        // 少し待ってからシャットダウンが呼ばれたことを確認
+        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1秒
+        XCTAssertTrue(shutdownCalled)
+    }
+    
+    /// 動作: デバッグモードの切り替えをテスト
+    /// 期待結果: isDebugModeが反転される
+    func testToggleDebugMode() async {
+        let store = TestStore(
+            initialState: HandTrackingFeature.State(),
+            reducer: { HandTrackingFeature() }
+        )
+        
+        await store.send(.toggleDebugMode) {
+            $0.isDebugMode = true
+        }
+        
+        await store.send(.toggleDebugMode) {
+            $0.isDebugMode = false
+        }
+    }
+    
+    /// 動作: エラークリアをテスト
+    /// 期待結果: エラーがnilになる
+    func testClearError() async {
+        let store = TestStore(
+            initialState: HandTrackingFeature.State(
+                error: MediaPipeError.notInitialized
+            ),
+            reducer: { HandTrackingFeature() }
+        )
+        
+        await store.send(.clearError) {
+            $0.error = nil
+        }
+    }
+    
+    // MARK: - Helper Methods
+    
+    private func createMockPixelBuffer() -> CVPixelBuffer {
+        var pixelBuffer: CVPixelBuffer?
+        let attrs = [
+            kCVPixelBufferCGImageCompatibilityKey: kCFBooleanTrue,
+            kCVPixelBufferCGBitmapContextCompatibilityKey: kCFBooleanTrue
+        ] as CFDictionary
+        
+        CVPixelBufferCreate(
+            kCFAllocatorDefault,
+            640,
+            480,
+            kCVPixelFormatType_32BGRA,
+            attrs,
+            &pixelBuffer
+        )
+        
+        return pixelBuffer!
+    }
 }
+

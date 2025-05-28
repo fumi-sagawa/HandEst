@@ -205,11 +205,11 @@ TCAアーキテクチャに基づくHandTrackingFeatureを実装し、MediaPipeC
 4. [x] HandTrackingFeature.Actionの拡張
 5. [x] 基本的なReducerロジックの実装
 
-### フェーズ2: MediaPipe統合
-1. [ ] MediaPipeClient初期化ロジック
-2. [ ] フレーム処理パイプライン実装
-3. [ ] 結果の状態反映
-4. [ ] エラーハンドリング実装
+### フェーズ2: MediaPipe統合 ✅
+1. [x] MediaPipeClient初期化ロジック
+2. [x] フレーム処理パイプライン実装
+3. [x] 結果の状態反映
+4. [x] エラーハンドリング実装
 
 ### フェーズ3: CameraFeature連携
 1. [ ] AppFeatureでの連携実装
@@ -320,3 +320,18 @@ func testTrackingHistoryManagement() async {
   - デバッグログ出力の詳細実装計画
 - **次のステップ**:
   - フェーズ1から順次実装開始
+
+### 2025-05-29 00:20
+- **Phase 1完了**: 基本構造の拡張を実装
+  - PerformanceMetrics/DebugInfo/Handedness構造体を作成
+  - HandTrackingFeatureのState/Actionを拡張
+  - MediaPipeClient依存関係を統合したReducerを実装
+  - 全108テストが成功
+- **Phase 2完了**: MediaPipe統合を実装
+  - MediaPipeClient初期化ロジック（onAppear/onDisappear）
+  - フレーム処理パイプライン（processFrameアクション）
+  - 結果の状態反映（trackingResult/updatePerformanceMetrics）
+  - エラーハンドリング（trackingError/clearError）
+  - MediaPipe統合テストを9個追加（全117テスト成功）
+- **次のステップ**:
+  - Phase 3: CameraFeature連携の実装

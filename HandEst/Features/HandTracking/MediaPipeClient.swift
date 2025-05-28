@@ -286,7 +286,7 @@ actor LiveMediaPipeClient: MediaPipeClientProtocol {
 }
 
 // MARK: - Test Helpers
-private extension HandTrackingResult {
+extension HandTrackingResult {
     static func mockData() -> HandTrackingResult {
         let landmarks = (0..<21).map { index in
             HandLandmark(
