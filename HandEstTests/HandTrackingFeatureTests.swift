@@ -6,15 +6,28 @@ import ComposableArchitecture
 final class HandTrackingFeatureTests: XCTestCase {
     
     /// 動作: 手認識開始アクションをテスト
-    /// 期待結果: isTrackingがtrueに更新される
+    /// 期待結果: MediaPipeが初期化されている場合、isTrackingがtrueに更新される
     func testStartTracking() async {
+        let store = TestStore(
+            initialState: HandTrackingFeature.State(isMediaPipeInitialized: true),
+            reducer: { HandTrackingFeature() }
+        )
+        
+        await store.send(.startTracking) {
+            $0.isTracking = true
+        }
+    }
+    
+    /// 動作: MediaPipeが初期化されていない状態で手認識開始アクションをテスト
+    /// 期待結果: エラーが設定され、isTrackingはfalseのまま
+    func testStartTrackingWithoutInitialization() async {
         let store = TestStore(
             initialState: HandTrackingFeature.State(),
             reducer: { HandTrackingFeature() }
         )
         
         await store.send(.startTracking) {
-            $0.isTracking = true
+            $0.error = .notInitialized
         }
     }
     
@@ -62,16 +75,16 @@ final class HandTrackingFeatureTests: XCTestCase {
     }
     
     /// 動作: エラー発生アクションをテスト
-    /// 期待結果: エラーメッセージが設定される
-    func testErrorOccurred() async {
+    /// 期待結果: エラーが設定される
+    func testTrackingError() async {
         let store = TestStore(
             initialState: HandTrackingFeature.State(),
             reducer: { HandTrackingFeature() }
         )
         
-        let errorMessage = "手認識エラー"
-        await store.send(.errorOccurred(errorMessage)) {
-            $0.error = errorMessage
+        let error = MediaPipeError.processingFailed("手認識エラー")
+        await store.send(.trackingError(error)) {
+            $0.error = error
         }
     }
 }

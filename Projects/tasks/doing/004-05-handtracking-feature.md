@@ -33,36 +33,153 @@ TCAアーキテクチャに基づくHandTrackingFeatureを実装し、MediaPipeC
 - [ ] 全テスト通過確認
 
 ## 実装方針
-1. **TCA State設計**
+
+### 1. **アーキテクチャ設計**
+   - HandTrackingFeatureは現在のBasicな実装からMediaPipeClientと統合した完全な実装に拡張
+   - CameraFeatureからのビデオフレームストリームを受け取り、MediaPipeで処理
+   - ポーズロック機能、左右手選択機能を含む
+
+### 2. **State設計の詳細**
    ```swift
-   struct State {
-       var isTracking: Bool = false
+   @ObservableState
+   struct State: Equatable {
+       // トラッキング状態
+       var isTracking = false
+       var isPoseLocked = false
+       var handedness: Handedness = .right
+       
+       // MediaPipe統合
+       var isMediaPipeInitialized = false
        var currentResult: HandTrackingResult?
+       var trackingHistory = HandTrackingHistory(maxFrames: 30)
+       
+       // パフォーマンス監視
+       var performanceMetrics: PerformanceMetrics = PerformanceMetrics()
+       
+       // エラー管理
        var error: MediaPipeError?
-       var performanceMetrics: PerformanceMetrics?
+       
+       // デバッグ情報
+       var isDebugMode = false
+       var debugInfo: DebugInfo?
    }
    ```
 
-2. **Action設計**
+### 3. **Action設計の詳細**
    ```swift
-   enum Action {
+   enum Action: Equatable {
+       // 基本制御
+       case onAppear
+       case onDisappear
        case startTracking
        case stopTracking
+       case togglePoseLock
+       case setHandedness(Handedness)
+       
+       // MediaPipe関連
+       case initializeMediaPipe
+       case mediaPipeInitialized(Bool)
+       case processFrame(CVPixelBuffer)
        case trackingResult(HandTrackingResult)
        case trackingError(MediaPipeError)
-       case performanceUpdate(PerformanceMetrics)
+       
+       // パフォーマンス
+       case updatePerformanceMetrics
+       
+       // デバッグ
+       case toggleDebugMode
+       case clearError
    }
    ```
 
-3. **Effect管理**
-   - MediaPipeClientの非同期呼び出し
-   - ストリーミングデータの処理
-   - エラーハンドリング
+### 4. **PerformanceMetrics構造体**
+   ```swift
+   struct PerformanceMetrics: Equatable {
+       var currentFPS: Double = 0
+       var averageFPS: Double = 0
+       var processingTimeMs: Double = 0
+       var frameDropRate: Double = 0
+       var totalFramesProcessed: Int = 0
+       var detectionRate: Double = 0
+   }
+   ```
 
-4. **デバッグログ出力**
-   - trackingResultアクションで認識情報をログ出力
-   - Logger.shared.logを使用してコンソールに表示
-   - 検出情報の詳細（手の数、信頼度、FPS、主要座標）を出力
+### 5. **DebugInfo構造体**
+   ```swift
+   struct DebugInfo: Equatable {
+       var detectedHandsCount: Int
+       var leftHandConfidence: Float?
+       var rightHandConfidence: Float?
+       var primaryLandmarks: [LandmarkDebugInfo]
+   }
+   
+   struct LandmarkDebugInfo: Equatable {
+       var type: LandmarkType
+       var position: CGPoint
+       var confidence: Float
+   }
+   ```
+
+### 6. **Reducer実装計画**
+   - **初期化フロー**:
+     1. onAppearでMediaPipeClientを初期化
+     2. 初期化成功後、カメラフレーム受信の準備
+   
+   - **フレーム処理フロー**:
+     1. CameraFeatureからCVPixelBufferを受信
+     2. MediaPipeClientでフレーム処理
+     3. 結果をStateに反映
+     4. デバッグ情報をログ出力
+   
+   - **エラーハンドリング**:
+     - MediaPipeエラーをキャッチしてユーザーに表示
+     - 自動リトライ機能
+
+### 7. **CameraFeatureとの統合**
+   - AppFeatureレベルでCameraFeatureとHandTrackingFeatureを連携
+   - CameraManagerのstartVideoDataOutputを使用してフレームを取得
+   - フレームをHandTrackingFeatureに送信
+
+### 8. **デバッグログ出力の詳細実装**
+   ```swift
+   private func logTrackingResult(_ result: HandTrackingResult) {
+       let logger = AppLogger.shared
+       
+       // 基本情報
+       logger.info("検出された手の数: \(result.detectedHandsCount)", category: .handTracking)
+       logger.info("FPS: \(String(format: "%.1f", result.estimatedFPS))", category: .handTracking)
+       logger.info("処理時間: \(String(format: "%.1f", result.processingTimeMs))ms", category: .handTracking)
+       
+       // 各手の詳細情報
+       if let leftHand = result.leftHandPose {
+           let confidence = result.handednessData.hands.first(where: { $0.handType == .left })?.confidence ?? 0
+           logger.info("左手 - 信頼度: \(String(format: "%.2f", confidence))", category: .handTracking)
+           logPrimaryLandmarks(leftHand, handType: "左手")
+       }
+       
+       if let rightHand = result.rightHandPose {
+           let confidence = result.handednessData.hands.first(where: { $0.handType == .right })?.confidence ?? 0
+           logger.info("右手 - 信頼度: \(String(format: "%.2f", confidence))", category: .handTracking)
+           logPrimaryLandmarks(rightHand, handType: "右手")
+       }
+   }
+   
+   private func logPrimaryLandmarks(_ pose: HandPose, handType: String) {
+       let logger = AppLogger.shared
+       
+       // 主要ランドマークのみログ出力
+       let primaryLandmarks: [LandmarkType] = [.wrist, .thumbTip, .indexFingerTip, .middleFingerTip]
+       
+       for landmarkType in primaryLandmarks {
+           if let landmark = pose.landmark(for: landmarkType) {
+               logger.debug(
+                   "\(handType) - \(landmarkType): (\(String(format: "%.3f", landmark.x)), \(String(format: "%.3f", landmark.y)), \(String(format: "%.3f", landmark.z)))",
+                   category: .handTracking
+               )
+           }
+       }
+   }
+   ```
 
 ## 成功判定基準
 - TCAアーキテクチャに準拠している
@@ -78,6 +195,96 @@ TCAアーキテクチャに基づくHandTrackingFeatureを実装し、MediaPipeC
 - TCA Reducer パターン
 - TCA Effect 管理
 - 前提チケット: 004-04-mediapipe-client-detailed.md
+
+## 実装手順
+
+### フェーズ1: 基本構造の拡張 ✅
+1. [x] PerformanceMetrics構造体の実装
+2. [x] DebugInfo構造体の実装
+3. [x] HandTrackingFeature.Stateの拡張
+4. [x] HandTrackingFeature.Actionの拡張
+5. [x] 基本的なReducerロジックの実装
+
+### フェーズ2: MediaPipe統合
+1. [ ] MediaPipeClient初期化ロジック
+2. [ ] フレーム処理パイプライン実装
+3. [ ] 結果の状態反映
+4. [ ] エラーハンドリング実装
+
+### フェーズ3: CameraFeature連携
+1. [ ] AppFeatureでの連携実装
+2. [ ] フレームストリーミングのセットアップ
+3. [ ] ライフサイクル管理（開始/停止）
+
+### フェーズ4: デバッグ・監視機能
+1. [ ] デバッグログ出力の実装
+2. [ ] パフォーマンスメトリクス計算
+3. [ ] デバッグモードUI（オプション）
+
+### フェーズ5: テスト実装
+1. [ ] Reducer単体テスト
+2. [ ] MediaPipe統合テスト
+3. [ ] パフォーマンステスト
+4. [ ] エラーケーステスト
+
+## 技術的考慮事項
+
+### 1. **パフォーマンス最適化**
+- フレームドロップの適切な処理
+- 30FPSターゲットでの安定動作
+- メモリ効率的なフレーム履歴管理
+
+### 2. **並行処理**
+- MediaPipeClientはactorベース
+- TCA Effectでの非同期処理管理
+- メインスレッドブロッキングの回避
+
+### 3. **エラー回復**
+- MediaPipe初期化失敗時の再試行
+- カメラ切断時の適切な処理
+- ユーザーへの明確なフィードバック
+
+## テスト戦略
+
+### 1. **既存テストの拡張**
+- 現在の5つの基本テストを維持
+- 新しいAction/Stateに対応するテストを追加
+
+### 2. **MediaPipe統合テスト**
+```swift
+// MediaPipe初期化テスト
+func testMediaPipeInitialization() async {
+    // 初期化成功・失敗のシナリオ
+}
+
+// フレーム処理テスト  
+func testFrameProcessing() async {
+    // モックフレームでの処理テスト
+}
+
+// エラーハンドリングテスト
+func testMediaPipeErrorHandling() async {
+    // 各種エラーケースのテスト
+}
+```
+
+### 3. **パフォーマンステスト**
+```swift
+// FPS計算テスト
+func testPerformanceMetricsCalculation() async {
+    // メトリクス計算の正確性確認
+}
+
+// 履歴管理テスト
+func testTrackingHistoryManagement() async {
+    // 履歴の追加・削除・統計計算
+}
+```
+
+### 4. **統合テスト**
+- CameraFeatureとの連携テスト
+- ライフサイクル管理テスト
+- デバッグモードのテスト
 
 ## 作業ログ
 ### 2025-05-28 23:30
@@ -98,3 +305,18 @@ TCAアーキテクチャに基づくHandTrackingFeatureを実装し、MediaPipeC
 - **今後の対策**:
   - 依存関係は`exact`バージョンで固定して予期しない自動アップデートを防止
   - pre-commitフックの実行を徹底（--no-verifyの使用を最小限に）
+
+### 2025-05-29 00:00 
+- **チケット詳細化**: これまでの実装を踏まえて実装計画を詳細化
+- **調査内容**:
+  - 完了したサブタスク（004-01〜004-04）の確認
+  - MediaPipeClientの実装状況確認（TCA Dependency対応済み）
+  - CameraManagerのビデオデータ出力機能確認
+  - 既存のHandTrackingFeature基本実装の確認
+- **実装計画**:
+  - State/Actionの詳細設計
+  - パフォーマンスメトリクス・デバッグ情報の構造体設計
+  - CameraFeatureとの連携方法の明確化
+  - デバッグログ出力の詳細実装計画
+- **次のステップ**:
+  - フェーズ1から順次実装開始

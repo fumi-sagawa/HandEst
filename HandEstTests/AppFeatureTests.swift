@@ -183,7 +183,9 @@ final class AppFeatureTests: XCTestCase {
     /// 期待結果: 手認識の開始・停止が正しく動作する
     func testHandTrackingFeatureIntegration() async {
         let store = TestStore(
-            initialState: AppFeature.State(),
+            initialState: AppFeature.State(
+                handTracking: HandTrackingFeature.State(isMediaPipeInitialized: true)
+            ),
             reducer: { AppFeature() }
         )
         
