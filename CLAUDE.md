@@ -34,7 +34,7 @@ xcodebuild -scheme HandEst -configuration Release archive
 xcodebuild -scheme HandEst clean
 
 # シミュレータで実行
-xcodebuild -scheme HandEst -destination 'platform=iOS Simulator,name=iPhone 15' build
+xcodebuild -scheme HandEst -destination 'platform=iOS Simulator,name=iPhone 16' build
 ```
 
 ## Git Hooks設定

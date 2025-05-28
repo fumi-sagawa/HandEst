@@ -4,14 +4,14 @@ echo "🔍 Running pre-commit checks..."
 
 # テストを実行
 echo "🧪 Running tests..."
-if ! xcodebuild -scheme HandEst -destination 'platform=iOS Simulator,name=iPhone 15' test -quiet; then
+if ! xcodebuild -scheme HandEst -destination 'platform=iOS Simulator,name=iPhone 16' test -quiet; then
     echo "❌ Tests failed! Please fix the failing tests before committing."
     exit 1
 fi
 
 # ビルドが成功するか確認（SwiftLintはproject.ymlで実行されるため、ここでは省略）
 echo "🔨 Building project..."
-if ! xcodebuild -scheme HandEst -destination 'platform=iOS Simulator,name=iPhone 15' -configuration Debug build -quiet; then
+if ! xcodebuild -scheme HandEst -destination 'platform=iOS Simulator,name=iPhone 16' -configuration Debug build -quiet; then
     echo "❌ Build failed! Please fix build errors before committing."
     exit 1
 fi
