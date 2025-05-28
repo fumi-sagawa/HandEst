@@ -5,10 +5,11 @@ echo "🔍 Running pre-commit checks..."
 # より高速なビルド設定を使用
 DESTINATION='platform=iOS Simulator,name=iPhone 16'
 BUILD_SETTINGS="-parallelizeTargets -jobs 8"
+TEST_SETTINGS="-parallel-testing-enabled YES -maximum-concurrent-test-simulator-destinations 4"
 
-# ビルドとテストを必ず実行
+# ビルドとテストを必ず実行（並列テスト実行）
 echo "🧪 Running tests and build..."
-if ! xcodebuild -scheme HandEst -destination "$DESTINATION" $BUILD_SETTINGS test -quiet; then
+if ! xcodebuild -scheme HandEst -destination "$DESTINATION" $BUILD_SETTINGS $TEST_SETTINGS test -quiet; then
     echo "❌ Tests or build failed! Please fix the issues before committing."
     exit 1
 fi

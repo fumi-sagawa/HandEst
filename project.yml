@@ -72,6 +72,11 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.sagawafumiya.HandEstTests
         DEVELOPMENT_TEAM: 8BD446AR8T
         GENERATE_INFOPLIST_FILE: YES
+    scheme:
+      testTargets:
+        - HandEstTests
+      parallelizeBuildables: true
+      buildImplicitDependencies: true
 
   HandEstUITests:
     type: bundle.ui-testing
@@ -86,6 +91,26 @@ targets:
         DEVELOPMENT_TEAM: 8BD446AR8T
         TEST_TARGET_NAME: HandEst
         GENERATE_INFOPLIST_FILE: YES
+
+schemes:
+  HandEst:
+    build:
+      targets:
+        HandEst: all
+    test:
+      targets:
+        - HandEstTests
+        - HandEstUITests
+      parallelizeBuildables: true
+      buildImplicitDependencies: true
+    run:
+      config: Debug
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
 
 packages:
   ComposableArchitecture:
