@@ -36,7 +36,10 @@ LocalPackages/
 # アプリをビルド
 xcodebuild -scheme HandEst -configuration Debug build
 
-# テストを実行  
+# テストを実行（エラーのみ表示）
+xcodebuild -scheme HandEst test -quiet 2>&1 | grep -E "(error:|failed:|TEST FAILED|✗)" || echo "✅ All tests passed!"
+
+# テストを実行（詳細表示が必要な場合のみ）
 xcodebuild -scheme HandEst test
 
 # リリース用にビルド
@@ -95,8 +98,8 @@ pre-commit hookでのテスト実行には1-3分程度かかることがあり�
 # ビルドのみの高速チェック
 ./Scripts/quick-check.sh
 
-# フルテストを手動実行
-xcodebuild -scheme HandEst test
+# テストを手動実行（エラーのみ表示）
+xcodebuild -scheme HandEst test -quiet 2>&1 | grep -E "(error:|failed:|TEST FAILED|✗)" || echo "✅ All tests passed!"
 ```
 
 ## アーキテクチャ
@@ -240,36 +243,6 @@ Projects/
 2. **作業開始**: タスクファイルを `doing/` フォルダに移動し、対応するブランチを作成
 3. **作業完了**: タスクファイルを `done/` フォルダに移動
 
-### タスクチケットテンプレート
-```markdown
-# タスク名: [わかりやすいタスク名]
-
-## 概要
-[このタスクで実現したいことの概要]
-
-## 背景・目的
-[なぜこのタスクが必要なのか]
-
-## To-Be（完了条件）
-- [ ] 実装完了条件1
-- [ ] 実装完了条件2
-- [ ] テストが全て通る
-- [ ] ドキュメント更新完了
-
-## 実装方針
-[どのように実装するかの方針]
-
-## 関連情報
-- 関連Issue: #XX
-- 参考資料: [リンク]
-
-## 作業ログ
-### YYYY-MM-DD HH:MM
-- 作業内容の記録
-- 発生した問題と解決方法
-- 次回の作業予定
-```
-
 ### タスク管理のベストプラクティス
 - タスクファイル名は `チケット番号-タスク名.md` の形式で作成
 - 作業ログは時系列で追記し、後から見返せるようにする
@@ -313,8 +286,8 @@ mv Projects/tasks/todo/20240524-camera-setup.md Projects/tasks/doing/
 
 1. **テストの実行と確認**
    ```bash
-   # 全テストが通ることを確認
-   xcodebuild -scheme HandEst test
+   # 全テストが通ることを確認（エラーのみ表示）
+   xcodebuild -scheme HandEst test -quiet 2>&1 | grep -E "(error:|failed:|TEST FAILED|✗)" || echo "✅ All tests passed!"
    ```
 
 2. **ビルドとユーザーへの報告**
@@ -474,33 +447,6 @@ func testCameraViewShowsPermissionAlert() throws {
    - 完了したタスクと未完了タスクを明示
    - 次のステップを具体的に提示
 
-### 報告例テンプレート
-
-```markdown
-## 作業完了報告
-
-### 実装内容
-[実装した機能の概要]
-
-### 完了したタスク
-- ✅ [完了タスク1]
-- ✅ [完了タスク2]
-- ✅ 単体テストの作成と実行
-
-### 実機確認が必要なタスク
-- ⏳ [確認項目1]
-- ⏳ [確認項目2]
-
-### 次のアクション
-「実機で上記の動作確認を行い、問題がなければこのチケットは完了です。
-確認方法：[具体的な確認手順]」
-
-### 変更ファイル
-- HandEst/Features/Camera/CameraFeature.swift
-- HandEst/Features/Camera/CameraView.swift
-- （他のファイル一覧）
-```
-
 ### 報告のタイミング
 - 新機能の実装が完了した時
 - 既存機能の修正・改善が完了した時
@@ -528,3 +474,53 @@ func testCameraViewShowsPermissionAlert() throws {
 - テストは型定義を直接使用
 - 実装は型定義に厳密に従う
 - SwiftUIビューはTCAのViewStoreを使用して状態を監視
+
+## テスト実行時の出力方針
+
+**重要な原則: テスト実行時は基本的にエラーのみを表示する**
+
+### テスト出力の基本方針
+- ✅ **成功時**: 「All tests passed!」の一行のみ表示
+- ❌ **失敗時**: エラーの詳細とスタックトレースを表示
+- 🚫 **絶対に避けるべきこと**: 
+  - 各テストケースの詳細出力
+  - 冗長なビルドログ
+  - 成功したテストの一覧
+
+### 必須のテスト実行方法
+
+```bash
+# これが標準的なテスト実行コマンド（エラーのみ表示）
+xcodebuild -scheme HandEst test -quiet 2>&1 | grep -E "(error:|failed:|TEST FAILED|✗)" || echo "✅ All tests passed!"
+
+# デバッグが必要な場合のみ詳細表示
+xcodebuild -scheme HandEst test  # 通常は使わない
+```
+
+### Claude Codeでのテスト実行
+
+**Claude Codeは常に以下のコマンドを使用すること:**
+```bash
+# Bashツール使用時のテスト実行
+xcodebuild -scheme HandEst test -quiet 2>&1 | grep -E "(error:|failed:|TEST FAILED|✗)" || echo "✅ All tests passed!"
+```
+
+### pre-commit hookでの実装
+
+```bash
+# Scripts/git-hooks/pre-commit での実装
+echo "🧪 Running tests..."
+if xcodebuild -scheme HandEst test -quiet 2>&1 | tee test_output.log | grep -E "(error:|failed:)"; then
+    echo "❌ Tests failed! See errors above."
+    exit 1
+else
+    echo "✅ All tests passed!"
+fi
+rm -f test_output.log
+```
+
+### なぜこの方針が重要か
+- **開発効率の向上**: 画面が大量のログで埋まらない
+- **エラーの視認性**: エラーがある場合のみ表示されるため見逃さない
+- **Claude Codeの制限対応**: 出力文字数の制限内で効率的に情報を伝達
+- **ユーザー体験の向上**: 必要な情報のみが表示される
