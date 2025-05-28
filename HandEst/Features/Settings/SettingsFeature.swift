@@ -1,6 +1,15 @@
 import ComposableArchitecture
 import Foundation
 
+/// 焦点距離の設定値
+enum FocalLength: String, CaseIterable, Equatable {
+    case fisheye = "魚眼"
+    case wide24mm = "24mm"
+    case normal50mm = "50mm"
+    case telephoto85mm = "85mm"
+    case orthographic = "平行投影"
+}
+
 @Reducer
 struct SettingsFeature {
     @ObservableState

@@ -51,11 +51,3 @@ struct RenderingFeature {
         }
     }
 }
-
-enum FocalLength: String, CaseIterable, Equatable {
-    case fisheye = "魚眼"
-    case wide24mm = "24mm"
-    case normal50mm = "50mm"
-    case tele85mm = "85mm"
-    case parallel = "平行投影"
-}

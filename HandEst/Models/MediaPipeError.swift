@@ -38,6 +38,12 @@ public enum MediaPipeError: Error, LocalizedError, Equatable {
     /// 不明なエラー
     case unknown(String)
     
+    /// 未初期化エラー
+    case notInitialized
+    
+    /// 画像変換エラー
+    case imageConversionFailed(String)
+    
     public var errorDescription: String? {
         switch self {
         case .initializationFailed(let message):
@@ -64,6 +70,10 @@ public enum MediaPipeError: Error, LocalizedError, Equatable {
             return "検出の信頼度が低いです: \(String(format: "%.2f", confidence))"
         case .unknown(let message):
             return "不明なエラー: \(message)"
+        case .notInitialized:
+            return "MediaPipeクライアントが初期化されていません"
+        case .imageConversionFailed(let message):
+            return "画像の変換に失敗しました: \(message)"
         }
     }
     
@@ -93,17 +103,21 @@ public enum MediaPipeError: Error, LocalizedError, Equatable {
             return "手をはっきりとカメラに映してください"
         case .unknown:
             return "アプリを再起動してください"
+        case .notInitialized:
+            return "MediaPipeクライアントを初期化してください"
+        case .imageConversionFailed:
+            return "別の画像形式を試してください"
         }
     }
     
     /// エラーの重要度
     public var severity: ErrorSeverity {
         switch self {
-        case .initializationFailed, .modelNotFound, .outOfMemory, .cameraAccessDenied:
+        case .initializationFailed, .modelNotFound, .outOfMemory, .cameraAccessDenied, .notInitialized:
             return .critical
         case .processingFailed, .timeout, .unknown:
             return .high
-        case .invalidInput, .lowFrameRate, .multipleHandsDetected:
+        case .invalidInput, .lowFrameRate, .multipleHandsDetected, .imageConversionFailed:
             return .medium
         case .noHandDetected, .lowConfidence:
             return .low
@@ -113,9 +127,9 @@ public enum MediaPipeError: Error, LocalizedError, Equatable {
     /// リトライ可能かどうか
     public var isRetryable: Bool {
         switch self {
-        case .processingFailed, .timeout, .noHandDetected, .lowConfidence:
+        case .processingFailed, .timeout, .noHandDetected, .lowConfidence, .imageConversionFailed:
             return true
-        case .initializationFailed, .modelNotFound, .outOfMemory, .cameraAccessDenied, .invalidInput, .lowFrameRate, .multipleHandsDetected, .unknown:
+        case .initializationFailed, .modelNotFound, .outOfMemory, .cameraAccessDenied, .invalidInput, .lowFrameRate, .multipleHandsDetected, .unknown, .notInitialized:
             return false
         }
     }
