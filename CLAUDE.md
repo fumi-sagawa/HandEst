@@ -15,8 +15,20 @@ HandEstは、ユーザーの手をリアルタイムで3Dモデルに変換し�
 - **SwiftUI**: メインUIフレームワーク
 - **The Composable Architecture (TCA)**: 状態管理
 - **RealityKit**: スキンメッシュ対応の3Dレンダリング
-- **MediaPipe Hands**: 21点の手トラッキング用MLフレームワーク
+- **MediaPipe Hands**: 21点の手トラッキング用MLフレームワーク（SwiftTasksVision経由）
 - **AVFoundation**: カメラアクセス
+
+## MediaPipe統合方法
+
+MediaPipeはSwiftTasksVisionを通じてローカルパッケージとして統合されています：
+
+```
+LocalPackages/
+└── SwiftTasksVision/   # MediaPipeTasksVision.xcframeworkを含む
+```
+
+- SPMのunsafeFlags制限を回避するため、LocalPackagesで管理
+- MediaPipeTasksVisionモジュールのimportで手のトラッキング機能にアクセス
 
 ## ビルドコマンド
 

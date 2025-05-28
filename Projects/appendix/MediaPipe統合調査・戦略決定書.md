@@ -100,16 +100,20 @@ platforms: [
 
 ### 4.1 段階的アプローチ（SPM完全維持）
 
-#### 第1段階: SwiftTasksVisionで迅速検証（2-3日）
+#### 第1段階: SwiftTasksVisionで迅速検証（2-3日）✅完了
 **目的**: Hand Landmarker機能の動作確認
 ```
-1. SwiftTasksVision依存関係追加
-2. MediaPipeTasksVisionのimport確認
-3. 基本的なHand Landmarker実装
-4. 21関節点データの取得確認
-5. パフォーマンステスト（30fps目標）
-6. TCAとの基本統合
+1. ✅ SwiftTasksVision依存関係追加（ローカルパッケージとして統合）
+2. ✅ MediaPipeTasksVisionのimport確認
+3. ⏳ 基本的なHand Landmarker実装（次ステップ）
+4. ⏳ 21関節点データの取得確認（次ステップ）
+5. ⏳ パフォーマンステスト（30fps目標）
+6. ⏳ TCAとの基本統合
 ```
+
+**統合方法の更新**:
+- SPMのunsafeFlags制限を回避するため、LocalPackagesディレクトリで管理
+- Package.swiftからunsafeFlagsを削除、project.ymlでOTHER_LDFLAGSを設定
 
 **検証項目**:
 - [ ] 21関節点の正確な検出
