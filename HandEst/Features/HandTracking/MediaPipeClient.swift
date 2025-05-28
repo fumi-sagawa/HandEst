@@ -29,6 +29,12 @@ public struct MediaPipeClientOptions: Equatable {
     /// 最小トラッキング信頼度（0.0-1.0）
     public let minTrackingConfidence: Float
     
+    /// 手の左右判別の最小信頼度閾値（0.0-1.0）
+    public let minHandednessConfidence: Float
+    
+    /// 目標フレームレート（fps）
+    public let targetFPS: Double
+    
     /// デリゲートキュー（デフォルト: .main）
     public let runningMode: RunningMode
     
@@ -42,11 +48,15 @@ public struct MediaPipeClientOptions: Equatable {
         maxNumHands: Int = 2,
         minDetectionConfidence: Float = 0.5,
         minTrackingConfidence: Float = 0.5,
+        minHandednessConfidence: Float = 0.8,
+        targetFPS: Double = 30.0,
         runningMode: RunningMode = .liveStream
     ) {
         self.maxNumHands = min(max(1, maxNumHands), 2)
         self.minDetectionConfidence = min(max(0, minDetectionConfidence), 1)
         self.minTrackingConfidence = min(max(0, minTrackingConfidence), 1)
+        self.minHandednessConfidence = min(max(0, minHandednessConfidence), 1)
+        self.targetFPS = min(max(1, targetFPS), 120)
         self.runningMode = runningMode
     }
 }
@@ -97,6 +107,9 @@ actor LiveMediaPipeClient: MediaPipeClientProtocol {
     
     private var handLandmarker: HandLandmarker?
     private let options: MediaPipeClientOptions
+    private var lastProcessingTime: Date?
+    private var processingQueue = DispatchQueue(label: "com.handest.mediapipe.processing", qos: .userInitiated)
+    private var isProcessing = false
     
     nonisolated var isInitialized: Bool {
         get async {
@@ -130,6 +143,29 @@ actor LiveMediaPipeClient: MediaPipeClientProtocol {
             throw MediaPipeError.notInitialized
         }
         
+        // フレームレート制御
+        if let lastTime = lastProcessingTime {
+            let minimumInterval = 1.0 / options.targetFPS
+            let elapsedTime = Date().timeIntervalSince(lastTime)
+            
+            // 目標FPSを超えている場合はフレームをスキップ
+            if elapsedTime < minimumInterval {
+                return nil
+            }
+        }
+        
+        // 既に処理中の場合はスキップ（フレームドロップ）
+        guard !isProcessing else {
+            return nil
+        }
+        
+        isProcessing = true
+        defer { isProcessing = false }
+        
+        // 処理開始時刻を記録
+        let startTime = Date()
+        lastProcessingTime = startTime
+        
         // MediaPipe用のイメージを作成
         let image = try createMPImage(from: pixelBuffer)
         
@@ -151,8 +187,11 @@ actor LiveMediaPipeClient: MediaPipeClientProtocol {
             throw MediaPipeError.processingFailed(error.localizedDescription)
         }
         
+        // 処理時間を計算
+        let processingTime = Date().timeIntervalSince(startTime) * 1000 // ミリ秒に変換
+        
         // 結果をHandTrackingResultに変換
-        return convertToHandTrackingResult(result)
+        return convertToHandTrackingResult(result, processingTimeMs: processingTime, pixelBuffer: pixelBuffer)
     }
     
     private func createMPImage(from pixelBuffer: CVPixelBuffer) throws -> MPImage {
@@ -163,7 +202,7 @@ actor LiveMediaPipeClient: MediaPipeClientProtocol {
         }
     }
     
-    private func convertToHandTrackingResult(_ result: HandLandmarkerResult) -> HandTrackingResult? {
+    private func convertToHandTrackingResult(_ result: HandLandmarkerResult, processingTimeMs: Double, pixelBuffer: CVPixelBuffer) -> HandTrackingResult? {
         guard !result.landmarks.isEmpty else {
             return nil
         }
@@ -173,6 +212,19 @@ actor LiveMediaPipeClient: MediaPipeClientProtocol {
         
         for (index, landmarks) in result.landmarks.enumerated() {
             guard index < result.handedness.count else {
+                continue
+            }
+            
+            // Handednessデータを先にチェック
+            guard let handedness = result.handedness[index].first else {
+                continue
+            }
+            
+            let handType: HandType = handedness.categoryName == "Left" ? .left : .right
+            let score = handedness.score
+            
+            // 信頼度閾値をチェック
+            guard score >= options.minHandednessConfidence else {
                 continue
             }
             
@@ -196,25 +248,24 @@ actor LiveMediaPipeClient: MediaPipeClientProtocol {
             let handPose = HandPose(landmarks: handLandmarks)
             poses.append(handPose)
             
-            // Handednessデータを取得
-            if let handedness = result.handedness[index].first {
-                let handType: HandType = handedness.categoryName == "Left" ? .left : .right
-                let score = handedness.score
-                handednessDataArray.append(HandednessData(handType: handType, confidence: score))
-            }
+            // Handednessデータを追加
+            handednessDataArray.append(HandednessData(handType: handType, confidence: score))
         }
         
         guard !poses.isEmpty else {
             return nil
         }
         
-        let processingTime = Date().timeIntervalSince(Date()) * 1000 // 仮の処理時間
+        // CVPixelBufferから実際のフレームサイズを取得
+        let width = CVPixelBufferGetWidth(pixelBuffer)
+        let height = CVPixelBufferGetHeight(pixelBuffer)
+        let frameSize = CGSize(width: width, height: height)
         
         return HandTrackingResult(
             poses: poses,
             handednessData: MultiHandednessData(hands: handednessDataArray),
-            processingTimeMs: processingTime,
-            frameSize: CGSize(width: 640, height: 480) // TODO: 実際のフレームサイズを取得
+            processingTimeMs: processingTimeMs,
+            frameSize: frameSize
         )
     }
     

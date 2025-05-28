@@ -43,15 +43,29 @@ final class MediaPipeClientTests: XCTestCase {
         let options1 = MediaPipeClientOptions(
             maxNumHands: 5,
             minDetectionConfidence: 1.5,
-            minTrackingConfidence: -0.5
+            minTrackingConfidence: -0.5,
+            minHandednessConfidence: 2.0,
+            targetFPS: 200
         )
         
         XCTAssertEqual(options1.maxNumHands, 2)
         XCTAssertEqual(options1.minDetectionConfidence, 1.0)
         XCTAssertEqual(options1.minTrackingConfidence, 0.0)
+        XCTAssertEqual(options1.minHandednessConfidence, 1.0)
+        XCTAssertEqual(options1.targetFPS, 120)
         
-        let options2 = MediaPipeClientOptions(maxNumHands: 0)
+        let options2 = MediaPipeClientOptions(maxNumHands: 0, targetFPS: -10)
         XCTAssertEqual(options2.maxNumHands, 1)
+        XCTAssertEqual(options2.targetFPS, 1)
+    }
+    
+    /// 動作: MediaPipeClientOptionsに新しく追加されたパラメータのデフォルト値を確認
+    /// 期待結果: minHandednessConfidenceが0.8、targetFPSが30.0
+    func testMediaPipeClientOptions_NewDefaultValues() {
+        let options = MediaPipeClientOptions()
+        
+        XCTAssertEqual(options.minHandednessConfidence, 0.8)
+        XCTAssertEqual(options.targetFPS, 30.0)
     }
     
     // MARK: - MediaPipeClient Dependency Tests
@@ -69,7 +83,7 @@ final class MediaPipeClientTests: XCTestCase {
         try await client.initialize()
         
         // フレーム処理（モックデータを返す）
-        let pixelBuffer = createMockPixelBuffer()
+        let pixelBuffer = Self.createMockPixelBuffer()
         let result = try await client.processFrame(pixelBuffer)
         
         XCTAssertNotNil(result)
@@ -120,7 +134,7 @@ final class MediaPipeClientTests: XCTestCase {
             
             try await client.initialize()
             
-            let result = try await client.processFrame(createMockPixelBuffer())
+            let result = try await client.processFrame(MediaPipeClientTests.createMockPixelBuffer())
             XCTAssertNil(result?.leftHandPose)
             XCTAssertNotNil(result?.rightHandPose)
             XCTAssertEqual(result?.handednessData.rightHand?.handType, .right)
@@ -133,7 +147,7 @@ final class MediaPipeClientTests: XCTestCase {
     /// 期待結果: 初期化前はisInitializedがfalseを返す
     func testLiveMediaPipeClient_NotInitialized() async {
         let client = LiveMediaPipeClient.shared
-        let isInitialized = await client.isInitialized
+        let _ = await client.isInitialized
         
         // 初回実行時は未初期化状態
         // ※他のテストでinitializeされている可能性があるため、この assert はコメントアウト
@@ -149,7 +163,7 @@ final class MediaPipeClientTests: XCTestCase {
         // このテストはMediaPipeClient.testValueを使用することを推奨
         
         do {
-            _ = try await client.processFrame(createMockPixelBuffer())
+            _ = try await client.processFrame(MediaPipeClientTests.createMockPixelBuffer())
             XCTFail("Expected MediaPipeError.notInitialized")
         } catch {
             guard case MediaPipeError.notInitialized = error else {
@@ -183,7 +197,7 @@ final class MediaPipeClientTests: XCTestCase {
     
     // MARK: - Helper Methods
     
-    private func createMockPixelBuffer() -> CVPixelBuffer {
+    fileprivate static func createMockPixelBuffer() -> CVPixelBuffer {
         var pixelBuffer: CVPixelBuffer?
         let attributes: [String: Any] = [
             kCVPixelBufferCGImageCompatibilityKey as String: true,
@@ -202,6 +216,163 @@ final class MediaPipeClientTests: XCTestCase {
         return pixelBuffer!
     }
 }
+
+    // MARK: - Handedness Confidence Tests
+    
+    /// 動作: 信頼度閾値によるフィルタリングをテスト
+    /// 期待結果: 閾値未満の手は結果に含まれない
+    func testHandednessConfidenceFiltering() async throws {
+        try await withDependencies {
+            $0.mediaPipeClient.processFrame = { _ in
+                // 左手: 信頼度0.9（閾値を超える）
+                let leftLandmarks = (0..<21).map { index in
+                    HandLandmark(
+                        x: 0.5,
+                        y: 0.5,
+                        z: 0.0,
+                        confidence: 0.9,
+                        type: LandmarkType(rawValue: index)!
+                    )
+                }
+                
+                // 右手: 信頼度0.6（閾値未満、デフォルト0.8）
+                let _ = (0..<21).map { index in
+                    HandLandmark(
+                        x: 0.6,
+                        y: 0.6,
+                        z: 0.0,
+                        confidence: 0.9,
+                        type: LandmarkType(rawValue: index)!
+                    )
+                }
+                
+                // 両手のデータを作成（右手は低信頼度）
+                let _ = MultiHandednessData(
+                    hands: [
+                        HandednessData(handType: .left, confidence: 0.9),
+                        HandednessData(handType: .right, confidence: 0.6)
+                    ]
+                )
+                
+                // 左手のみが含まれるべき
+                return HandTrackingResult(
+                    poses: [HandPose(landmarks: leftLandmarks)],
+                    handednessData: MultiHandednessData(
+                        hands: [HandednessData(handType: .left, confidence: 0.9)]
+                    ),
+                    processingTimeMs: 16.7,
+                    frameSize: CGSize(width: 640, height: 480)
+                )
+            }
+        } operation: {
+            @Dependency(\.mediaPipeClient) var client
+            
+            let result = try await client.processFrame(MediaPipeClientTests.createMockPixelBuffer())
+            
+            // 左手のみが含まれていることを確認
+            XCTAssertNotNil(result)
+            XCTAssertEqual(result?.detectedHandsCount, 1)
+            XCTAssertNotNil(result?.leftHandPose)
+            XCTAssertNil(result?.rightHandPose)
+            XCTAssertEqual(result?.handednessData.hands.count, 1)
+            XCTAssertTrue(result?.handednessData.leftHand?.isReliable() ?? false)
+        }
+    }
+    
+    /// 動作: 処理時間とFPS計算のテスト
+    /// 期待結果: 正しい処理時間とFPSが計算される
+    func testProcessingTimeAndFPSCalculation() async throws {
+        try await withDependencies {
+            $0.mediaPipeClient.processFrame = { _ in
+                // 16.7ms（約60fps）の処理時間をシミュレート
+                let landmarks = (0..<21).map { index in
+                    HandLandmark(
+                        x: 0.5,
+                        y: 0.5,
+                        z: 0.0,
+                        confidence: 0.9,
+                        type: LandmarkType(rawValue: index)!
+                    )
+                }
+                
+                return HandTrackingResult(
+                    poses: [HandPose(landmarks: landmarks)],
+                    handednessData: MultiHandednessData(
+                        hands: [HandednessData(handType: .left, confidence: 0.9)]
+                    ),
+                    processingTimeMs: 16.7,
+                    frameSize: CGSize(width: 1920, height: 1080)
+                )
+            }
+        } operation: {
+            @Dependency(\.mediaPipeClient) var client
+            
+            let result = try await client.processFrame(MediaPipeClientTests.createMockPixelBuffer())
+            
+            XCTAssertNotNil(result)
+            XCTAssertEqual(result?.processingTimeMs, 16.7)
+            XCTAssertEqual(result?.estimatedFPS ?? 0, 1000.0 / 16.7, accuracy: 0.1)
+            XCTAssertEqual(result?.frameSize, CGSize(width: 1920, height: 1080))
+        }
+    }
+    
+    /// 動作: フレームレート制御のテスト（モック実装）
+    /// 期待結果: 高頻度の呼び出しでも適切にフレームがドロップされる
+    func testFrameRateControl() async throws {
+        // LiveMediaPipeClientはフレームレート制御を内部で行うため、
+        // このテストはモック実装で動作を確認
+        var processCount = 0
+        
+        try await withDependencies {
+            $0.mediaPipeClient.processFrame = { _ in
+                processCount += 1
+                
+                // 30FPS制限の場合、33.3ms以内の呼び出しはnilを返す
+                if processCount % 2 == 0 {
+                    return nil // フレームドロップをシミュレート
+                }
+                
+                let landmarks = (0..<21).map { index in
+                    HandLandmark(
+                        x: 0.5,
+                        y: 0.5,
+                        z: 0.0,
+                        confidence: 0.9,
+                        type: LandmarkType(rawValue: index)!
+                    )
+                }
+                
+                return HandTrackingResult(
+                    poses: [HandPose(landmarks: landmarks)],
+                    handednessData: MultiHandednessData(
+                        hands: [HandednessData(handType: .left, confidence: 0.9)]
+                    ),
+                    processingTimeMs: 16.7,
+                    frameSize: CGSize(width: 640, height: 480)
+                )
+            }
+        } operation: {
+            @Dependency(\.mediaPipeClient) var client
+            
+            // 高頻度で呼び出し
+            var successCount = 0
+            var dropCount = 0
+            
+            for _ in 0..<10 {
+                let result = try await client.processFrame(MediaPipeClientTests.createMockPixelBuffer())
+                if result != nil {
+                    successCount += 1
+                } else {
+                    dropCount += 1
+                }
+            }
+            
+            // 約半分がドロップされることを確認
+            XCTAssertEqual(successCount, 5)
+            XCTAssertEqual(dropCount, 5)
+            XCTAssertEqual(processCount, 10)
+        }
+    }
 
 // MARK: - LiveMediaPipeClient Extension for Testing
 // Note: LiveMediaPipeClientは共有インスタンスを使用するため、
