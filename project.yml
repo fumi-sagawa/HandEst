@@ -39,6 +39,7 @@ targets:
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_NSCameraUsageDescription: "HandEstはユーザーの手をリアルタイムで3Dモデルに変換するためにカメラを使用します。カメラ映像は端末内でのみ処理され、外部に送信されることはありません。"
     dependencies:
       - package: ComposableArchitecture
         product: ComposableArchitecture

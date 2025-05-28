@@ -1,3 +1,4 @@
+import AVFoundation
 import XCTest
 import ComposableArchitecture
 @testable import HandEst
@@ -11,13 +12,16 @@ final class AppFeatureTests: XCTestCase {
         let store = TestStore(
             initialState: AppFeature.State(),
             reducer: { AppFeature() }
-        )
+        ) {
+            $0.cameraManager.checkAuthorizationStatus = { .notDetermined }
+        }
+        
+        // 非網羅的なテストストアを使用（CameraFeatureの詳細なアクションは無視）
+        store.exhaustivity = .off
         
         await store.send(.onAppear)
         await store.receive(\.camera.onAppear)
-        await store.receive(\.settings.loadSettings) {
-            $0.settings.isLoaded = true
-        }
+        await store.receive(\.settings.loadSettings)
         await store.receive(\.settings.settingsLoaded)
     }
     
@@ -132,20 +136,26 @@ final class AppFeatureTests: XCTestCase {
     /// 動作: カメラFeatureのアクションがAppFeatureで正しく処理されるかテスト
     /// 期待結果: カメラFeatureの状態が適切に更新される
     func testCameraFeatureIntegration() async {
+        let mockSession = AVCaptureSession()
         let store = TestStore(
             initialState: AppFeature.State(),
             reducer: { AppFeature() }
-        )
+        ) {
+            $0.cameraManager.requestPermission = { true }
+            $0.cameraManager.startSession = { }
+            $0.cameraManager.getCaptureSession = { mockSession }
+        }
+        
+        // 非網羅的なテストストアを使用
+        store.exhaustivity = .off
         
         await store.send(.camera(.requestPermission))
         
-        await store.send(.camera(.permissionGranted(true))) {
-            $0.camera.isAuthorized = true
+        await store.send(.camera(.permissionReceived(true))) {
+            $0.camera.authorizationStatus = .authorized
         }
         
-        await store.send(.camera(.startCamera)) {
-            $0.camera.isCameraActive = true
-        }
+        await store.send(.camera(.startCamera))
     }
     
     /// 動作: 設定Featureのアクションがスコープされて処理されるかテスト

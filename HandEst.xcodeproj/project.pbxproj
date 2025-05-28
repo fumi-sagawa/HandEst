@@ -31,6 +31,7 @@
 		B4AABDE9EC5E982B8662C73E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37C2AD49E86388EA04D8CE3C /* Assets.xcassets */; };
 		DAD987F527910D0FCE400711 /* SettingsFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2EA5425386E9B21AE8A1A2 /* SettingsFeatureTests.swift */; };
 		E2CCE8DEBA5BEEA6F578A93C /* AppFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F0068E8B9F2043CD1B96A6 /* AppFeatureTests.swift */; };
+		EBDBC1678DEE8C672C0DF141 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C63F7B183A85CF721D0A946 /* CameraView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		311DE1B94A9AAB1AD9636169 /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
 		364268121FB500F64917675A /* CameraFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeature.swift; sourceTree = "<group>"; };
 		37C2AD49E86388EA04D8CE3C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3C63F7B183A85CF721D0A946 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		413DD054A9F83F4B8C13083A /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		58F0068E8B9F2043CD1B96A6 /* AppFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeatureTests.swift; sourceTree = "<group>"; };
 		66847FDECB8D7821F06F06B0 /* TCA+ErrorHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TCA+ErrorHandling.swift"; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 			isa = PBXGroup;
 			children = (
 				364268121FB500F64917675A /* CameraFeature.swift */,
+				3C63F7B183A85CF721D0A946 /* CameraView.swift */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -416,6 +419,7 @@
 				1BFECFD55B73F5CF5805DDF1 /* AppFeature.swift in Sources */,
 				B1116408F8845BAF7ECE00D5 /* CameraFeature.swift in Sources */,
 				A4EBDE54B45B89EC1BC7F69B /* CameraManager.swift in Sources */,
+				EBDBC1678DEE8C672C0DF141 /* CameraView.swift in Sources */,
 				1234CF6BA24B9B7FA4DDDE5D /* ContentView.swift in Sources */,
 				89290FC8EBE69310BC704759 /* HandEstApp.swift in Sources */,
 				0D7C4EDE62EF575D5DCD161E /* HandTrackingFeature.swift in Sources */,
@@ -477,6 +481,7 @@
 				INFOPLIST_KEY_CFBundleName = HandEst;
 				INFOPLIST_KEY_CFBundleShortVersionString = 1.0;
 				INFOPLIST_KEY_CFBundleVersion = 1;
+				INFOPLIST_KEY_NSCameraUsageDescription = "HandEstはユーザーの手をリアルタイムで3Dモデルに変換するためにカメラを使用します。カメラ映像は端末内でのみ処理され、外部に送信されることはありません。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -627,6 +632,7 @@
 				INFOPLIST_KEY_CFBundleName = HandEst;
 				INFOPLIST_KEY_CFBundleShortVersionString = 1.0;
 				INFOPLIST_KEY_CFBundleVersion = 1;
+				INFOPLIST_KEY_NSCameraUsageDescription = "HandEstはユーザーの手をリアルタイムで3Dモデルに変換するためにカメラを使用します。カメラ映像は端末内でのみ処理され、外部に送信されることはありません。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
