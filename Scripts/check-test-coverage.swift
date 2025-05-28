@@ -39,16 +39,15 @@ struct TestCoverageChecker {
     
     // 対応するテストファイルの存在をチェック
     func checkTestFileExists(for featureFile: String) -> Bool {
-        let testFileName = featureFile
-            .replacingOccurrences(of: "/Features/", with: "Tests/")
-            .replacingOccurrences(of: ".swift", with: "Tests.swift")
+        let fileName = URL(fileURLWithPath: featureFile).lastPathComponent
+        let testFileName = "\(projectPath)/HandEstTests/\(fileName.replacingOccurrences(of: ".swift", with: "Tests.swift"))"
         
         return FileManager.default.fileExists(atPath: testFileName)
     }
     
     // ファイル内の純粋関数を検出（簡易版）
     func findPureFunctions(in file: String) -> [String] {
-        guard let content = try? String(contentsOfFile: file) else { return [] }
+        guard let content = try? String(contentsOfFile: file, encoding: .utf8) else { return [] }
         
         var functions: [String] = []
         let lines = content.components(separatedBy: .newlines)
@@ -92,7 +91,7 @@ struct TestCoverageChecker {
     
     // テストファイル内でテストされている関数をチェック
     func findTestedFunctions(in testFile: String) -> Set<String> {
-        guard let content = try? String(contentsOfFile: testFile) else { return [] }
+        guard let content = try? String(contentsOfFile: testFile, encoding: .utf8) else { return [] }
         
         var testedFunctions = Set<String>()
         let lines = content.components(separatedBy: .newlines)
@@ -151,9 +150,8 @@ struct TestCoverageChecker {
             print("📄 \(fileName)")
             
             // テストファイルの存在チェック
-            let testFile = featureFile
-                .replacingOccurrences(of: "/HandEst/Features/", with: "/HandEstTests/")
-                .replacingOccurrences(of: ".swift", with: "Tests.swift")
+            let featureFileName = URL(fileURLWithPath: featureFile).lastPathComponent
+            let testFile = "\(projectPath)/HandEstTests/\(featureFileName.replacingOccurrences(of: ".swift", with: "Tests.swift"))"
             
             if !FileManager.default.fileExists(atPath: testFile) {
                 print("   ❌ テストファイルが見つかりません")

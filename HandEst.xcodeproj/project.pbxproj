@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B74583E4DC98EB42DD49689 /* RenderingFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B2FC0EB0391B28BE8AC90B /* RenderingFeatureTests.swift */; };
 		0D7C4EDE62EF575D5DCD161E /* HandTrackingFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD284D924E8A135EB96C0FC2 /* HandTrackingFeature.swift */; };
 		1234CF6BA24B9B7FA4DDDE5D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE52738F08D03EB39A077AF /* ContentView.swift */; };
+		1A758A46072243354AF71C9E /* CameraFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C13666F3F9B126B1F93124FC /* CameraFeatureTests.swift */; };
 		1BFECFD55B73F5CF5805DDF1 /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311DE1B94A9AAB1AD9636169 /* AppFeature.swift */; };
 		1D556F42D72B719FC7340103 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A19C7B6A0A94724C838E2A1F /* Preview Assets.xcassets */; };
 		21A5FD149C6E697BC489436A /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66D5685D4609CD3BC0DDF66 /* Logger.swift */; };
@@ -18,6 +20,7 @@
 		4A5351524C17F0995C01E8D4 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188FFDDBABBBEB87C86077C1 /* UserDefaultsManager.swift */; };
 		64F096E98AF3C9A1936F40F6 /* SettingsFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8DB00000D933CCD73B2583 /* SettingsFeature.swift */; };
 		6881BB5C32E48ADE81592595 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 11D97D45F8417FAC70E072E4 /* ComposableArchitecture */; };
+		6E8030F1B29512B9FEC6173A /* HandTrackingFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AD6453110993CB9A7BE218 /* HandTrackingFeatureTests.swift */; };
 		6F0430D31032A34E0D776454 /* HandEstUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A60DBD554440DA3B4EC1AB /* HandEstUITests.swift */; };
 		89290FC8EBE69310BC704759 /* HandEstApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2BF58A26505D04424A00FE /* HandEstApp.swift */; };
 		933BA31F835505829C091744 /* HandEstUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C11829F90999DB91B34C20C /* HandEstUITestsLaunchTests.swift */; };
@@ -26,6 +29,7 @@
 		ACC370F43EFFAD11FFABC6CD /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413DD054A9F83F4B8C13083A /* AppError.swift */; };
 		B1116408F8845BAF7ECE00D5 /* CameraFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364268121FB500F64917675A /* CameraFeature.swift */; };
 		B4AABDE9EC5E982B8662C73E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37C2AD49E86388EA04D8CE3C /* Assets.xcassets */; };
+		DAD987F527910D0FCE400711 /* SettingsFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2EA5425386E9B21AE8A1A2 /* SettingsFeatureTests.swift */; };
 		E2CCE8DEBA5BEEA6F578A93C /* AppFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F0068E8B9F2043CD1B96A6 /* AppFeatureTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -61,13 +65,17 @@
 		7F1E243434D33E0D4973858F /* LoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		8BE52738F08D03EB39A077AF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		8DB53E71B72D360CD12DFD51 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
+		91B2FC0EB0391B28BE8AC90B /* RenderingFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderingFeatureTests.swift; sourceTree = "<group>"; };
 		9D96AA2AF686579FD677B2AC /* RenderingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderingFeature.swift; sourceTree = "<group>"; };
 		A19C7B6A0A94724C838E2A1F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A6A8C15E7145261EB2E8CA4C /* HandEst.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = HandEst.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8A60DBD554440DA3B4EC1AB /* HandEstUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandEstUITests.swift; sourceTree = "<group>"; };
 		AF8DB00000D933CCD73B2583 /* SettingsFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFeature.swift; sourceTree = "<group>"; };
+		C13666F3F9B126B1F93124FC /* CameraFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeatureTests.swift; sourceTree = "<group>"; };
+		D0AD6453110993CB9A7BE218 /* HandTrackingFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandTrackingFeatureTests.swift; sourceTree = "<group>"; };
 		DB2BF58A26505D04424A00FE /* HandEstApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandEstApp.swift; sourceTree = "<group>"; };
 		E66D5685D4609CD3BC0DDF66 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		FB2EA5425386E9B21AE8A1A2 /* SettingsFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFeatureTests.swift; sourceTree = "<group>"; };
 		FD284D924E8A135EB96C0FC2 /* HandTrackingFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandTrackingFeature.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -153,8 +161,12 @@
 			isa = PBXGroup;
 			children = (
 				58F0068E8B9F2043CD1B96A6 /* AppFeatureTests.swift */,
+				C13666F3F9B126B1F93124FC /* CameraFeatureTests.swift */,
 				1A3E0DAC2D99E737CF6C5B05 /* HandEstTests.swift */,
+				D0AD6453110993CB9A7BE218 /* HandTrackingFeatureTests.swift */,
 				7F1E243434D33E0D4973858F /* LoggerTests.swift */,
+				91B2FC0EB0391B28BE8AC90B /* RenderingFeatureTests.swift */,
+				FB2EA5425386E9B21AE8A1A2 /* SettingsFeatureTests.swift */,
 			);
 			path = HandEstTests;
 			sourceTree = "<group>";
@@ -429,8 +441,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				E2CCE8DEBA5BEEA6F578A93C /* AppFeatureTests.swift in Sources */,
+				1A758A46072243354AF71C9E /* CameraFeatureTests.swift in Sources */,
 				3F414776FCFC28DA4A6AE801 /* HandEstTests.swift in Sources */,
+				6E8030F1B29512B9FEC6173A /* HandTrackingFeatureTests.swift in Sources */,
 				2A923892B0F1F95A71122208 /* LoggerTests.swift in Sources */,
+				0B74583E4DC98EB42DD49689 /* RenderingFeatureTests.swift in Sources */,
+				DAD987F527910D0FCE400711 /* SettingsFeatureTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
