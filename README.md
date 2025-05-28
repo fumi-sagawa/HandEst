@@ -70,10 +70,11 @@ open HandEst.xcodeproj
 ```
 
 これにより、`git commit`時に自動的に以下が実行されます：
-- 全テストの実行
-- ビルドの確認
+- SwiftLintによるコード品質チェック
+- 全テストの実行とビルド確認
+- 純粋関数とReducerのテストカバレッジチェック
 
-**注意**: SwiftLintはビルド時に自動実行されるため、pre-commitでは実行されません。
+詳細は[品質管理システムドキュメント](./Scripts/QUALITY_CHECKS.md)を参照してください。
 
 ## 💻 開発フロー
 
@@ -181,7 +182,15 @@ xcodebuild -scheme HandEst test
 
 # SwiftLintでコード品質チェック
 swiftlint
+
+# テストカバレッジチェック
+./Scripts/check-test-coverage.swift
+
+# 開発中の高速ビルドチェック（テストなし）
+./Scripts/quick-check.sh
 ```
+
+品質チェックシステムの詳細は[Scripts/QUALITY_CHECKS.md](./Scripts/QUALITY_CHECKS.md)を参照してください。
 
 ## 🚨 トラブルシューティング
 
