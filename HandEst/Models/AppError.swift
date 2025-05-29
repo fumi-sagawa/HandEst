@@ -132,6 +132,10 @@ enum RenderingError: Error, Equatable {
     case sceneSetupFailed
     case modelLoadFailed
     case animationFailed
+    case initializationFailed(String)
+    case modelCreationFailed
+    case updateFailed(String)
+    case memoryWarning
     case unknown(String)
     
     var localizedDescription: String {
@@ -142,6 +146,14 @@ enum RenderingError: Error, Equatable {
             return "3Dモデルの読み込みに失敗しました"
         case .animationFailed:
             return "3Dモデルのアニメーション処理に失敗しました"
+        case .initializationFailed(let message):
+            return "RealityKitの初期化に失敗しました: \(message)"
+        case .modelCreationFailed:
+            return "3Dモデルの作成に失敗しました"
+        case .updateFailed(let message):
+            return "モデルの更新に失敗しました: \(message)"
+        case .memoryWarning:
+            return "メモリ不足の警告"
         case .unknown(let message):
             return message
         }
@@ -149,10 +161,12 @@ enum RenderingError: Error, Equatable {
     
     var userMessage: String {
         switch self {
-        case .sceneSetupFailed, .modelLoadFailed:
+        case .sceneSetupFailed, .modelLoadFailed, .initializationFailed, .modelCreationFailed:
             return "3Dレンダリングの初期化に失敗しました。アプリを再起動してお試しください。"
-        case .animationFailed:
+        case .animationFailed, .updateFailed:
             return "3Dモデルのアニメーション処理でエラーが発生しました。"
+        case .memoryWarning:
+            return "メモリが不足しています。他のアプリを終了してからお試しください。"
         case .unknown:
             return "3Dレンダリングで予期しないエラーが発生しました。"
         }
