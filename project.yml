@@ -114,6 +114,8 @@ targets:
         DEVELOPMENT_TEAM: 8BD446AR8T
         TEST_TARGET_NAME: HandEst
         GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGN_STYLE: Automatic
+        PROVISIONING_PROFILE_SPECIFIER: ""
 
 schemes:
   HandEst:

@@ -110,16 +110,12 @@ private final class LiveCameraManager: NSObject, ObservableObject {
     private let sessionQueue = DispatchQueue(label: "com.handest.session", qos: .userInitiated)
     private var frameDelegate: AVCaptureVideoDataOutputSampleBufferDelegate?
     private let logger = AppLogger.shared
+    private var isStartingSession = false
     
     override private init() {
         super.init()
-        Task {
-            do {
-                try await configureSession()
-            } catch {
-                logger.error("初期設定失敗: \(error)", category: .camera)
-            }
-        }
+        // 初期化時の自動設定を削除
+        // configureSession()はstartSession()で呼ばれる
     }
     
     func checkAuthorizationStatus() async -> AVAuthorizationStatus {
@@ -136,6 +132,14 @@ private final class LiveCameraManager: NSObject, ObservableObject {
     
     func startSession() async throws {
         logger.info("カメラセッション開始を試行", category: .camera)
+        
+        // 並行実行防止
+        guard !isStartingSession else {
+            logger.warning("セッション開始処理が既に実行中", category: .camera)
+            return
+        }
+        isStartingSession = true
+        defer { isStartingSession = false }
         
         let authStatus = await checkAuthorizationStatus()
         guard authStatus == .authorized else {
