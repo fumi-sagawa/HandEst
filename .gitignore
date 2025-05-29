@@ -66,8 +66,13 @@ playground.xcworkspace
 Carthage/Build/
 
 # Accio dependency management
-Dependencies/
+# Note: Only ignore Accio dependencies, not our source code Dependencies folder
+# Dependencies/
 .accio/
+
+# Ignore only Accio-specific Dependencies directories
+/Dependencies/
+LocalPackages/*/Dependencies/
 
 # fastlane
 #
