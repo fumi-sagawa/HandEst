@@ -113,9 +113,9 @@ struct HandTrackingFeature {
                 return .none
                 
             case let .processFrame(pixelBuffer):
-                guard state.isTracking, !state.isPoseLocked else {
+                guard state.isTracking, !state.isPoseLocked, state.isMediaPipeInitialized else {
                     if Int.random(in: 0..<60) == 0 {  // 60フレームに1回ログ
-                        AppLogger.shared.debug("フレームスキップ - isTracking: \(state.isTracking), isPoseLocked: \(state.isPoseLocked)", category: .handTracking)
+                        AppLogger.shared.debug("フレームスキップ - isTracking: \(state.isTracking), isPoseLocked: \(state.isPoseLocked), isInitialized: \(state.isMediaPipeInitialized)", category: .handTracking)
                     }
                     return .none
                 }

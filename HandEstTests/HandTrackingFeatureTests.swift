@@ -131,7 +131,7 @@ final class HandTrackingFeatureTests: XCTestCase {
     func testProcessFrameSuccess() async {
         // テスト用のピクセルバッファを作成
         let pixelBuffer = createMockPixelBuffer()
-        let mockResult = HandTrackingResult.mockData()
+        let mockResult = createMockHandTrackingResult()
         
         let store = TestStore(
             initialState: HandTrackingFeature.State(
@@ -290,7 +290,127 @@ final class HandTrackingFeatureTests: XCTestCase {
         }
     }
     
+    // MARK: - Additional Core Tests
+    
+    /// 動作: MediaPipe未初期化時のフレーム処理をテスト
+    /// 期待結果: フレーム処理がスキップされる
+    func testProcessFrameSkipWhenNotInitialized() async {
+        let store = TestStore(
+            initialState: HandTrackingFeature.State(
+                isTracking: true,
+                isMediaPipeInitialized: false  // 未初期化
+            ),
+            reducer: { HandTrackingFeature() }
+        ) {
+            $0.mediaPipeClient.processFrame = { _ in
+                XCTFail("processFrame should not be called when not initialized")
+                return nil
+            }
+        }
+        
+        let pixelBuffer = createMockPixelBuffer()
+        await store.send(.processFrame(pixelBuffer))
+        // アクションは受信されない（フレーム処理がスキップされる）
+    }
+    
+    /// 動作: ライフサイクル管理のテスト
+    /// 期待結果: onDisappear時に適切にクリーンアップされる
+    func testLifecycleManagement() async {
+        var shutdownCalled = false
+        
+        let store = TestStore(
+            initialState: HandTrackingFeature.State(
+                isTracking: true,
+                isMediaPipeInitialized: true
+            ),
+            reducer: { HandTrackingFeature() }
+        ) {
+            $0.mediaPipeClient.shutdown = {
+                shutdownCalled = true
+            }
+        }
+        
+        await store.send(.onDisappear)
+        await store.receive(.stopTracking) {
+            $0.isTracking = false
+        }
+        
+        // 少し待ってからシャットダウンが呼ばれたことを確認
+        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1秒
+        XCTAssertTrue(shutdownCalled)
+    }
+    
+    /// 動作: 重要なエラーシナリオのテスト
+    /// 期待結果: 重大なエラー時に適切に処理される
+    func testCriticalErrorHandling() async {
+        let criticalError = MediaPipeError.initializationFailed("重大なエラー")
+        
+        let store = TestStore(
+            initialState: HandTrackingFeature.State(),
+            reducer: { HandTrackingFeature() }
+        ) {
+            $0.mediaPipeClient.initialize = { throw criticalError }
+        }
+        
+        await store.send(.initializeMediaPipe)
+        await store.receive(.trackingError(criticalError)) {
+            $0.error = criticalError
+        }
+        
+        // 重大なエラー後は初期化されていないことを確認
+        XCTAssertFalse(store.state.isMediaPipeInitialized)
+        XCTAssertNotNil(store.state.error)
+    }
+    
     // MARK: - Helper Methods
+    
+    private func createMockHandTrackingResult(
+        hasBothHands: Bool = true,
+        processingTimeMs: Double = 16.7,
+        estimatedFPS: Double? = nil,
+        leftConfidence: Float = 0.9,
+        rightConfidence: Float = 0.9
+    ) -> HandTrackingResult {
+        var poses: [HandPose] = []
+        var handednessDataArray: [HandednessData] = []
+        
+        if hasBothHands {
+            // 左手のデータ
+            poses.append(createMockHandPose())
+            handednessDataArray.append(HandednessData(handType: .left, confidence: leftConfidence))
+            
+            // 右手のデータ
+            poses.append(createMockHandPose())
+            handednessDataArray.append(HandednessData(handType: .right, confidence: rightConfidence))
+        } else if leftConfidence > 0 || rightConfidence > 0 {
+            // 片手のみ（右手）
+            poses.append(createMockHandPose())
+            handednessDataArray.append(HandednessData(handType: .right, confidence: rightConfidence))
+        }
+        
+        return HandTrackingResult(
+            poses: poses,
+            handednessData: MultiHandednessData(hands: handednessDataArray),
+            processingTimeMs: processingTimeMs,
+            frameSize: CGSize(width: 640, height: 480)
+        )
+    }
+    
+    private func createMockHandPose() -> HandPose {
+        var landmarks: [HandLandmark] = []
+        for (index, landmarkType) in LandmarkType.allCases.enumerated() {
+            landmarks.append(
+                HandLandmark(
+                    x: Float.random(in: 0...1),
+                    y: Float.random(in: 0...1),
+                    z: Float.random(in: -0.5...0.5),
+                    confidence: 1.0,
+                    type: landmarkType
+                )
+            )
+        }
+        return HandPose(landmarks: landmarks)
+    }
     
     private func createMockPixelBuffer() -> CVPixelBuffer {
         var pixelBuffer: CVPixelBuffer?
