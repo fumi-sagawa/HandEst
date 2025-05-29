@@ -43,6 +43,18 @@ struct CameraView: View {
             }
             
             VStack {
+                // 低照度警告表示
+                if store.shouldShowLightingWarning {
+                    LightingWarningView(
+                        condition: store.lightingCondition,
+                        onDismiss: {
+                            store.send(.dismissLightingWarning)
+                        }
+                    )
+                    .padding(.top, 60)
+                    .padding(.horizontal, 20)
+                }
+                
                 Spacer()
                 
                 HStack {
@@ -146,6 +158,91 @@ struct CameraPreviewView: UIViewRepresentable {
         // 向きの更新
         DispatchQueue.main.async {
             view.previewLayer.connection?.videoOrientation = .portrait
+        }
+    }
+}
+
+/// 低照度警告表示用のView
+struct LightingWarningView: View {
+    let condition: LightingCondition
+    let onDismiss: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 12) {
+            HStack {
+                Image(systemName: warningIcon)
+                    .foregroundColor(warningColor)
+                    .font(.title3)
+                
+                Text("照明環境: \(condition.rawValue)")
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                
+                Spacer()
+                
+                Button {
+                    onDismiss()
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.secondary)
+                        .font(.title3)
+                }
+            }
+            
+            if !condition.userMessage.isEmpty {
+                Text(condition.userMessage)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.leading)
+            }
+            
+            if condition == .veryPoor {
+                HStack {
+                    Image(systemName: "lightbulb")
+                        .foregroundColor(.yellow)
+                    Text("推奨: 明るい場所に移動してください")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+            }
+        }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(.ultraThinMaterial)
+                .shadow(radius: 4)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(warningColor.opacity(0.3), lineWidth: 1)
+        )
+    }
+    
+    private var warningIcon: String {
+        switch condition {
+        case .excellent, .good:
+            return "checkmark.circle.fill"
+        case .fair:
+            return "exclamationmark.triangle.fill"
+        case .poor:
+            return "exclamationmark.triangle.fill"
+        case .veryPoor:
+            return "exclamationmark.octagon.fill"
+        }
+    }
+    
+    private var warningColor: Color {
+        switch condition {
+        case .excellent:
+            return .green
+        case .good:
+            return .blue
+        case .fair:
+            return .yellow
+        case .poor:
+            return .orange
+        case .veryPoor:
+            return .red
         }
     }
 }

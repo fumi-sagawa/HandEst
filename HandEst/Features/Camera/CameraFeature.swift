@@ -15,12 +15,20 @@ struct CameraFeature {
         var captureSession: AVCaptureSession?
         var isVideoDataOutputActive = false
         
+        // 露出情報と照明環境
+        var currentExposureInfo: ExposureInfo? = nil
+        var lightingCondition: LightingCondition = .good
+        var shouldShowLightingWarning: Bool = false
+        
         static func == (lhs: State, rhs: State) -> Bool {
             lhs.authorizationStatus == rhs.authorizationStatus &&
             lhs.isCameraActive == rhs.isCameraActive &&
             lhs.currentCameraPosition == rhs.currentCameraPosition &&
             lhs.error == rhs.error &&
             lhs.isVideoDataOutputActive == rhs.isVideoDataOutputActive &&
+            lhs.currentExposureInfo == rhs.currentExposureInfo &&
+            lhs.lightingCondition == rhs.lightingCondition &&
+            lhs.shouldShowLightingWarning == rhs.shouldShowLightingWarning &&
             ObjectIdentifier(lhs.captureSession as AnyObject) == ObjectIdentifier(rhs.captureSession as AnyObject)
         }
         
@@ -59,6 +67,11 @@ struct CameraFeature {
         case frameReceived(CVPixelBuffer)
         case videoDataOutputStarted
         case videoDataOutputStopped
+        
+        // 露出情報関連
+        case exposureInfoReceived(ExposureInfo)
+        case lightingConditionChanged(LightingCondition)
+        case dismissLightingWarning
     }
     
     @Dependency(\.cameraManager) var cameraManager
@@ -197,14 +210,22 @@ struct CameraFeature {
                     do {
                         AppLogger.shared.info("ビデオデータ出力を開始中...", category: .camera)
                         
-                        // Continuationを使ってコールバックとEffectを繋ぐ
+                        // 露出情報監視付きのビデオデータ出力を開始
                         let stream = AsyncStream<CVPixelBuffer> { continuation in
                             Task {
                                 do {
-                                    try await cameraManager.startVideoDataOutput { pixelBuffer in
-                                        // ストリームにフレームを送信
-                                        continuation.yield(pixelBuffer)
-                                    }
+                                    try await cameraManager.startVideoDataOutputWithExposureMonitoring(
+                                        { pixelBuffer in
+                                            // ストリームにフレームを送信
+                                            continuation.yield(pixelBuffer)
+                                        },
+                                        { exposureInfo in
+                                            // 露出情報を受信したEffectを通じて送信
+                                            Task {
+                                                await send(.exposureInfoReceived(exposureInfo))
+                                            }
+                                        }
+                                    )
                                 } catch {
                                     AppLogger.shared.error("ビデオデータ出力エラー: \(error)", category: .camera)
                                     continuation.finish()
@@ -260,6 +281,39 @@ struct CameraFeature {
                 
             case .videoDataOutputStopped:
                 state.isVideoDataOutputActive = false
+                return .none
+                
+            // 露出情報関連の処理
+            case let .exposureInfoReceived(exposureInfo):
+                state.currentExposureInfo = exposureInfo
+                let newCondition = exposureInfo.lightingCondition
+                
+                // 照明環境が変わった場合のみ警告を更新
+                if state.lightingCondition != newCondition {
+                    return .run { send in
+                        await send(.lightingConditionChanged(newCondition))
+                    }
+                }
+                return .none
+                
+            case let .lightingConditionChanged(condition):
+                state.lightingCondition = condition
+                
+                // 警告を表示すべきか判定
+                let shouldWarn = condition.shouldShowWarning
+                if shouldWarn != state.shouldShowLightingWarning {
+                    state.shouldShowLightingWarning = shouldWarn
+                    
+                    if shouldWarn {
+                        AppLogger.shared.warning("低照度環境を検出: \(condition.rawValue)", category: .camera)
+                    } else {
+                        AppLogger.shared.info("照明環境が改善: \(condition.rawValue)", category: .camera)
+                    }
+                }
+                return .none
+                
+            case .dismissLightingWarning:
+                state.shouldShowLightingWarning = false
                 return .none
             }
         }

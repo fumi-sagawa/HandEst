@@ -325,7 +325,7 @@ final class CameraFeatureTests: XCTestCase {
             reducer: { CameraFeature() }
         ) {
             var startCallCount = 0
-            $0.cameraManager.startVideoDataOutput = { _ in
+            $0.cameraManager.startVideoDataOutputWithExposureMonitoring = { _, _ in
                 startCallCount += 1
                 // 正常に開始（コールバックは呼ばない）
             }
@@ -349,8 +349,8 @@ final class CameraFeatureTests: XCTestCase {
             ),
             reducer: { CameraFeature() }
         ) {
-            $0.cameraManager.startVideoDataOutput = { _ in
-                XCTFail("startVideoDataOutput should not be called when camera is inactive")
+            $0.cameraManager.startVideoDataOutputWithExposureMonitoring = { _, _ in
+                XCTFail("startVideoDataOutputWithExposureMonitoring should not be called when camera is inactive")
             }
         }
         
@@ -412,7 +412,7 @@ final class CameraFeatureTests: XCTestCase {
             ),
             reducer: { CameraFeature() }
         ) {
-            $0.cameraManager.startVideoDataOutput = { _ in
+            $0.cameraManager.startVideoDataOutputWithExposureMonitoring = { _, _ in
                 throw testError
             }
         }

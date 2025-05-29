@@ -19,6 +19,7 @@
 		21A5FD149C6E697BC489436A /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66D5685D4609CD3BC0DDF66 /* Logger.swift */; };
 		278BA11BA93D379DAF1856D5 /* SwiftTasksVision in Frameworks */ = {isa = PBXBuildFile; productRef = 024C3F4EDB389C51F767FC43 /* SwiftTasksVision */; };
 		2A923892B0F1F95A71122208 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1E243434D33E0D4973858F /* LoggerTests.swift */; };
+		31EB1A428BA6766B58FF48D0 /* LightingCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E34D8518AD2560BE19176F36 /* LightingCondition.swift */; };
 		3F414776FCFC28DA4A6AE801 /* HandEstTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3E0DAC2D99E737CF6C5B05 /* HandEstTests.swift */; };
 		40DE92CC55D8EFBAAD86E5E1 /* TCA+ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66847FDECB8D7821F06F06B0 /* TCA+ErrorHandling.swift */; };
 		49ADA3641142FD3AD4646A69 /* MediaPipeClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA2DA6F13C9E4C2D16F3283 /* MediaPipeClient.swift */; };
@@ -48,6 +49,7 @@
 		C0901D0044CA9A67E7E5EF33 /* HandTrackingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD895A2C5F96E1C2D9CB6654 /* HandTrackingResult.swift */; };
 		DAD987F527910D0FCE400711 /* SettingsFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2EA5425386E9B21AE8A1A2 /* SettingsFeatureTests.swift */; };
 		E2CCE8DEBA5BEEA6F578A93C /* AppFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F0068E8B9F2043CD1B96A6 /* AppFeatureTests.swift */; };
+		E97C0FFD0F29EEC8657CD658 /* LightingConditionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D25F664D8FB1B0ED6E05D8 /* LightingConditionTests.swift */; };
 		EBDBC1678DEE8C672C0DF141 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C63F7B183A85CF721D0A946 /* CameraView.swift */; };
 		F2760D5EA6510037EC625333 /* DebugInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079DE13C4367EA6A6EB687DF /* DebugInfo.swift */; };
 		F8A2FACC887594B5F7CABE25 /* HandednessData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E935C5CCE9C4E676357C9EF /* HandednessData.swift */; };
@@ -80,6 +82,7 @@
 		1A3E0DAC2D99E737CF6C5B05 /* HandEstTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandEstTests.swift; sourceTree = "<group>"; };
 		1E6A11867E314F5BF9A3454F /* HandTrackingResultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandTrackingResultTests.swift; sourceTree = "<group>"; };
 		24079F71A8C846CAC1482925 /* hand_landmarker.task */ = {isa = PBXFileReference; path = hand_landmarker.task; sourceTree = "<group>"; };
+		28D25F664D8FB1B0ED6E05D8 /* LightingConditionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightingConditionTests.swift; sourceTree = "<group>"; };
 		2C11829F90999DB91B34C20C /* HandEstUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandEstUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		311DE1B94A9AAB1AD9636169 /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
 		364268121FB500F64917675A /* CameraFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeature.swift; sourceTree = "<group>"; };
@@ -111,6 +114,7 @@
 		D0FC520EEF389CD24FFDEB96 /* HandLandmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandLandmark.swift; sourceTree = "<group>"; };
 		DB2BF58A26505D04424A00FE /* HandEstApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandEstApp.swift; sourceTree = "<group>"; };
 		E0D5C7AE3C3DDC53623DF967 /* MediaPipeError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPipeError.swift; sourceTree = "<group>"; };
+		E34D8518AD2560BE19176F36 /* LightingCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightingCondition.swift; sourceTree = "<group>"; };
 		E66D5685D4609CD3BC0DDF66 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		EB2E8B29505117F6F5DC64E7 /* MediaPipeErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPipeErrorTests.swift; sourceTree = "<group>"; };
 		F1C4EA032D19002A7F1310F3 /* PerformanceMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceMetrics.swift; sourceTree = "<group>"; };
@@ -208,6 +212,7 @@
 				C13666F3F9B126B1F93124FC /* CameraFeatureTests.swift */,
 				1A3E0DAC2D99E737CF6C5B05 /* HandEstTests.swift */,
 				D0AD6453110993CB9A7BE218 /* HandTrackingFeatureTests.swift */,
+				28D25F664D8FB1B0ED6E05D8 /* LightingConditionTests.swift */,
 				7F1E243434D33E0D4973858F /* LoggerTests.swift */,
 				9ECCF25F057F244D82A44E09 /* MediaPipeClientTests.swift */,
 				91B2FC0EB0391B28BE8AC90B /* RenderingFeatureTests.swift */,
@@ -246,6 +251,7 @@
 				D0FC520EEF389CD24FFDEB96 /* HandLandmark.swift */,
 				0789DDA49526E5C402F6F53E /* HandPose.swift */,
 				FD895A2C5F96E1C2D9CB6654 /* HandTrackingResult.swift */,
+				E34D8518AD2560BE19176F36 /* LightingCondition.swift */,
 				E0D5C7AE3C3DDC53623DF967 /* MediaPipeError.swift */,
 				F1C4EA032D19002A7F1310F3 /* PerformanceMetrics.swift */,
 			);
@@ -508,6 +514,7 @@
 				053FE9F4A596102B350E523E /* HandTrackingView.swift in Sources */,
 				A94F0139DEE5F03C4F1894C5 /* Handedness.swift in Sources */,
 				F8A2FACC887594B5F7CABE25 /* HandednessData.swift in Sources */,
+				31EB1A428BA6766B58FF48D0 /* LightingCondition.swift in Sources */,
 				21A5FD149C6E697BC489436A /* Logger.swift in Sources */,
 				49ADA3641142FD3AD4646A69 /* MediaPipeClient.swift in Sources */,
 				0BD4F7F963D39294156E2E95 /* MediaPipeError.swift in Sources */,
@@ -540,6 +547,7 @@
 				6E8030F1B29512B9FEC6173A /* HandTrackingFeatureTests.swift in Sources */,
 				0822E987A10CC486451196DB /* HandTrackingResultTests.swift in Sources */,
 				A75CB361B56D1F484662785A /* HandednessDataTests.swift in Sources */,
+				E97C0FFD0F29EEC8657CD658 /* LightingConditionTests.swift in Sources */,
 				2A923892B0F1F95A71122208 /* LoggerTests.swift in Sources */,
 				7FD9B5E0B7EE97AF5BBEB226 /* MediaPipeClientTests.swift in Sources */,
 				7034E61AD99B03EAA7867E67 /* MediaPipeErrorTests.swift in Sources */,
