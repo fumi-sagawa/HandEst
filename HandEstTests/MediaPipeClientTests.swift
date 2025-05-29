@@ -147,7 +147,7 @@ final class MediaPipeClientTests: XCTestCase {
     /// 期待結果: 初期化前はisInitializedがfalseを返す
     func testLiveMediaPipeClient_NotInitialized() async {
         let client = LiveMediaPipeClient.shared
-        let _ = await client.isInitialized
+        _ = await client.isInitialized
         
         // 初回実行時は未初期化状態
         // ※他のテストでinitializeされている可能性があるため、この assert はコメントアウト
@@ -236,7 +236,7 @@ final class MediaPipeClientTests: XCTestCase {
                 }
                 
                 // 右手: 信頼度0.6（閾値未満、デフォルト0.8）
-                let _ = (0..<21).map { index in
+                _ = (0..<21).map { index in
                     HandLandmark(
                         x: 0.6,
                         y: 0.6,
@@ -247,7 +247,7 @@ final class MediaPipeClientTests: XCTestCase {
                 }
                 
                 // 両手のデータを作成（右手は低信頼度）
-                let _ = MultiHandednessData(
+                _ = MultiHandednessData(
                     hands: [
                         HandednessData(handType: .left, confidence: 0.9),
                         HandednessData(handType: .right, confidence: 0.6)
@@ -301,7 +301,7 @@ final class MediaPipeClientTests: XCTestCase {
                         hands: [HandednessData(handType: .left, confidence: 0.9)]
                     ),
                     processingTimeMs: 16.7,
-                    frameSize: CGSize(width: 1920, height: 1080)
+                    frameSize: CGSize(width: 1_920, height: 1_080)
                 )
             }
         } operation: {
@@ -311,8 +311,8 @@ final class MediaPipeClientTests: XCTestCase {
             
             XCTAssertNotNil(result)
             XCTAssertEqual(result?.processingTimeMs, 16.7)
-            XCTAssertEqual(result?.estimatedFPS ?? 0, 1000.0 / 16.7, accuracy: 0.1)
-            XCTAssertEqual(result?.frameSize, CGSize(width: 1920, height: 1080))
+            XCTAssertEqual(result?.estimatedFPS ?? 0, 1_000.0 / 16.7, accuracy: 0.1)
+            XCTAssertEqual(result?.frameSize, CGSize(width: 1_920, height: 1_080))
         }
     }
     

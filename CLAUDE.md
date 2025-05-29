@@ -39,8 +39,17 @@ xcodebuild -scheme HandEst -configuration Debug build
 # テストを実行（エラーのみ表示）
 xcodebuild -scheme HandEst test -quiet 2>&1 | grep -E "(error:|failed:|TEST FAILED|✗)" || echo "✅ All tests passed!"
 
+# SwiftLintチェック（エラーのみ表示）
+swiftlint lint --quiet 2>&1 | grep "error:" || echo "✅ No lint errors!"
+
+# SwiftLint自動修正（Prettierのような機能）
+swiftlint lint --fix --quiet
+
 # テストを実行（詳細表示が必要な場合のみ）
 xcodebuild -scheme HandEst test
+
+# SwiftLintチェック（全ての警告・エラーを表示）
+swiftlint lint --quiet
 
 # リリース用にビルド
 xcodebuild -scheme HandEst -configuration Release archive
@@ -72,9 +81,9 @@ chmod +x .git/hooks/pre-commit
 ### pre-commit hookの内容
 
 コミット前に以下のチェックが自動実行されます：
-- 🧪 全テストの実行
-- 🧹 SwiftLintによるコード品質チェック（インストール済みの場合）
-- 🔨 ビルドの成功確認
+- 🧪 全テストの実行（エラーのみ表示）
+- 🧹 SwiftLintによるコード品質チェック（エラーのみ表示）
+- 📊 純粋関数とReducerのテストカバレッジチェック
 
 ### hookをスキップしたい場合
 
@@ -475,9 +484,9 @@ func testCameraViewShowsPermissionAlert() throws {
 - 実装は型定義に厳密に従う
 - SwiftUIビューはTCAのViewStoreを使用して状態を監視
 
-## テスト実行時の出力方針
+## テスト・Lint実行時の出力方針
 
-**重要な原則: テスト実行時は基本的にエラーのみを表示する**
+**重要な原則: テスト・Lint実行時は基本的にエラーのみを表示する**
 
 ### テスト出力の基本方針
 - ✅ **成功時**: 「All tests passed!」の一行のみ表示
@@ -487,28 +496,46 @@ func testCameraViewShowsPermissionAlert() throws {
   - 冗長なビルドログ
   - 成功したテストの一覧
 
-### 必須のテスト実行方法
+### SwiftLint出力の基本方針
+- ✅ **成功時**: 「No lint errors!」の一行のみ表示
+- ❌ **失敗時**: エラーのみ表示（警告は非表示）
+- 📝 **注意**: 行長制限は無効化済み（LLM可読性を優先）
+- 🚫 **絶対に避けるべきこと**: 
+  - 全ての警告の詳細出力
+  - ファイル処理状況のログ
+  - 設定情報のログ
+
+### 必須の実行方法
 
 ```bash
-# これが標準的なテスト実行コマンド（エラーのみ表示）
+# テスト実行（エラーのみ表示）
 xcodebuild -scheme HandEst test -quiet 2>&1 | grep -E "(error:|failed:|TEST FAILED|✗)" || echo "✅ All tests passed!"
+
+# SwiftLint実行（エラーのみ表示）
+swiftlint lint --quiet 2>&1 | grep "error:" || echo "✅ No lint errors!"
 
 # デバッグが必要な場合のみ詳細表示
 xcodebuild -scheme HandEst test  # 通常は使わない
+swiftlint lint --quiet  # 警告も含めて表示
 ```
 
-### Claude Codeでのテスト実行
+### Claude Codeでの実行
 
 **Claude Codeは常に以下のコマンドを使用すること:**
 ```bash
 # Bashツール使用時のテスト実行
 xcodebuild -scheme HandEst test -quiet 2>&1 | grep -E "(error:|failed:|TEST FAILED|✗)" || echo "✅ All tests passed!"
+
+# Bashツール使用時のSwiftLint実行
+swiftlint lint --quiet 2>&1 | grep "error:" || echo "✅ No lint errors!"
 ```
 
 ### pre-commit hookでの実装
 
 ```bash
 # Scripts/git-hooks/pre-commit での実装
+
+# テスト実行
 echo "🧪 Running tests..."
 if xcodebuild -scheme HandEst test -quiet 2>&1 | tee test_output.log | grep -E "(error:|failed:)"; then
     echo "❌ Tests failed! See errors above."
@@ -517,6 +544,15 @@ else
     echo "✅ All tests passed!"
 fi
 rm -f test_output.log
+
+# SwiftLint実行
+echo "🧹 Running SwiftLint checks..."
+if swiftlint lint --quiet 2>&1 | grep "error:"; then
+    echo "❌ SwiftLint errors found! Please fix the issues before committing."
+    exit 1
+else
+    echo "✅ No lint errors!"
+fi
 ```
 
 ### なぜこの方針が重要か

@@ -190,7 +190,7 @@ actor LiveMediaPipeClient: MediaPipeClientProtocol {
                 result = try handLandmarker.detect(image: image)
             case .video, .liveStream:
                 // ビデオモードでタイムスタンプ付きで処理
-                let timestampMs = Int(Date().timeIntervalSince1970 * 1000)
+                let timestampMs = Int(Date().timeIntervalSince1970 * 1_000)
                 result = try handLandmarker.detect(
                     videoFrame: image,
                     timestampInMilliseconds: timestampMs
@@ -201,7 +201,7 @@ actor LiveMediaPipeClient: MediaPipeClientProtocol {
         }
         
         // 処理時間を計算
-        let processingTime = Date().timeIntervalSince(startTime) * 1000 // ミリ秒に変換
+        let processingTime = Date().timeIntervalSince(startTime) * 1_000 // ミリ秒に変換
         
         // 結果をHandTrackingResultに変換
         let trackingResult = convertToHandTrackingResult(result, processingTimeMs: processingTime, pixelBuffer: pixelBuffer)
@@ -253,7 +253,7 @@ actor LiveMediaPipeClient: MediaPipeClientProtocol {
             }
             
             // ランドマークを変換（21個のランドマークに対応するtype付き）
-            let handLandmarks = landmarks.enumerated().map { (landmarkIndex, landmark) in
+            let handLandmarks = landmarks.enumerated().map { landmarkIndex, landmark in
                 HandLandmark(
                     x: landmark.x,
                     y: landmark.y,

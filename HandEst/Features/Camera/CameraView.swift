@@ -90,7 +90,7 @@ struct CameraView: View {
             "エラー",
             isPresented: .constant(store.error != nil),
             presenting: store.error
-        ) { error in
+        ) { _ in
             Button("OK") {
                 store.send(.clearError)
             }

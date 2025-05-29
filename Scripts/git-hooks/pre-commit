@@ -19,6 +19,15 @@ else
     rm -f test_output.log
 fi
 
+# SwiftLintチェック（エラーのみ表示）
+echo "🧹 Running SwiftLint checks..."
+if swiftlint lint --quiet 2>&1 | grep "error:"; then
+    echo "❌ SwiftLint errors found! Please fix the issues before committing."
+    exit 1
+else
+    echo "✅ No lint errors!"
+fi
+
 # 純粋関数とReducerのテストカバレッジをチェック
 echo "📊 Checking test coverage for pure functions and Reducers..."
 if ! ./Scripts/check-test-coverage.swift; then

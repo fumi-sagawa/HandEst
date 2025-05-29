@@ -325,7 +325,7 @@ final class CameraFeatureTests: XCTestCase {
             reducer: { CameraFeature() }
         ) {
             var startCallCount = 0
-            $0.cameraManager.startVideoDataOutput = { callback in
+            $0.cameraManager.startVideoDataOutput = { _ in
                 startCallCount += 1
                 // 正常に開始（コールバックは呼ばない）
             }

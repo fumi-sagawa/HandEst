@@ -19,7 +19,7 @@ final class HandLandmarkTests: XCTestCase {
     /// 期待結果: 正規化座標が画面座標に正しく変換される
     func testToScreenCoordinates() {
         let landmark = HandLandmark(x: 0.5, y: 0.3, z: 0.1, confidence: 1.0, type: .wrist)
-        let screenPoint = landmark.toScreenCoordinates(width: 1920, height: 1080)
+        let screenPoint = landmark.toScreenCoordinates(width: 1_920, height: 1_080)
         
         XCTAssertEqual(screenPoint.x, 960, accuracy: 0.1)  // 0.5 * 1920
         XCTAssertEqual(screenPoint.y, 324, accuracy: 0.1)  // 0.3 * 1080

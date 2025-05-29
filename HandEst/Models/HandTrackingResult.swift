@@ -61,7 +61,7 @@ public struct HandTrackingResult: Equatable, Codable {
     
     /// フレームレート（FPS）を計算
     public var estimatedFPS: Double {
-        return processingTimeMs > 0 ? 1000.0 / processingTimeMs : 0
+        return processingTimeMs > 0 ? 1_000.0 / processingTimeMs : 0
     }
     
     /// 最も信頼度の高い手のポーズを取得
@@ -85,7 +85,7 @@ public struct HandTrackingHistory: Equatable, Codable {
     public let maxFrames: Int
     
     /// トラッキング結果の履歴
-    private(set) public var results: [HandTrackingResult]
+    public private(set) var results: [HandTrackingResult]
     
     public init(maxFrames: Int = 30) {
         self.maxFrames = maxFrames
@@ -114,7 +114,7 @@ public struct HandTrackingHistory: Equatable, Codable {
     
     /// 平均FPSを計算
     public var averageFPS: Double {
-        return averageProcessingTimeMs > 0 ? 1000.0 / averageProcessingTimeMs : 0
+        return averageProcessingTimeMs > 0 ? 1_000.0 / averageProcessingTimeMs : 0
     }
     
     /// 最新の結果を取得

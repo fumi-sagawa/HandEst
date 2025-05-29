@@ -66,11 +66,9 @@ disabled_rules:
   - trailing_whitespace # 末尾空白を一時的に許可
   - trailing_newline # 末尾改行を一時的に許可
   - trailing_closure # トレイリングクロージャを一時的に許可
+  - line_length # LLM可読性のため行長制限を無効化
 
 # カスタム設定
-line_length:
-  warning: 120
-  error: 150
 
 function_body_length:
   warning: 60

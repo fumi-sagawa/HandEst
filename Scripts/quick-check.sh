@@ -3,12 +3,20 @@
 
 echo "🚀 Running quick checks..."
 
-# SwiftLintのみ実行（高速）
+# SwiftLintのみ実行（高速、エラーのみ表示）
 echo "🧹 Running SwiftLint..."
 if [ -f /opt/homebrew/bin/swiftlint ]; then
-    /opt/homebrew/bin/swiftlint
+    if /opt/homebrew/bin/swiftlint lint --quiet 2>&1 | grep "error:"; then
+        echo "❌ SwiftLint errors found!"
+    else
+        echo "✅ No lint errors!"
+    fi
 elif [ -f /usr/local/bin/swiftlint ]; then
-    /usr/local/bin/swiftlint
+    if /usr/local/bin/swiftlint lint --quiet 2>&1 | grep "error:"; then
+        echo "❌ SwiftLint errors found!"
+    else
+        echo "✅ No lint errors!"
+    fi
 else
     echo "⚠️ SwiftLint not found, skipping..."
 fi

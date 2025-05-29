@@ -31,12 +31,12 @@ final class HandTrackingResultTests: XCTestCase {
             poses: [pose1, pose2],
             handednessData: handednessData,
             processingTimeMs: 16.7,
-            frameSize: CGSize(width: 1920, height: 1080)
+            frameSize: CGSize(width: 1_920, height: 1_080)
         )
         
         XCTAssertEqual(result.poses.count, 2)
         XCTAssertEqual(result.processingTimeMs, 16.7)
-        XCTAssertEqual(result.frameSize, CGSize(width: 1920, height: 1080))
+        XCTAssertEqual(result.frameSize, CGSize(width: 1_920, height: 1_080))
         XCTAssertNotNil(result.timestamp)
     }
     
@@ -54,7 +54,7 @@ final class HandTrackingResultTests: XCTestCase {
             poses: [leftPose, rightPose],
             handednessData: handednessData,
             processingTimeMs: 16.7,
-            frameSize: CGSize(width: 1920, height: 1080)
+            frameSize: CGSize(width: 1_920, height: 1_080)
         )
         
         XCTAssertNotNil(result.leftHandPose)
@@ -75,7 +75,7 @@ final class HandTrackingResultTests: XCTestCase {
             poses: [pose],
             handednessData: handednessData,
             processingTimeMs: 16.7,
-            frameSize: CGSize(width: 1920, height: 1080)
+            frameSize: CGSize(width: 1_920, height: 1_080)
         )
         
         XCTAssertNotNil(result.leftHandPose)
@@ -91,7 +91,7 @@ final class HandTrackingResultTests: XCTestCase {
             poses: [],
             handednessData: MultiHandednessData(hands: []),
             processingTimeMs: 16.7,  // 約60FPS
-            frameSize: CGSize(width: 1920, height: 1080)
+            frameSize: CGSize(width: 1_920, height: 1_080)
         )
         
         XCTAssertEqual(result.estimatedFPS, 59.88, accuracy: Double(0.1))
@@ -101,7 +101,7 @@ final class HandTrackingResultTests: XCTestCase {
             poses: [],
             handednessData: MultiHandednessData(hands: []),
             processingTimeMs: 0,
-            frameSize: CGSize(width: 1920, height: 1080)
+            frameSize: CGSize(width: 1_920, height: 1_080)
         )
         
         XCTAssertEqual(zeroTimeResult.estimatedFPS, 0)
@@ -125,7 +125,7 @@ final class HandTrackingResultTests: XCTestCase {
             poses: [lowConfidencePose, highConfidencePose],
             handednessData: MultiHandednessData(hands: []),
             processingTimeMs: 16.7,
-            frameSize: CGSize(width: 1920, height: 1080)
+            frameSize: CGSize(width: 1_920, height: 1_080)
         )
         
         XCTAssertEqual(result.mostConfidentPose?.overallConfidence ?? 0, 0.95, accuracy: Float(0.001))
@@ -145,7 +145,7 @@ final class HandTrackingResultTests: XCTestCase {
             poses: [leftPose, rightPose],
             handednessData: handednessData,
             processingTimeMs: 16.7,
-            frameSize: CGSize(width: 1920, height: 1080)
+            frameSize: CGSize(width: 1_920, height: 1_080)
         )
         
         let leftData = result.handData(for: .left)
@@ -169,7 +169,7 @@ final class HandTrackingResultTests: XCTestCase {
             poses: [],
             handednessData: MultiHandednessData(hands: []),
             processingTimeMs: 16.0,
-            frameSize: CGSize(width: 1920, height: 1080)
+            frameSize: CGSize(width: 1_920, height: 1_080)
         )
         
         history.append(result1)
@@ -195,14 +195,14 @@ final class HandTrackingResultTests: XCTestCase {
             poses: [createTestHandPose()],
             handednessData: MultiHandednessData(hands: [HandednessData(handType: .left, confidence: 0.9)]),
             processingTimeMs: 16.0,
-            frameSize: CGSize(width: 1920, height: 1080)
+            frameSize: CGSize(width: 1_920, height: 1_080)
         )
         
         let result2 = HandTrackingResult(
             poses: [],
             handednessData: MultiHandednessData(hands: []),
             processingTimeMs: 20.0,
-            frameSize: CGSize(width: 1920, height: 1080)
+            frameSize: CGSize(width: 1_920, height: 1_080)
         )
         
         history.append(result1)
@@ -231,7 +231,7 @@ final class HandTrackingResultTests: XCTestCase {
             poses: [],
             handednessData: MultiHandednessData(hands: []),
             processingTimeMs: 16.0,
-            frameSize: CGSize(width: 1920, height: 1080)
+            frameSize: CGSize(width: 1_920, height: 1_080)
         )
         
         history.append(result)
@@ -255,7 +255,7 @@ final class HandTrackingResultTests: XCTestCase {
             poses: [pose],
             handednessData: handednessData,
             processingTimeMs: 16.7,
-            frameSize: CGSize(width: 1920, height: 1080)
+            frameSize: CGSize(width: 1_920, height: 1_080)
         )
         
         let encoder = JSONEncoder()
